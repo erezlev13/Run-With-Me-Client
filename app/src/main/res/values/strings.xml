@@ -5,4 +5,5 @@
     <string name="profile_menu">Profile</string>
     <string name="run_menu">Run</string>
     <string name="groups_menu">Groups</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
