@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Run With Me</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_menu">Profile</string>
+    <string name="run_menu">Run</string>
+    <string name="groups_menu">Groups</string>
 </resources>
