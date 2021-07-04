@@ -25,4 +25,7 @@
     <string name="keep_running">Keep Running?</string>
     <string name="continue_running">Continue Running</string>
     <string name="stop_running">Stop Running</string>
+    <string name="button_stat">Statistics</string>
+    <string name="button_add_friend">Add friend</string>
+
 </resources>

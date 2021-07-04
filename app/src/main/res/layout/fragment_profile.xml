@@ -9,27 +9,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="405dp">
+
         <LinearLayout
-            android:background="@drawable/gradientbackground"
             android:layout_width="match_parent"
             android:layout_height="350dp"
+            android:background="@drawable/gradientbackground"
             android:orientation="vertical">
-            <ImageView
-                android:layout_marginTop="45dp"
-                android:layout_gravity="center_horizontal"
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/ic_account_circle"/>
-            <TextView
-                android:layout_marginTop="10dp"
+                android:contentDescription="image"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shahar Chalfon"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:textSize="21sp"/>
+                android:layout_marginTop="55dp"
+                app:civ_border_color="@color/grayLight"
+                android:src="@drawable/ic_account_circle" />
+
         </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/pick_photo_action_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            android:layout_marginTop="135dp"
+            android:layout_marginLeft="125dp"
+
+            android:src="@drawable/ic_camera"
+            app:tint="@color/startBlue" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="310dp"
             android:layout_height="120dp"
@@ -66,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/endBlue"
-                        android:text="Statistics"
+                        android:text="@string/button_stat"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -96,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/endBlue"
-                        android:text="Add Friend"
+                        android:text="@string/button_add_friend"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
@@ -120,6 +129,7 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_people"/>
             <TextView
+                android:id="@+id/runner_name"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -138,17 +148,13 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_email"/>
             <TextView
+                android:id="@+id/runner_email"
                 android:textStyle="bold"
-
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="Shaharcalfon@gmail.com"/>
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>

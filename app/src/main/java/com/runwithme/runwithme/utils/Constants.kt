@@ -3,6 +3,7 @@ package com.runwithme.runwithme.utils
 object Constants {
     const val PERMISSION_LOCATION_REQUEST_CODE = 1
     const val PERMISSION_BACKGROUND_LOCATION_REQUEST_CODE = 2
+    const val PERMISSION_EXTERNAL_STORAGE_REQUEST_CODE = 3
 
     const val NOTIFICATION_CHANNEL_ID = "tracker_notification_id"
     const val NOTIFICATION_CHANNEL_NAME = "tracker_notification"
