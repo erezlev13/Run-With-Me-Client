@@ -1,9 +1,14 @@
 package com.runwithme.runwithme.view.run
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +21,19 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
+import com.runwithme.runwithme.databinding.FragmentRunBinding
+import com.runwithme.runwithme.utils.ExtensionFunctions.hide
+import com.runwithme.runwithme.utils.ExtensionFunctions.show
+import com.runwithme.runwithme.utils.MapUtils.createCustomMarker
 import com.runwithme.runwithme.utils.MapUtils.setCameraPosition
+import com.runwithme.runwithme.utils.Permissions.hasBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.hasLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestLocationPermission
+import com.runwithme.runwithme.view.activity.OnRunningActivity
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 
@@ -34,7 +46,9 @@ class RunFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
-    private lateinit var runLayoutContainer: View
+    private var _binding: FragmentRunBinding? = null
+    private val binding: FragmentRunBinding get() = _binding!!
+    private lateinit var runAnimation: AnimationDrawable
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +61,14 @@ class RunFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_run, container, false)
-        runLayoutContainer = view.findViewById(R.id.map)
+        _binding =  FragmentRunBinding.inflate(inflater, container, false)
 
-        return view
+        binding.runProgressBar.apply {
+            setBackgroundResource(R.drawable.run_anim)
+            runAnimation = background as AnimationDrawable
+        }
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +77,29 @@ class RunFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        onStartClick()
+    }
+
+    private fun onStartClick() {
+        // Starting running activity by tapping on "start".
+        // Start new activity, that will show all measurements.
+        binding.startRunningButton.setOnClickListener {
+            binding.runProgressBar.show()
+            runAnimation.start()
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.runProgressBar.hide()
+                runAnimation.stop()
+                Intent(requireContext(), OnRunningActivity::class.java).also {
+                    startActivity(it)
+                }
+            }, 3000)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     /** Maps Implementations: */
@@ -79,10 +120,11 @@ class RunFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
         hideUiSettings()
 
-        if (hasLocationPermission(requireContext())) {
+        if (hasLocationPermission(requireContext()) && hasBackgroundLocationPermission(requireContext())) {
             showCurrentLocation()
         } else {
             requestLocationPermission(this)
+            requestBackgroundLocationPermission(this)
         }
     }
 
@@ -99,13 +141,20 @@ class RunFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
                     it.result.latitude,
                     it.result.longitude
                 )
+
                 mMap.animateCamera(
                     CameraUpdateFactory.newCameraPosition(
                         setCameraPosition(lastKnownLocation)
                     )
                 )
+
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(lastKnownLocation)
+                        .icon(createCustomMarker(requireContext()))
+                )
             } else {
-                val noGPSMsg = Snackbar.make(runLayoutContainer, "No GPS signal yet", Snackbar.LENGTH_INDEFINITE)
+                val noGPSMsg = Snackbar.make(binding.runContainer, "No GPS signal yet", Snackbar.LENGTH_INDEFINITE)
                 noGPSMsg.setAction("OK") {
                     noGPSMsg.duration = 1
                 }
