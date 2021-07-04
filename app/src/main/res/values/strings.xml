@@ -5,4 +5,24 @@
     <string name="profile_menu">Profile</string>
     <string name="run_menu">Run</string>
     <string name="groups_menu">Groups</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_on_running">OnRunningActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+    <string name="start_time">00:00:00</string>
+    <string name="start_distance">0.00</string>
+    <string name="kilometer_unit_distance">Kilometer</string>
+    <string name="start_pace_and_duration">00:00</string>
+    <string name="current_pace">Current Pace</string>
+    <string name="duration">Duration</string>
+    <string name="avg_pace">Avg. Pace</string>
+    <string name="pause">Pause</string>
+    <string name="keep_running">Keep Running?</string>
+    <string name="continue_running">Continue Running</string>
+    <string name="stop_running">Stop Running</string>
 </resources>

@@ -8,16 +8,13 @@
     <fragment
         android:id="@+id/runFragment"
         android:name="com.runwithme.runwithme.view.run.RunFragment"
-        android:label="@string/run_menu"
         tools:layout="@layout/fragment_run" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.runwithme.runwithme.view.profile.ProfileFragment"
-        android:label="@string/profile_menu"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/groupsFragment"
         android:name="com.runwithme.runwithme.view.groups.GroupsFragment"
-        android:label="@string/groups_menu"
         tools:layout="@layout/fragment_groups" />
 </navigation>
