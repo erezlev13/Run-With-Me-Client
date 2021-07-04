@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.groupsFragment
             )
         )
-
         binding.mainNavigationMenu.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
