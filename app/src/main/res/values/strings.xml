@@ -27,5 +27,7 @@
     <string name="stop_running">Stop Running</string>
     <string name="button_stat">Statistics</string>
     <string name="button_add_friend">Add friend</string>
+    <string name="no_runs_stat">No Runs Found Yet.</string>
+    <string name="title_run_stat">My Runs Statistics</string>
 
 </resources>

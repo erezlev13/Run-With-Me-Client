@@ -16,4 +16,6 @@ object Constants {
 
     const val LOCATION_UPDATE_INTERVAL = 4000L
     const val LOCATION_FASTEST_UPDATE_INTERVAL = 2000L
+
+    const val BASE_URL = "http://10.0.2.2:3000/run-with-me/"
 }

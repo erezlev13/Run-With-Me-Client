@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="405dp">
 
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:background="@drawable/gradientbackground"
@@ -20,24 +21,35 @@
                 android:id="@+id/profile_image"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_marginStart="113dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="155dp"
+                android:layout_marginBottom="164dp"
                 android:contentDescription="image"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="55dp"
+                android:src="@drawable/ic_account_circle"
                 app:civ_border_color="@color/grayLight"
-                android:src="@drawable/ic_account_circle" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
-        </LinearLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/pick_photo_action_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:clickable="true"
-            android:layout_marginTop="135dp"
-            android:layout_marginLeft="125dp"
-
-            android:src="@drawable/ic_camera"
-            app:tint="@color/startBlue" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/pick_photo_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/profile_image"
+                app:layout_constraintVertical_bias="0.925"
+                app:tint="@color/startBlue" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="310dp"

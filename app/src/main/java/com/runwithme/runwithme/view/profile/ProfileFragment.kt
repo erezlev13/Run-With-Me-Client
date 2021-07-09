@@ -1,5 +1,6 @@
 package com.runwithme.runwithme.view.profile
 
+
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -15,12 +16,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.databinding.FragmentProfileBinding
 import com.runwithme.runwithme.utils.Permissions.hasExternalStoragePermission
 import com.runwithme.runwithme.utils.Permissions.requestExternalStoragePermission
-
+import com.vmadalin.easypermissions.EasyPermissions
+import com.vmadalin.easypermissions.dialogs.SettingsDialog
 
 /**
  * A simple [Fragment] subclass.
  */
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
 
     lateinit var binding: FragmentProfileBinding
     private var currentPhotoPath: Uri? = null
@@ -52,6 +54,11 @@ class ProfileFragment : Fragment() {
                 requestExternalStoragePermission(this)
             }
         }
+        binding.buttonStatistics.setOnClickListener {
+            Intent(requireContext(), RunStatActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -75,5 +82,28 @@ class ProfileFragment : Fragment() {
         )
         resultLauncher.launch(Intent.createChooser(getFromGalleryIntent, "Select Image"))
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {
+            SettingsDialog.Builder(requireActivity()).build().show()
+        } else{
+            requestExternalStoragePermission(this)
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        uploadImageFromPhotoLibrary()
+    }
+
+
+
 
 }
