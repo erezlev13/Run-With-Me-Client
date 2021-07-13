@@ -11,5 +11,12 @@
     <color name="grayLight">#FAFAFA</color>
     <color name="startBlue">#09C6DF</color>
     <color name="endBlue">#0BCCE6</color>
+    <color name="lightMediumGray">#80D1D1D1</color>
+    <color name="red">#FF0000</color>
+
+
+    <color name="darkBlue">#005073</color>
+    <color name="lightBlue">#107DAC</color>
+    <color name="sky">#189AD3</color>
 
 </resources>

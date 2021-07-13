@@ -3,6 +3,7 @@ package com.runwithme.runwithme.utils
 object Constants {
     const val PERMISSION_LOCATION_REQUEST_CODE = 1
     const val PERMISSION_BACKGROUND_LOCATION_REQUEST_CODE = 2
+    const val PERMISSION_EXTERNAL_STORAGE_REQUEST_CODE = 3
 
     const val NOTIFICATION_CHANNEL_ID = "tracker_notification_id"
     const val NOTIFICATION_CHANNEL_NAME = "tracker_notification"
@@ -15,4 +16,6 @@ object Constants {
 
     const val LOCATION_UPDATE_INTERVAL = 4000L
     const val LOCATION_FASTEST_UPDATE_INTERVAL = 2000L
+
+    const val BASE_URL = "http://10.0.2.2:3000/run-with-me/"
 }
