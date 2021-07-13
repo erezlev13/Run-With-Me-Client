@@ -2,68 +2,61 @@ package com.runwithme.runwithme.view.activity
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.runwithme.runwithme.databinding.ActivityLoginBinding
 import com.runwithme.runwithme.model.LoginRequest
-import com.runwithme.runwithme.model.LoginResponse
-import com.runwithme.runwithme.network.ApiClient
-import com.runwithme.runwithme.network.SessionManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.runwithme.runwithme.network.NetworkResult
+import com.runwithme.runwithme.network.TokenStoreImpl
+import com.runwithme.runwithme.viewmodels.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
-
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var sessionManager: SessionManager
-    private lateinit var apiClient: ApiClient
+    private lateinit var tokenStore: TokenStoreImpl
+    private lateinit var loginViewModel : LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        apiClient = ApiClient()
-        sessionManager = SessionManager(this)
+        tokenStore = TokenStoreImpl()
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         binding.buttonLogin.setOnClickListener {
             login()
         }
 
     }
-
-    fun login(){
+    private fun login(){
         val email= binding.email.text.toString()
         val password = binding.password.text.toString()
 
-        apiClient.getApiService(this).login(LoginRequest(email,password))
-            .enqueue(object : Callback<LoginResponse> {
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    // Error logging in
-                }
-
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    val loginResponse = response.body()
-
-                    if (response.isSuccessful) {
-                        if(loginResponse?.user != null) {
-                            sessionManager.saveAuthToken(loginResponse.token)
-                            changeScreen()
-                        }
-                    } else {
-                        binding.errorTextView.visibility = View.VISIBLE
+        loginViewModel.login(LoginRequest(email,password))
+        loginViewModel.loginResponse.observe(this, { response ->
+            when(response){
+                is NetworkResult.Success -> {
+                    if(response.data?.user != null) {
+                        tokenStore.setJwt(response.data?.token)
+                        changeScreen()
                     }
                 }
-            })
+                is NetworkResult.Error -> {
+                    binding.errorTextView.text = response.message
+                    binding.errorTextView.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     fun changeScreen(){
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
