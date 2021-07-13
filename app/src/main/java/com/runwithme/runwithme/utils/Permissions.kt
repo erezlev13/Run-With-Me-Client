@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.fragment.app.Fragment
 import com.runwithme.runwithme.utils.Constants.PERMISSION_BACKGROUND_LOCATION_REQUEST_CODE
 import com.runwithme.runwithme.utils.Constants.PERMISSION_LOCATION_REQUEST_CODE
+import com.runwithme.runwithme.utils.Constants.PERMISSION_EXTERNAL_STORAGE_REQUEST_CODE
 import com.vmadalin.easypermissions.EasyPermissions
 
 object Permissions {
@@ -44,4 +45,18 @@ object Permissions {
             )
         }
     }
+    fun hasExternalStoragePermission(context: Context) = EasyPermissions.hasPermissions(
+        context,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
+    fun requestExternalStoragePermission(fragment: Fragment) {
+        EasyPermissions.requestPermissions(
+            fragment,
+            "External permission is essential for this app, so you can upload photos",
+            PERMISSION_EXTERNAL_STORAGE_REQUEST_CODE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    }
+
 }
