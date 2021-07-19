@@ -8,12 +8,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivityOnRunningBinding
 import com.runwithme.runwithme.model.Timer
 import com.runwithme.runwithme.service.TrackerService
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
+import com.runwithme.runwithme.utils.Constants.AVG_PACE
+import com.runwithme.runwithme.utils.Constants.DISTANCE
+import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.MapUtils
 import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
 
@@ -33,6 +37,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private var sumPace = 0.0
     private var paceCounter = 0
     private var currentPace = 0.0
+    private var avgPace = 0.0
     private var lastPace = 0.0
     private var isContinued = false
 
@@ -46,6 +51,11 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         startRun()
         observeTrackerService()
         onPauseClickListener()
+        // TODO: calculate steps!!
+    }
+
+    override fun onBackPressed() {
+        Snackbar.make(binding.root, "Press pause to quit running :)", Snackbar.LENGTH_LONG).show()
     }
 
     /** Class Methods: */
@@ -112,9 +122,6 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun calculateAvgPace(): String {
-        // Get average pace.
-        var avgPace = 0.0
-
         if (totalDistance < 1 * KM) {
             // The user is on the first km. So, the average pace is the current pace.
             avgPace = currentPace
@@ -149,7 +156,6 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
             sendActionCommandToService(ACTION_SERVICE_STOP)
             timer.stop()
             showBottomSheet()
-            // TODO: show to the user results, include the path on the map.
         }
     }
 
@@ -178,6 +184,15 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     override fun onStopClick() {
         sendActionCommandToService(ACTION_SERVICE_STOP)
         timer.stop()
-        // TODO: show to the user the results, including the path on the map.
+        showSummarry()
+    }
+
+    private fun showSummarry() {
+        val intent = Intent(this, SummaryActivity::class.java)
+        intent.putExtra(TIME, timer.timeTextView.text.toString())
+        intent.putExtra(AVG_PACE, getTimeInMinutesAndSeconds(avgPace))
+        intent.putExtra(DISTANCE, binding.distanceTextView.text.toString())
+        // TODO: send steps along with all the running data.
+        startActivity(intent)
     }
 }

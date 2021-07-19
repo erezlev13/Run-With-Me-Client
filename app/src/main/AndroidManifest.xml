@@ -23,12 +23,11 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.RunWithMe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.SignupActivity"></activity>
+        <activity android:name=".view.activity.SummaryActivity"></activity>
+        <activity android:name=".view.activity.SignupActivity" />
         <activity android:name=".view.activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+            <!-- TODO: change this back to the launcher. -->
         </activity>
         <activity android:name=".view.profile.RunStatActivity" />
 
@@ -55,7 +54,15 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".view.activity.MainActivity"></activity>
+        <activity android:name=".view.activity.MainActivity">
+
+            <!-- TODO: change this back to the NOT launcher. -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
