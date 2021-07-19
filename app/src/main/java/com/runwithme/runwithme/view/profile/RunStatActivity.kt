@@ -2,6 +2,7 @@ package com.runwithme.runwithme.view.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.adapters.RunsStatisticsAdapter
 import com.runwithme.runwithme.databinding.ActivityRunStatBinding
@@ -30,10 +31,10 @@ class RunStatActivity : AppCompatActivity() {
 //
 //        if (runStatisticsList.size > 0) {
 //            binding.runStatList.visibility = View.VISIBLE
-//            binding.noRunsAvailableTextView.visibility = View.GONE
+//            binding.noRunsAvailableTextView.visibility = View.INVISIBLE
 //            setupRunStatisticsRecyclerView(runStatisticsList)
 //        }else{
-//            binding.runStatList.visibility = View.GONE
+//            binding.runStatList.visibility = View.INVISIBLE
 //            binding.noRunsAvailableTextView.visibility = View.VISIBLE
 //        }
 //    }

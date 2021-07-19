@@ -1,15 +1,20 @@
 package com.runwithme.runwithme.model
 
+import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 
 data class User(
     @SerializedName("_id")
-    val _id: String,
+    var _id: String,
     @SerializedName("firstName")
-    val firstName: String,
+    var firstName: String,
     @SerializedName("lastName")
-    val lastName: String,
+    var lastName: String,
     @SerializedName("email")
-    val email: String,
+    var email: String,
+    @SerializedName("photoUri")
+    var photoUri : String,
+    @SerializedName("runs")
+    var runs : ArrayList<Run>,
 )

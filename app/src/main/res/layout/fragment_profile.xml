@@ -6,14 +6,28 @@
     android:layout_height="match_parent"
     android:background="@color/grayLight"
     android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/main_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/profile_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/endBlue"
+            android:minHeight="?attr/actionBarSize"
+            app:title="My Profile"
+            app:titleTextColor="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="405dp">
-
+        android:layout_height="380dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="300dp"
             android:background="@drawable/gradientbackground"
             android:orientation="vertical">
 
@@ -21,19 +35,17 @@
                 android:id="@+id/profile_image"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="113dp"
                 android:layout_marginTop="36dp"
-                android:layout_marginEnd="155dp"
                 android:layout_marginBottom="164dp"
                 android:contentDescription="image"
                 android:src="@drawable/ic_account_circle"
                 app:civ_border_color="@color/grayLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/pick_photo_action_button"
@@ -55,7 +67,7 @@
             android:layout_width="310dp"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="275dp">
+            android:layout_marginTop="240dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -75,9 +87,10 @@
                         android:textSize="20sp"
                         />
                     <TextView
+                        android:id="@+id/total_runs_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10"
+                        android:text=""
                         android:textStyle="bold"
                         android:textSize="20sp"
                         android:paddingTop="10dp"
@@ -130,7 +143,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="10dp">
         <LinearLayout
             android:orientation="horizontal"
             android:paddingLeft="25dp"
@@ -141,7 +154,7 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_people"/>
             <TextView
-                android:id="@+id/runner_name"
+                android:id="@+id/runner_name_textView"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -160,7 +173,7 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_email"/>
             <TextView
-                android:id="@+id/runner_email"
+                android:id="@+id/runner_email_textView"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"

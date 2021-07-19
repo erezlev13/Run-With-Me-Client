@@ -1,4 +1,4 @@
-package com.runwithme.runwithme.network
+package com.runwithme.runwithme.utils
 
 sealed class NetworkResult<T>(
     val data: T? = null,

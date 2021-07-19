@@ -2,30 +2,51 @@ package com.runwithme.runwithme.view.profile
 
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import com.runwithme.runwithme.MyApplication
+import com.runwithme.runwithme.R
+import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.databinding.FragmentProfileBinding
+import com.runwithme.runwithme.utils.Constants.IMAGE_DIRECTORY
+import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.Permissions.hasExternalStoragePermission
 import com.runwithme.runwithme.utils.Permissions.requestExternalStoragePermission
+import com.runwithme.runwithme.view.activity.LoginActivity
+import com.runwithme.runwithme.view.activity.MainActivity
+import com.runwithme.runwithme.viewmodels.UserViewModel
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
 
-    lateinit var binding: FragmentProfileBinding
+    private lateinit var binding: FragmentProfileBinding
     private var currentPhotoPath: Uri? = null
+    private lateinit var userViewModel: UserViewModel
+
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             if(result.data != null){
@@ -37,14 +58,18 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
                     MediaStore.Images.Media.getBitmap(requireContext().contentResolver, currentPhotoPath)
                 binding.profileImage.setImageBitmap(selectedImageBitmap)
 
+                updateUserPhoto(selectedImageBitmap)
+
             } catch (e: java.lang.RuntimeException) {
-                Snackbar.make(binding.root, "Oops something went wrong... Please try again", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, "something went wrong... Please try again", Snackbar.LENGTH_LONG).show()
             }
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         binding = FragmentProfileBinding.inflate(layoutInflater)
         binding.pickPhotoActionButton.setOnClickListener{
@@ -65,9 +90,45 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        binding.profileToolbar.inflateMenu(R.menu.profile_menu)
+        binding.profileToolbar.setOnMenuItemClickListener {
+            when(it.itemId)
+            {
+                R.id.logout_item -> {
+                    logout()
+                    true
+                }
+                else -> {
+                    super.onOptionsItemSelected(it)
+                }
+            }
+        }
+        setupProfileData()
         return binding.root
+    }
+
+
+    private fun logout(){
+        deleteUserFromLocalDB()
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
+    }
+
+    private fun setupProfileData() {
+        userViewModel.readUser.observeOnce(this,{database ->
+            if(database.isNotEmpty()){
+                val user = database[0].user
+                if(!user.photoUri.isNullOrEmpty()){
+                    binding.profileImage.setImageURI(Uri.parse(user.photoUri))
+                }
+                binding.totalRunsTextView.text = user.runs.size.toString()
+                binding.runnerEmailTextView.text = user.email
+                binding.runnerNameTextView.text = user.firstName + " " +user.lastName
+
+            }
+        })
     }
 
     private fun uploadImageFromPhotoLibrary() {
@@ -101,6 +162,56 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         uploadImageFromPhotoLibrary()
+    }
+
+    private fun saveImageToInternalStorage(bitmap: Bitmap): Uri {
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(MyApplication.appContext)
+
+        var file = wrapper.getDir(IMAGE_DIRECTORY, Context.MODE_PRIVATE)
+
+        // Create a file to save the image
+        file = File(file, "${UUID.randomUUID()}.jpg")
+
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(file)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException) { // Catch the exception
+            e.printStackTrace()
+        }
+
+        // Return the saved image uri
+        return Uri.parse(file.absolutePath)
+    }
+
+    private fun updateUserPhoto(bitmap: Bitmap){
+        userViewModel.readUser.observeOnce(this,{database ->
+            if(database.isNotEmpty()){
+                val user = database[0].user
+                user.photoUri = saveImageToInternalStorage(bitmap).toString()
+                val updatedUserEntity = UserEntity(database[0].token,user)
+                userViewModel.updateUser(updatedUserEntity)
+            }
+        })
+    }
+
+    private fun deleteUserFromLocalDB(){
+        userViewModel.readUser.observeOnce(this,{ database ->
+            if(database.isNotEmpty()){
+                Log.i("myApp","Delete user from db")
+                userViewModel.deleteUser(database[0])
+            }
+        })
     }
 
 
