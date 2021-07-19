@@ -1,7 +1,7 @@
 package com.runwithme.runwithme.network
 
-import com.runwithme.runwithme.model.LoginRequest
-import com.runwithme.runwithme.model.LoginResponse
+import com.runwithme.runwithme.model.network.LoginRequest
+import com.runwithme.runwithme.model.network.LoginResponse
 import com.runwithme.runwithme.model.Run
 import retrofit2.Call
 import retrofit2.Response

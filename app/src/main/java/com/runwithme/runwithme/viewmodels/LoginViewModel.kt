@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.runwithme.runwithme.model.LoginRequest
-import com.runwithme.runwithme.model.LoginResponse
+import com.runwithme.runwithme.model.network.LoginRequest
+import com.runwithme.runwithme.model.network.LoginResponse
 import com.runwithme.runwithme.network.Repository
 import com.runwithme.runwithme.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel

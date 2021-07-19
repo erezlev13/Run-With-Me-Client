@@ -1,7 +1,7 @@
 package com.runwithme.runwithme.network
 
-import com.runwithme.runwithme.model.LoginRequest
-import com.runwithme.runwithme.model.LoginResponse
+import com.runwithme.runwithme.model.network.LoginRequest
+import com.runwithme.runwithme.model.network.LoginResponse
 import retrofit2.Response
 import javax.inject.Inject
 

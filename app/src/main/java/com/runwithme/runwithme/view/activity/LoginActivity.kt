@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.runwithme.runwithme.databinding.ActivityLoginBinding
-import com.runwithme.runwithme.model.LoginRequest
+import com.runwithme.runwithme.model.network.LoginRequest
 import com.runwithme.runwithme.network.NetworkResult
 import com.runwithme.runwithme.network.TokenStoreImpl
 import com.runwithme.runwithme.viewmodels.LoginViewModel

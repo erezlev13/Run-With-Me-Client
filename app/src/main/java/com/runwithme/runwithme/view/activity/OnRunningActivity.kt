@@ -34,7 +34,6 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private var paceCounter = 0
     private var currentPace = 0.0
     private var lastPace = 0.0
-    private var lastAvgPace = 0.0
     private var isContinued = false
 
     /** Activity Methods: */
@@ -96,9 +95,9 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         }
 
         // Count current pace every 1KM. So, we can get an average of every 1KM of running.
-        if (totalDistance == 1*KM) {
+        if (totalDistance == 1 * KM) {
             sumAndCountPace()
-        } else if (totalDistance > 1*KM && isPassedAKilometer()) {
+        } else if (totalDistance > 1 * KM && isPassedAKilometer()) {
             sumAndCountPace()
         }
 
@@ -116,7 +115,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         // Get average pace.
         var avgPace = 0.0
 
-        if (totalDistance < 1*KM) {
+        if (totalDistance < 1 * KM) {
             // The user is on the first km. So, the average pace is the current pace.
             avgPace = currentPace
         } else if (isPassedAKilometer()) {

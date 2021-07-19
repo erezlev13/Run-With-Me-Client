@@ -18,4 +18,5 @@ object Constants {
     const val LOCATION_FASTEST_UPDATE_INTERVAL = 2000L
 
     const val BASE_URL = "http://10.0.2.2:3000/run-with-me/"
+    const val MAPS_STATIC_URL = "https://maps.googleapis.com/maps/api/staticmap?"
 }

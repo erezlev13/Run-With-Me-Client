@@ -5,6 +5,8 @@ import com.runwithme.runwithme.network.AuthInterceptor
 import com.runwithme.runwithme.network.RunWithMeService
 import com.runwithme.runwithme.utils.Constants.BASE_URL
 import com.runwithme.runwithme.network.TokenStoreImpl
+import com.runwithme.runwithme.network.maps.MapsService
+import com.runwithme.runwithme.utils.Constants.MAPS_STATIC_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
