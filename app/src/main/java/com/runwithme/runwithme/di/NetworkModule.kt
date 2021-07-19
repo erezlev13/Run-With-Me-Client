@@ -1,13 +1,14 @@
 package com.runwithme.runwithme.di
 
 
+import android.content.Context
 import com.runwithme.runwithme.network.AuthInterceptor
 import com.runwithme.runwithme.network.RunWithMeService
 import com.runwithme.runwithme.utils.Constants.BASE_URL
-import com.runwithme.runwithme.network.TokenStoreImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -20,19 +21,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Singleton
-    @Provides
-    fun provideTokenStore(tokenStore: TokenStoreImpl): TokenStoreImpl {
-        return tokenStore
-    }
 
     @Singleton
     @Provides
-    fun provideHttpClient(authInterceptor: AuthInterceptor) : OkHttpClient {
+    fun provideHttpClient(@ApplicationContext context: Context) : OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(authInterceptor)
+            .addInterceptor(AuthInterceptor(context))
             .build()
     }
 
