@@ -26,8 +26,11 @@
         <activity android:name=".view.activity.SummaryActivity"></activity>
         <activity android:name=".view.activity.SignupActivity" />
         <activity android:name=".view.activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!-- TODO: change this back to the launcher. -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".view.profile.RunStatActivity" />
 
@@ -55,13 +58,6 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".view.activity.MainActivity">
-
-            <!-- TODO: change this back to the NOT launcher. -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
