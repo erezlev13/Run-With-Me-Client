@@ -17,6 +17,16 @@ object Constants {
     const val LOCATION_UPDATE_INTERVAL = 4000L
     const val LOCATION_FASTEST_UPDATE_INTERVAL = 2000L
 
+    //Retrofit
     const val BASE_URL = "http://10.0.2.2:3000/run-with-me/"
     const val MAPS_STATIC_URL = "https://maps.googleapis.com/maps/api/staticmap?"
+
+    //Room
+    const val DATABASE_NAME = "run_with_me_database"
+    const val USER_TABLE = "user_table"
+
+    //Preferences
+    const val USER_TOKEN = "user_token"
+
+    const val IMAGE_DIRECTORY = "RunWithMeImages"
 }
