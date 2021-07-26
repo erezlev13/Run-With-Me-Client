@@ -41,5 +41,12 @@
     <string name="signup">Sign Up</string>
     <string name="email_exist">This email already exist</string>
     <string name="create_group">Create New Group</string>
+    <string name="map_summary">Map summary</string>
+    <string name="_0_km_h">0 km/h</string>
+    <string name="steps">Steps</string>
+    <string name="init_steps">0</string>
+    <string name="speed">Speed</string>
+    <string name="save">Save</string>
+    <string name="delete_summary">Delete Summary</string>
 
 </resources>
