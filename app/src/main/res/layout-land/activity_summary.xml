@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.activity.summary.SummaryActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -23,12 +23,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/gradientbackground"
             android:minHeight="?attr/actionBarSize"
-            app:title="Summary"
-            app:menu="@menu/summary_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/summary_menu"
+            app:title="Summary"></com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment
@@ -37,31 +36,15 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/save_summary_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"
-        app:layout_constraintVertical_bias="0.076"
         tools:context=".view.activity.MainActivity" />
-
-<!--    <ImageView-->
-<!--        android:id="@+id/summary_map_image_view"-->
-<!--        android:layout_width="250dp"-->
-<!--        android:layout_height="250dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:layout_marginBottom="32dp"-->
-<!--        android:contentDescription="@string/map_summary"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.493"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"-->
-<!--        app:layout_constraintVertical_bias="0.076"-->
-<!--        app:srcCompat="@color/grayLight" />-->
 
     <ProgressBar
         android:id="@+id/summary_progress_bar"
@@ -71,22 +54,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/summary_map_image_view"-->
+    <!--        android:layout_width="250dp"-->
+    <!--        android:layout_height="250dp"-->
+    <!--        android:layout_marginStart="16dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layout_marginBottom="32dp"-->
+    <!--        android:contentDescription="@string/map_summary"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.493"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"-->
+    <!--        app:layout_constraintVertical_bias="0.076"-->
+    <!--        app:srcCompat="@color/grayLight" />-->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/time_card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:contentPaddingLeft="32dp"
         app:contentPaddingRight="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_summary"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toEndOf="@+id/map_summary"
+        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -127,17 +125,14 @@
         android:id="@+id/pace_card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toEndOf="@id/time_card_view"
-        app:layout_constraintTop_toBottomOf="@+id/map_summary"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toEndOf="@+id/time_card_view"
+        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -178,14 +173,14 @@
         android:id="@+id/steps_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/save_summary_button"
         app:layout_constraintEnd_toEndOf="@+id/time_card_view"
         app:layout_constraintStart_toStartOf="@+id/time_card_view"
-        app:layout_constraintTop_toBottomOf="@+id/time_card_view"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/time_card_view">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -226,14 +221,15 @@
         android:id="@+id/distance_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/save_summary_button"
         app:layout_constraintEnd_toEndOf="@+id/pace_card_view"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/pace_card_view"
-        app:layout_constraintTop_toBottomOf="@+id/pace_card_view"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/pace_card_view">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
