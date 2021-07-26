@@ -27,4 +27,8 @@ class RemoteDataSource @Inject constructor(
         return runWithMeApi.getAllUsers()
     }
 
+    suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run> {
+        return runWithMeApi.saveRunData(runDataRequest)
+    }
+
 }

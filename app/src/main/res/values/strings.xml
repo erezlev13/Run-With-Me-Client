@@ -36,7 +36,7 @@
     <string name="password_empty_error">Please insert your password</string>
     <string name="first_name_empty_error">Please insert your first name</string>
     <string name="last_name_empty_error">Please insert your last name</string>
-    <string name="signup_question">"Don't have an account? <font color='#107DAC'>Signup</font>"</string>
+    <string name="signup_question">"Don't have an account? <font color='#107DAC'>Sign Up</font>"</string>
     <string name="login_question">"Already have an account? <font color='#107DAC'>Login</font>"</string>
     <string name="signup">Sign Up</string>
     <string name="email_exist">This email already exist</string>

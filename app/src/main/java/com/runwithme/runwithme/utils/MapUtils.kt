@@ -41,7 +41,7 @@ object MapUtils {
     }
 
     fun createCustomMarker(context: Context?): BitmapDescriptor {
-        val drawable = ContextCompat.getDrawable(context!!, R.drawable.location)
+        val drawable = ContextCompat.getDrawable(context!!, R.drawable.ic_location)
         if (drawable != null) {
             drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
             val bitmap = Bitmap.createBitmap(

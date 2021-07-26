@@ -25,4 +25,7 @@ interface RunWithMeService {
 
     @GET("users/")
     suspend fun getAllUsers() : Response<AllUsersResponse>
+
+    @POST("runs/save-run")
+    suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run>
 }
