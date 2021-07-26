@@ -1,10 +1,8 @@
 package com.runwithme.runwithme.network
 
+import android.util.Log
 import com.runwithme.runwithme.model.*
-import com.runwithme.runwithme.model.network.LoginRequest
-import com.runwithme.runwithme.model.network.LoginResponse
-import com.runwithme.runwithme.model.network.SignupRequest
-import com.runwithme.runwithme.model.network.TokenResponse
+import com.runwithme.runwithme.model.network.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Query
@@ -24,6 +22,9 @@ class RemoteDataSource @Inject constructor(
     }
     suspend fun updateMe(@Body user:User) : Response<User> {
         return runWithMeApi.updateMe(user)
+    }
+    suspend fun getAllUsers() : Response<AllUsersResponse>{
+        return runWithMeApi.getAllUsers()
     }
 
 }

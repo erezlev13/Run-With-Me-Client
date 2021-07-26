@@ -17,8 +17,10 @@ object Constants {
     const val LOCATION_UPDATE_INTERVAL = 4000L
     const val LOCATION_FASTEST_UPDATE_INTERVAL = 2000L
 
+    const val EXTRA_GROUP_DETAILS = "extra_group_details"
+
     //Retrofit
-    const val BASE_URL = "http://10.0.2.2:3000/run-with-me/"
+    const val BASE_URL = "http://192.168.36.68:3000/run-with-me/"
 
     //Room
     const val DATABASE_NAME = "run_with_me_database"

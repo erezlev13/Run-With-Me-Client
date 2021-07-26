@@ -7,6 +7,8 @@ import java.time.LocalTime
 
 
 data class Run(
+    @SerializedName("_id")
+    var _id: String,
     @SerializedName("date")
     val date: LocalDate,
     @SerializedName("startTime")

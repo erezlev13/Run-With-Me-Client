@@ -15,8 +15,12 @@ class UserTypeConverter {
     }
 
     @TypeConverter
-    fun stringToUser(data: String): User {
-        val type = object : TypeToken<User>() {}.type
-        return gson.fromJson(data, type)
+    fun stringToUser(data: String?): User? {
+        if(data != null){
+            val type = object : TypeToken<User>() {}.type
+            return gson.fromJson(data, type)
+        } else{
+           return null
+        }
     }
 }

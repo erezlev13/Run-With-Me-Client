@@ -3,6 +3,8 @@ package com.runwithme.runwithme.model
 import com.google.gson.annotations.SerializedName
 
 data class RunData(
+    @SerializedName("_id")
+    var _id: String,
     @SerializedName("distance")
     val distance: Int,
     @SerializedName("steps")

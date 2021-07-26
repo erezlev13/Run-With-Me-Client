@@ -6,12 +6,12 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.util.Base64.*
 import android.view.*
-
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -23,19 +23,17 @@ import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.databinding.FragmentProfileBinding
 import com.runwithme.runwithme.utils.Constants.IMAGE_DIRECTORY
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.ImageUtils.resizeBitmap
 import com.runwithme.runwithme.utils.Permissions.hasExternalStoragePermission
 import com.runwithme.runwithme.utils.Permissions.requestExternalStoragePermission
 import com.runwithme.runwithme.view.activity.LoginActivity
-import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.viewmodels.UserViewModel
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.util.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -58,7 +56,7 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
                     MediaStore.Images.Media.getBitmap(requireContext().contentResolver, currentPhotoPath)
                 binding.profileImage.setImageBitmap(selectedImageBitmap)
 
-                updateUserPhoto(selectedImageBitmap)
+                updateUserPhoto(resizeBitmap(selectedImageBitmap))
 
             } catch (e: java.lang.RuntimeException) {
                 Snackbar.make(binding.root, "something went wrong... Please try again", Snackbar.LENGTH_LONG).show()
@@ -84,6 +82,12 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
                 startActivity(it)
             }
         }
+        binding.buttonAddFriend.setOnClickListener {
+            Intent(requireContext(), AddFriendActivity::class.java).also {
+                startActivity(it)
+            }
+        }
+
     }
 
     override fun onCreateView(
@@ -121,11 +125,14 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
             if(database.isNotEmpty()){
                 val user = database[0].user
                 if(!user.photoUri.isNullOrEmpty()){
-                    binding.profileImage.setImageURI(Uri.parse(user.photoUri))
+                    val imgBytes: ByteArray = decode(user.photoUri,DEFAULT);
+                    val bitmap : Bitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
+                    binding.profileImage.setImageBitmap(bitmap)
                 }
                 binding.totalRunsTextView.text = user.runs.size.toString()
                 binding.runnerEmailTextView.text = user.email
                 binding.runnerNameTextView.text = user.firstName + " " +user.lastName
+                binding.totalFriendsTextView.text = user.friends.size.toString()
 
             }
         })
@@ -198,7 +205,12 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         userViewModel.readUser.observeOnce(this,{database ->
             if(database.isNotEmpty()){
                 val user = database[0].user
-                user.photoUri = saveImageToInternalStorage(bitmap).toString()
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val imageBytes: ByteArray = baos.toByteArray()
+                val selectedPicture  = encodeToString(imageBytes, DEFAULT)
+                //user.photoUri = saveImageToInternalStorage(bitmap).toString()
+                user.photoUri = selectedPicture
                 val updatedUserEntity = UserEntity(database[0].token,user)
                 userViewModel.updateUser(updatedUserEntity)
             }
@@ -208,11 +220,13 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
     private fun deleteUserFromLocalDB(){
         userViewModel.readUser.observeOnce(this,{ database ->
             if(database.isNotEmpty()){
-                Log.i("myApp","Delete user from db")
                 userViewModel.deleteUser(database[0])
             }
         })
     }
+
+
+
 
 
 
