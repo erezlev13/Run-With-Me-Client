@@ -38,5 +38,6 @@ object Constants {
     const val TIME = "Time"
     const val AVG_PACE = "Avg Pace"
     const val DISTANCE = "Distance"
+    const val LOCATIONS = "Locations"
     const val STEPS = "Steps"
 }

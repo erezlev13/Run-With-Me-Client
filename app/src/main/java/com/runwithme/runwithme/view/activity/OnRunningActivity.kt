@@ -5,11 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
-import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivityOnRunningBinding
 import com.runwithme.runwithme.model.Timer
 import com.runwithme.runwithme.service.TrackerService
@@ -17,8 +15,10 @@ import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
 import com.runwithme.runwithme.utils.Constants.AVG_PACE
 import com.runwithme.runwithme.utils.Constants.DISTANCE
+import com.runwithme.runwithme.utils.Constants.LOCATIONS
 import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.MapUtils
+import com.runwithme.runwithme.view.activity.summary.SummaryActivity
 import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
 
 /** Constants: */
@@ -188,10 +188,12 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun showSummarry() {
+        val locations: ArrayList<LatLng> = ArrayList(locationList)
         val intent = Intent(this, SummaryActivity::class.java)
         intent.putExtra(TIME, timer.timeTextView.text.toString())
         intent.putExtra(AVG_PACE, getTimeInMinutesAndSeconds(avgPace))
         intent.putExtra(DISTANCE, binding.distanceTextView.text.toString())
+        intent.putParcelableArrayListExtra(LOCATIONS, locations)
         // TODO: send steps along with all the running data.
         startActivity(intent)
     }
