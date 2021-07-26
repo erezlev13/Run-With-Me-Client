@@ -15,11 +15,14 @@ import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
 import com.runwithme.runwithme.utils.Constants.AVG_PACE
 import com.runwithme.runwithme.utils.Constants.DISTANCE
+import com.runwithme.runwithme.utils.Constants.END_TIME
 import com.runwithme.runwithme.utils.Constants.LOCATIONS
+import com.runwithme.runwithme.utils.Constants.START_TIME
 import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.MapUtils
 import com.runwithme.runwithme.view.activity.summary.SummaryActivity
 import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
+import java.time.LocalTime
 
 /** Constants: */
 private const val TAG = "OnRunningActivity"
@@ -33,6 +36,8 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private var locationList = mutableListOf<LatLng>()
     private val timer = Timer()
 
+    private lateinit var startTime: LocalTime
+    private lateinit var endTime: LocalTime
     private var totalDistance = 0.0
     private var sumPace = 0.0
     private var paceCounter = 0
@@ -60,6 +65,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
 
     /** Class Methods: */
     private fun startRun() {
+        startTime = LocalTime.now()
         sendActionCommandToService(ACTION_SERVICE_START)
     }
 
@@ -183,6 +189,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
 
     override fun onStopClick() {
         sendActionCommandToService(ACTION_SERVICE_STOP)
+        endTime = LocalTime.now()
         timer.stop()
         showSummarry()
     }
@@ -190,6 +197,8 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private fun showSummarry() {
         val locations: ArrayList<LatLng> = ArrayList(locationList)
         val intent = Intent(this, SummaryActivity::class.java)
+        intent.putExtra(START_TIME, startTime.toString())
+        intent.putExtra(END_TIME, endTime.toString())
         intent.putExtra(TIME, timer.timeTextView.text.toString())
         intent.putExtra(AVG_PACE, getTimeInMinutesAndSeconds(avgPace))
         intent.putExtra(DISTANCE, binding.distanceTextView.text.toString())

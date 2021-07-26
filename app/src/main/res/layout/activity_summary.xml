@@ -34,8 +34,8 @@
     <fragment
         android:id="@+id/map_summary"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="300dp"
+        android:layout_height="230dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
@@ -75,9 +75,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/time_card_view"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
@@ -86,12 +86,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map_summary"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.17000002">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/time_title_text_view"
@@ -125,24 +124,23 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/pace_card_view"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="32dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.857"
         app:layout_constraintStart_toEndOf="@id/time_card_view"
         app:layout_constraintTop_toBottomOf="@+id/map_summary"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.171">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/pace_title_text_view"
@@ -176,7 +174,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/steps_card_view"
-        android:layout_width="0dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="10dp"
@@ -189,8 +187,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/steps_title_text_view"
@@ -224,7 +221,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/distance_card_view"
-        android:layout_width="0dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="10dp"
@@ -237,8 +234,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/distance_title_text_view"
