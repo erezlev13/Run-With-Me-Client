@@ -57,7 +57,6 @@ class LoginActivity : AppCompatActivity() {
     private fun readLocalUserData() {
         loginViewModel.readUser.observeOnce(this,{ database ->
             if(database.isNotEmpty()){
-                Log.i("myApp","There is user in db")
                 loginViewModel.isValidToken(database[0].token)
                 loginViewModel.tokenResponse.observeOnce(this,{ response ->
                     when(response){

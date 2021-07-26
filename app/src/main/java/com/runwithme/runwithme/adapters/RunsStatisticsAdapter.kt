@@ -9,7 +9,6 @@ import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.utils.TimeUtils
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 
 class RunsStatisticsAdapter(private val context: Context,

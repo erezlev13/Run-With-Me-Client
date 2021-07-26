@@ -23,6 +23,8 @@ class RunStatActivity : AppCompatActivity() {
         binding.runsStatToolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+
+
     }
 
 //    private fun getRunStatisticsList() {

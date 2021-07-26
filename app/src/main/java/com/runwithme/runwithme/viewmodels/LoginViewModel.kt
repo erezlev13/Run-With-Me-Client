@@ -99,7 +99,6 @@ class LoginViewModel @Inject constructor(
         when {
             response.isSuccessful -> {
                 val tokenResponse = response.body()
-                Log.i("Status-App","Success : ${tokenResponse!!.isValidToken}")
                 return NetworkResult.Success(tokenResponse!!)
             }
             else ->{
@@ -108,8 +107,5 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
-
-
 
 }

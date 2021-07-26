@@ -1,10 +1,7 @@
 package com.runwithme.runwithme.network
 
 import com.runwithme.runwithme.model.*
-import com.runwithme.runwithme.model.network.LoginRequest
-import com.runwithme.runwithme.model.network.LoginResponse
-import com.runwithme.runwithme.model.network.SignupRequest
-import com.runwithme.runwithme.model.network.TokenResponse
+import com.runwithme.runwithme.model.network.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -23,6 +20,9 @@ interface RunWithMeService {
     @GET("users/check-token")
     suspend fun isValidToken(@Query("token") token:String) : Response<TokenResponse>
 
-    @PATCH("users/updateme")
+    @PATCH("users/updateMe")
     suspend fun updateMe(@Body user:User) : Response<User>
+
+    @GET("users/")
+    suspend fun getAllUsers() : Response<AllUsersResponse>
 }
