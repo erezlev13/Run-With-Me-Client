@@ -8,7 +8,7 @@
     tools:context=".view.activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/main_bar"
+        android:id="@+id/main_activity_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"

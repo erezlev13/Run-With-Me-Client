@@ -1,10 +1,7 @@
 package com.runwithme.runwithme.view.run
 
-import android.Manifest
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -13,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -40,7 +36,10 @@ import com.vmadalin.easypermissions.dialogs.SettingsDialog
 /**
  * A simple [Fragment] subclass.
  */
-class RunFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
+class RunFragment :
+        Fragment(),
+        OnMapReadyCallback,
+        EasyPermissions.PermissionCallbacks {
 
     /** Properties: */
     private lateinit var mMap: GoogleMap
