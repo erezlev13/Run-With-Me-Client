@@ -142,9 +142,17 @@ class RunFragment :
                 )
 
                 mMap.animateCamera(
-                    CameraUpdateFactory.newCameraPosition(
-                        setCameraPosition(lastKnownLocation)
-                    )
+                    CameraUpdateFactory.newCameraPosition(setCameraPosition(lastKnownLocation)),
+                        2000,
+                        object : GoogleMap.CancelableCallback {
+                            override fun onFinish() {
+                                // Leave this empty
+                            }
+
+                            override fun onCancel() {
+                                Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
+                            }
+                        }
                 )
 
                 mMap.addMarker(

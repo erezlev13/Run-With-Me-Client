@@ -33,9 +33,9 @@
     <fragment
         android:id="@+id/map_summary"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="230dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
@@ -77,8 +77,8 @@
         android:id="@+id/time_card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:contentPaddingLeft="32dp"
@@ -88,8 +88,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/time_title_text_view"
@@ -126,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
@@ -136,8 +135,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/pace_title_text_view"
@@ -173,7 +171,7 @@
         android:id="@+id/steps_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
@@ -184,8 +182,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/steps_title_text_view"
@@ -221,7 +218,7 @@
         android:id="@+id/distance_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
@@ -233,8 +230,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grayLight">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/distance_title_text_view"
@@ -268,7 +264,7 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/save_summary_button"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"

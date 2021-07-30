@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivitySignupBinding
 import com.runwithme.runwithme.model.network.SignupRequest
+import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.ExtensionFunctions.show
 import com.runwithme.runwithme.utils.SessionManager
 import com.runwithme.runwithme.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +32,7 @@ class SignupActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         sessionManager = SessionManager(this)
         onTextChangeAllFields()
+
 
 
         binding.signupButton.setOnClickListener {
@@ -78,9 +82,11 @@ class SignupActivity : AppCompatActivity() {
         val password = binding.passwordTextInputEditText.text.toString()
 
         loginViewModel.signup(SignupRequest(firstName,lastName,email,password))
+        binding.signUpProgressBar.show()
         loginViewModel.loginResponse.observeOnce(this, { response ->
             when(response){
                 is NetworkResult.Success -> {
+                    binding.signUpProgressBar.hide()
                     if(response.data?.user != null) {
                         sessionManager.saveAuthToken(response.data?.token)
                         val intent = Intent(this, MainActivity::class.java)
@@ -89,7 +95,12 @@ class SignupActivity : AppCompatActivity() {
                     }
                 }
                 is NetworkResult.Error -> {
+                    binding.signUpProgressBar.hide()
                     binding.emailTextInputLayout.error = getString(R.string.email_exist)
+                }
+                else -> {
+                    binding.signUpProgressBar.hide()
+                    Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
                 }
             }
         })

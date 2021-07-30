@@ -24,7 +24,7 @@ object Constants {
     const val EXTRA_GROUP_DETAILS = "extra_group_details"
 
     //Retrofit
-    const val BASE_URL = "http://10.0.2.2:3000/run-with-me/"
+    const val BASE_URL = "http://192.168.36.68:3000/run-with-me/"
     const val MAPS_STATIC_URL = "https://maps.googleapis.com/maps/api/staticmap?"
 
     //Room
@@ -35,9 +35,14 @@ object Constants {
     const val USER_TOKEN = "user_token"
     
     // Run Data
+    const val START_TIME = "Start Time"
+    const val END_TIME = "End Time"
     const val TIME = "Time"
     const val AVG_PACE = "Avg Pace"
     const val DISTANCE = "Distance"
     const val LOCATIONS = "Locations"
     const val STEPS = "Steps"
+
+    // Response Results
+    const val NO_CONNECTION = "No Connection"
 }

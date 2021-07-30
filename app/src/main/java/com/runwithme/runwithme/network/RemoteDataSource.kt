@@ -30,4 +30,8 @@ class RemoteDataSource @Inject constructor(
         return runWithMeApi.addFriend(friendID)
     }
 
+    suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run> {
+        return runWithMeApi.saveRunData(runDataRequest)
+    }
+
 }
