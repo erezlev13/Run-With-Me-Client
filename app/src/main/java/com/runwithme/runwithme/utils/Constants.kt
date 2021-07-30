@@ -33,9 +33,7 @@ object Constants {
 
     //Preferences
     const val USER_TOKEN = "user_token"
-
-    const val IMAGE_DIRECTORY = "RunWithMeImages"
-
+    
     // Run Data
     const val START_TIME = "Start Time"
     const val END_TIME = "End Time"
