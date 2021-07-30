@@ -27,6 +27,12 @@ object ExtensionFunctions {
     fun ProgressBar.hide() {
         this.visibility = View.GONE
     }
+    fun View.show(){
+        this.visibility = View.VISIBLE
+    }
+    fun View.hide(){
+        this.visibility = View.GONE
+    }
 
     fun <T> MutableLiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
         observe(lifecycleOwner, object : Observer<T> {

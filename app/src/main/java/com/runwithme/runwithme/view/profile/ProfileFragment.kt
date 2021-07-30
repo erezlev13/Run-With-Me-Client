@@ -11,10 +11,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64.*
+import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.MyApplication
@@ -86,6 +88,7 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
             Intent(requireContext(), AddFriendActivity::class.java).also {
                 startActivity(it)
             }
+
         }
 
     }
@@ -112,6 +115,11 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupProfileData()
+    }
+
 
     private fun logout(){
         deleteUserFromLocalDB()
@@ -121,7 +129,7 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
     }
 
     private fun setupProfileData() {
-        userViewModel.readUser.observeOnce(this,{database ->
+        userViewModel.readUser.observe(requireActivity(),{database ->
             if(database.isNotEmpty()){
                 val user = database[0].user
                 if(!user.photoUri.isNullOrEmpty()){
@@ -171,36 +179,6 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         uploadImageFromPhotoLibrary()
     }
 
-    private fun saveImageToInternalStorage(bitmap: Bitmap): Uri {
-
-        // Get the context wrapper instance
-        val wrapper = ContextWrapper(MyApplication.appContext)
-
-        var file = wrapper.getDir(IMAGE_DIRECTORY, Context.MODE_PRIVATE)
-
-        // Create a file to save the image
-        file = File(file, "${UUID.randomUUID()}.jpg")
-
-        try {
-            // Get the file output stream
-            val stream: OutputStream = FileOutputStream(file)
-
-            // Compress bitmap
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-
-            // Flush the stream
-            stream.flush()
-
-            // Close stream
-            stream.close()
-        } catch (e: IOException) { // Catch the exception
-            e.printStackTrace()
-        }
-
-        // Return the saved image uri
-        return Uri.parse(file.absolutePath)
-    }
-
     private fun updateUserPhoto(bitmap: Bitmap){
         userViewModel.readUser.observeOnce(this,{database ->
             if(database.isNotEmpty()){
@@ -209,7 +187,6 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val imageBytes: ByteArray = baos.toByteArray()
                 val selectedPicture  = encodeToString(imageBytes, DEFAULT)
-                //user.photoUri = saveImageToInternalStorage(bitmap).toString()
                 user.photoUri = selectedPicture
                 val updatedUserEntity = UserEntity(database[0].token,user)
                 userViewModel.updateUser(updatedUserEntity)

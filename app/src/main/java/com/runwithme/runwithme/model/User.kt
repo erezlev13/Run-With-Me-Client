@@ -16,7 +16,7 @@ data class User(
     @SerializedName("photoUri")
     var photoUri : String,
     @SerializedName("friends")
-    var friends : ArrayList<User>,
+    var friends : ArrayList<String>,
     @SerializedName("runs")
     var runs : ArrayList<Run>,
 )

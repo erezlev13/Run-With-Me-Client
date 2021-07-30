@@ -20,11 +20,14 @@ class RemoteDataSource @Inject constructor(
     suspend fun isValidToken(@Query("token") token:String) : Response<TokenResponse>{
         return runWithMeApi.isValidToken(token)
     }
-    suspend fun updateMe(@Body user:User) : Response<User> {
+    suspend fun updateMe(user:User) : Response<User> {
         return runWithMeApi.updateMe(user)
     }
     suspend fun getAllUsers() : Response<AllUsersResponse>{
         return runWithMeApi.getAllUsers()
+    }
+    suspend fun addFriend(friendID : String) : Response<User>{
+        return runWithMeApi.addFriend(friendID)
     }
 
 }

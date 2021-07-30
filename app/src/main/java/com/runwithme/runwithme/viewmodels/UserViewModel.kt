@@ -1,12 +1,10 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.*
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.model.network.AllUsersResponse
-import com.runwithme.runwithme.model.network.TokenResponse
 import com.runwithme.runwithme.network.Repository
 import com.runwithme.runwithme.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,8 +49,6 @@ class UserViewModel @Inject constructor(
         }
     }
 
-
-
     private fun handleAllUsersResponse(response: Response<AllUsersResponse>): NetworkResult<AllUsersResponse>? {
         when {
             response.isSuccessful -> {
@@ -63,6 +59,13 @@ class UserViewModel @Inject constructor(
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
+        }
+    }
+
+    fun addFriend(userToUpdate: UserEntity,friendID : String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.updateUser(userToUpdate)
+            repository.remote.addFriend(friendID)
         }
     }
 
