@@ -23,17 +23,12 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.RunWithMe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.profile.AddFriendActivity"></activity>
+        <activity android:name=".view.activity.StatisticsDetailsActivity"></activity>
+        <activity android:name=".view.profile.AddFriendActivity" />
         <activity android:name=".view.activity.GroupDetailActivity" />
         <activity android:name=".view.activity.summary.SummaryActivity" />
         <activity android:name=".view.activity.SignupActivity" />
-        <activity android:name=".view.activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".view.activity.LoginActivity"></activity>
         <activity android:name=".view.profile.RunStatActivity" />
 
         <service
@@ -62,6 +57,11 @@
         <activity
             android:name=".view.activity.MainActivity"
             android:screenOrientation="nosensor">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
