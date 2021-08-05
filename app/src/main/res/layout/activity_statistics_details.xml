@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.summary.SummaryActivity">
+    tools:context=".view.activity.StatisticsDetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/summary_activity_bar"
+        android:id="@+id/statistics_details_activity_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/summary_toolbar"
+            android:id="@+id/statistics_details_toolbar"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,9 +33,9 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment
-        android:id="@+id/map_summary"
+        android:id="@+id/map_statistics_details"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="230dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -44,56 +44,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_details_activity_bar"
         app:layout_constraintVertical_bias="0.076"
         tools:context=".view.activity.summary.SummaryActivity" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/summary_map_image_view"-->
-<!--        android:layout_width="250dp"-->
-<!--        android:layout_height="250dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:layout_marginBottom="32dp"-->
-<!--        android:contentDescription="@string/map_summary"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.493"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"-->
-<!--        app:layout_constraintVertical_bias="0.076"-->
-<!--        app:srcCompat="@color/grayLight" />-->
-
-    <ProgressBar
-        android:id="@+id/summary_progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar" />
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/time_card_view"
+        android:id="@+id/statistics_details_time_card_view"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:contentPaddingLeft="32dp"
         app:contentPaddingRight="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/map_summary"
-        app:layout_constraintTop_toBottomOf="@+id/map_summary"
-        app:layout_constraintVertical_bias="0.17000002">
+        app:layout_constraintStart_toStartOf="@+id/map_statistics_details"
+        app:layout_constraintTop_toBottomOf="@+id/map_statistics_details"
+        app:layout_constraintVertical_bias="0.18">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/time_title_text_view"
+                android:id="@+id/statistics_details_time_title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time"
@@ -106,7 +82,7 @@
                 app:layout_constraintVertical_bias="0.109" />
 
             <TextView
-                android:id="@+id/time_text_view"
+                android:id="@+id/statistics_details_time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -115,7 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_title_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/statistics_details_time_title_text_view"
                 app:layout_constraintVertical_bias="0.242" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -123,17 +99,19 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/pace_card_view"
+        android:id="@+id/statistics_details_pace_card_view"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/map_summary"
-        app:layout_constraintStart_toEndOf="@id/time_card_view"
-        app:layout_constraintTop_toBottomOf="@+id/map_summary"
+        app:layout_constraintEnd_toEndOf="@+id/map_statistics_details"
+        app:layout_constraintStart_toEndOf="@id/statistics_details_time_card_view"
+        app:layout_constraintTop_toBottomOf="@+id/map_statistics_details"
         app:layout_constraintVertical_bias="0.171">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -141,7 +119,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/pace_title_text_view"
+                android:id="@+id/statistics_details_pace_title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/avg_pace"
@@ -154,7 +132,7 @@
                 app:layout_constraintVertical_bias="0.109" />
 
             <TextView
-                android:id="@+id/pace_text_view"
+                android:id="@+id/statistics_details_pace_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -163,7 +141,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pace_title_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/statistics_details_pace_title_text_view"
                 app:layout_constraintVertical_bias="0.242" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -171,16 +149,16 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/steps_card_view"
+        android:id="@+id/statistics_details_steps_card_view"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/time_card_view"
-        app:layout_constraintStart_toStartOf="@+id/time_card_view"
-        app:layout_constraintTop_toBottomOf="@+id/time_card_view"
+        app:layout_constraintStart_toStartOf="@+id/statistics_details_time_card_view"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_details_time_card_view"
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -188,7 +166,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/steps_title_text_view"
+                android:id="@+id/statistics_details_steps_title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/steps"
@@ -201,7 +179,7 @@
                 app:layout_constraintVertical_bias="0.109" />
 
             <TextView
-                android:id="@+id/steps_text_view"
+                android:id="@+id/statistics_details_steps_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -210,7 +188,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/steps_title_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/statistics_details_steps_title_text_view"
                 app:layout_constraintVertical_bias="0.242" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -218,16 +196,16 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/distance_card_view"
+        android:id="@+id/statistics_details_distance_card_view"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="10dp"
         app:contentPadding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/pace_card_view"
-        app:layout_constraintStart_toStartOf="@+id/pace_card_view"
-        app:layout_constraintTop_toBottomOf="@+id/pace_card_view"
+        app:layout_constraintEnd_toEndOf="@+id/statistics_details_pace_card_view"
+        app:layout_constraintStart_toStartOf="@+id/statistics_details_pace_card_view"
+        app:layout_constraintTop_toBottomOf="@+id/statistics_details_pace_card_view"
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -235,7 +213,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/distance_title_text_view"
+                android:id="@+id/statistics_details_distance_title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/distance"
@@ -248,7 +226,7 @@
                 app:layout_constraintVertical_bias="0.109" />
 
             <TextView
-                android:id="@+id/distance_summary_text_view"
+                android:id="@+id/statistics_details_distance_summary_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -257,24 +235,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/distance_title_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/statistics_details_distance_title_text_view"
                 app:layout_constraintVertical_bias="0.242" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/save_summary_button"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

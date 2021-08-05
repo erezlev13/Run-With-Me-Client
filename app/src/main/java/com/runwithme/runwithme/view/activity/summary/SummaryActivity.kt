@@ -1,19 +1,12 @@
 package com.runwithme.runwithme.view.activity.summary
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.BitmapCompat
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -36,10 +29,7 @@ import com.runwithme.runwithme.utils.MapUtils.createCustomMarker
 import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.viewmodels.RunViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.LocalTime
-import java.util.*
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
@@ -50,12 +40,13 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var mViewModel: RunViewModel
 
-    private lateinit var startTime: LocalTime
-    private lateinit var endTime: LocalTime
-    private lateinit var avgPace: SimpleDateFormat
+    private lateinit var startTime: String
+    private lateinit var endTime: String
+    private lateinit var avgPace: String
     private var distance: Float = 0f
     private var steps: Int = 0
     private var locations: ArrayList<LatLng> = ArrayList()
+    private var wayPoints: ArrayList<LatLng> = ArrayList()
     private var locationsPair: ArrayList<Pair<Double, Double>> = ArrayList()
     private lateinit var runType: RunType
 
@@ -85,7 +76,6 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         onSaveClickListener()
-        onMapClickListener()
     }
 
     override fun onBackPressed() {
@@ -98,21 +88,25 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         showPolyline()
+        addWayPoints()
         binding.summaryProgressBar.hide()
 
         mMap.uiSettings.apply {
             setAllGesturesEnabled(false)
         }
 
-        Log.d("Summary", "${locations.first()}")
-        mMap.addMarker(MarkerOptions()
-            .icon(createCustomMarker(this))
-            .position(locations.first())
-        )
+        // Add the starting point marker.
+        if (locations.isNotEmpty()) {
+            mMap.addMarker(MarkerOptions()
+                .icon(createCustomMarker(this))
+                .position(locations.first())
+            )
+        }
 
+        // Set the camera to be at the starting point position, with large zoom so we could see the full course.
         mMap.animateCamera(
             CameraUpdateFactory
-            .newCameraPosition(CameraPosition(locations.first(), 15f, 0f, 0f)),
+            .newCameraPosition(CameraPosition(locations.first(), 12f, 0f, 0f)),
             2000,
             object : GoogleMap.CancelableCallback {
                 override fun onFinish() {
@@ -150,9 +144,9 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     /** Class Methods: */
     private fun getDataAndSetViews() {
-        startTime = LocalTime.parse(intent.getStringExtra(START_TIME))
-        endTime = LocalTime.parse(intent.getStringExtra(END_TIME))
-        avgPace = SimpleDateFormat(intent.getStringExtra(AVG_PACE), Locale.US)
+        startTime = intent.getStringExtra(START_TIME)
+        endTime = intent.getStringExtra(END_TIME)
+        avgPace = intent.getStringExtra(AVG_PACE)
         distance = intent.getStringExtra(DISTANCE)!!.toFloat()
         locations = intent.getParcelableArrayListExtra(LOCATIONS)
         setLocationsPair()
@@ -160,6 +154,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.timeTextView.text = intent.getStringExtra(TIME)
         binding.paceTextView.text = intent.getStringExtra(AVG_PACE)
         binding.distanceSummaryTextView.text = intent.getStringExtra(DISTANCE)
+        binding.stepsTextView.text = "3728"
     }
 
     private fun setLocationsPair() {
@@ -180,7 +175,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         val request = RunDataRequest(
             startTime,
             endTime,
-            LocalDateTime.now(),
+            LocalDateTime.now().toString(),
             avgPace,
             distance,
             steps,
@@ -217,7 +212,6 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getBackToMainActivity() {
-        Log.d("Summary", "getBackToMainActivity was called")
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
@@ -232,7 +226,12 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun onMapClickListener() {
-        // TODO: move to full map presentation screen.
+    private fun addWayPoints() {
+        wayPoints.forEach { wayPoint ->
+            mMap.addMarker(MarkerOptions()
+                .icon(createCustomMarker(this))
+                .position(wayPoint)
+            )
+        }
     }
 }

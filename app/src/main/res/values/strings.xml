@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Run With Me</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_menu">Profile</string>
     <string name="run_menu">Run</string>
     <string name="groups_menu">Groups</string>
@@ -43,9 +41,21 @@
     <string name="create_group">Create New Group</string>
     <string name="map_summary">Map summary</string>
     <string name="_0_km_h">0 km/h</string>
-    <string name="steps">Steps</string>
     <string name="init_steps">0</string>
     <string name="speed">Speed</string>
     <string name="save">Save</string>
     <string name="delete_summary">Delete Summary</string>
+    <string name="start">Start</string>
+    <string name="group_run">Group Run</string>
+    <string name="date_example">4.7.2021</string>
+    <string name="step_icon">Step Icon</string>
+    <string name="steps_example">15000</string>
+    <string name="time_icon">Time Icon</string>
+    <string name="time_example">22:10</string>
+    <string name="road_icon">Road Icon</string>
+    <string name="distance_example">1.2 KM</string>
+    <string name="speed_icon">Speed Icon</string>
+    <string name="speed_example">3.6 km/h</string>
+    <string name="steps">Steps</string>
+    <string name="avg_speed">Avg Speed</string>
 </resources>

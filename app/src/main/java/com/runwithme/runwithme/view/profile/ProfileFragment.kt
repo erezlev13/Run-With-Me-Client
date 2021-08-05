@@ -16,14 +16,11 @@ import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.runwithme.runwithme.MyApplication
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.databinding.FragmentProfileBinding
-import com.runwithme.runwithme.utils.Constants.IMAGE_DIRECTORY
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ImageUtils.resizeBitmap
 import com.runwithme.runwithme.utils.Permissions.hasExternalStoragePermission

@@ -35,16 +35,16 @@
                 android:background="@color/white">
 
 
-                <ImageView
-                    android:id="@+id/run_route_imageView"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:srcCompat="@drawable/route" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/run_route_imageView"-->
+<!--                    android:layout_width="130dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintVertical_bias="1.0"-->
+<!--                    tools:srcCompat="@drawable/route" />-->
 
                 <TextView
                     android:id="@+id/run_type_title"
@@ -54,21 +54,21 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="12dp"
                     android:fontFamily="@font/courgette"
-                    android:text="Group Run"
+                    android:text="@string/group_run"
                     android:gravity="center"
                     android:textColor="@color/primaryDark"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.479"
-                    app:layout_constraintStart_toEndOf="@+id/run_route_imageView"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/run_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="4.7.2021"
+                    android:text="@string/date_example"
                     android:gravity="center"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/run_type_title"
@@ -81,7 +81,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="35dp"
                     android:layout_marginBottom="36dp"
-
+                    android:contentDescription="@string/step_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/total_steps_textView"
                     app:layout_constraintStart_toStartOf="@+id/total_steps_textView"
@@ -93,8 +93,8 @@
                     android:id="@+id/total_steps_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:text="15000"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/steps_example"
                     app:layout_constraintStart_toStartOf="@+id/run_date"
                     app:layout_constraintTop_toBottomOf="@+id/step_imageView" />
 
@@ -102,6 +102,9 @@
                     android:id="@+id/time_imageView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/time_icon"
                     app:layout_constraintEnd_toEndOf="@+id/total_time_textView"
                     app:layout_constraintHorizontal_bias="0.446"
                     app:layout_constraintStart_toStartOf="@+id/total_time_textView"
@@ -112,8 +115,8 @@
                     android:id="@+id/total_time_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:text="22:10 "
+                    android:layout_marginStart="50dp"
+                    android:text="@string/time_example"
                     app:layout_constraintStart_toEndOf="@+id/total_steps_textView"
                     app:layout_constraintTop_toBottomOf="@+id/time_imageView" />
 
@@ -124,14 +127,15 @@
                     app:layout_constraintEnd_toEndOf="@+id/distance_textView"
                     app:layout_constraintStart_toStartOf="@+id/distance_textView"
                     app:layout_constraintTop_toTopOf="@+id/time_imageView"
-                    app:srcCompat="@drawable/ic_road" />
+                    app:srcCompat="@drawable/ic_road"
+                    android:contentDescription="@string/road_icon" />
 
                 <TextView
                     android:id="@+id/distance_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:text="1.2 KM"
+                    android:layout_marginStart="50dp"
+                    android:text="@string/distance_example"
                     app:layout_constraintStart_toEndOf="@+id/total_time_textView"
                     app:layout_constraintTop_toBottomOf="@+id/road_imageView" />
 
@@ -143,14 +147,15 @@
                     app:layout_constraintHorizontal_bias="0.687"
                     app:layout_constraintStart_toStartOf="@+id/avg_speed_textView"
                     app:layout_constraintTop_toTopOf="@+id/road_imageView"
-                    app:srcCompat="@drawable/ic_speed" />
+                    app:srcCompat="@drawable/ic_speed"
+                    android:contentDescription="@string/speed_icon" />
 
                 <TextView
                     android:id="@+id/avg_speed_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="3.6 km/h"
+                    android:layout_marginStart="50dp"
+                    android:text="@string/speed_example"
                     android:textAlignment="center"
                     app:layout_constraintStart_toEndOf="@+id/distance_textView"
                     app:layout_constraintTop_toBottomOf="@+id/speed_imageView" />
@@ -159,9 +164,10 @@
                     android:id="@+id/steps_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Steps"
+                    android:text="@string/steps"
                     app:layout_constraintBottom_toTopOf="@+id/step_imageView"
                     app:layout_constraintEnd_toEndOf="@+id/step_imageView"
+                    app:layout_constraintHorizontal_bias="0.48"
                     app:layout_constraintStart_toStartOf="@+id/step_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/run_date" />
 
@@ -169,7 +175,7 @@
                     android:id="@+id/time_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time"
+                    android:text="@string/time"
                     app:layout_constraintEnd_toEndOf="@+id/time_imageView"
                     app:layout_constraintStart_toStartOf="@+id/time_imageView"
                     app:layout_constraintTop_toTopOf="@+id/steps_title" />
@@ -178,7 +184,7 @@
                     android:id="@+id/distance_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Distance"
+                    android:text="@string/distance"
                     app:layout_constraintEnd_toEndOf="@+id/road_imageView"
                     app:layout_constraintStart_toStartOf="@+id/road_imageView"
                     app:layout_constraintTop_toTopOf="@+id/time_title" />
@@ -187,7 +193,7 @@
                     android:id="@+id/avg_speed_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Avg Speed"
+                    android:text="@string/avg_speed"
                     app:layout_constraintEnd_toEndOf="@+id/speed_imageView"
                     app:layout_constraintStart_toStartOf="@+id/speed_imageView"
                     app:layout_constraintTop_toTopOf="@+id/distance_title" />
