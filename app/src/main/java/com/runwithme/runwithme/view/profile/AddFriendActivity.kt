@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.adapters.FriendSearchAdapter
@@ -42,6 +43,12 @@ class AddFriendActivity : AppCompatActivity() {
         friendSearchAdapter = FriendSearchAdapter( ArrayList<User>())
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
+        userViewModel.readUser.observeOnce(this,{userList ->
+            if(userList.isNotEmpty()){
+                currentUser = userList[0].user
+            }
+        })
+
         binding.friendTextInputEditText.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -59,13 +66,8 @@ class AddFriendActivity : AppCompatActivity() {
         })
 
         getAllUserFromDB()
-        setupRunStatisticsRecyclerView()
 
-        userViewModel.readUser.observeOnce(this,{userList ->
-            if(userList.isNotEmpty()){
-                currentUser = userList[0].user
-            }
-        })
+
     }
 
     private fun getAllUserFromDB(){
@@ -76,6 +78,7 @@ class AddFriendActivity : AppCompatActivity() {
                     if(response.data?.users != null) {
                         userList = response.data.users
                     }
+                    setupAddFriendRecyclerView()
                 }
 
             }
@@ -106,7 +109,7 @@ class AddFriendActivity : AppCompatActivity() {
         return false
     }
 
-    private fun setupRunStatisticsRecyclerView() {
+    private fun setupAddFriendRecyclerView() {
 
         binding.friendsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.friendsRecyclerView.setHasFixedSize(true)
@@ -121,11 +124,11 @@ class AddFriendActivity : AppCompatActivity() {
 
     }
     private fun addFriend(newFriend: User){
-        userViewModel.readUser.observeOnce(this,{database ->
-            if(database.isNotEmpty()){
-                val user = database[0].user
+        userViewModel.readUser.observeOnce(this,{userList ->
+            if(userList.isNotEmpty()){
+                val user = userList[0].user
                 user.friends.add(newFriend._id)
-                val updatedUserEntity = UserEntity(database[0].token,user)
+                val updatedUserEntity = UserEntity(userList[0].token,user)
                 userViewModel.addFriend(updatedUserEntity,newFriend._id)
             }
         })

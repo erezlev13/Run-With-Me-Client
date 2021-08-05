@@ -4,16 +4,13 @@ package com.runwithme.runwithme.adapters
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.almatechnologies.datatracker.utils.GenericDiffUtil
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.FriendRowLayoutBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
@@ -32,7 +29,7 @@ class FriendSearchAdapter(
         val friend = friendsList[position]
 
         if (holder is MyViewHolder) {
-            holder.binding.friendNameTextView.text = friend.email
+            holder.binding.friendNameTextView.text = friend.firstName + " " + friend.lastName
             holder.binding.checkImageView.hide()
             holder.binding.addFriendImageButton.show()
             if(friend.photoUri.isNotEmpty()){
