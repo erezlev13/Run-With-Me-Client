@@ -8,7 +8,7 @@ import com.runwithme.runwithme.adapters.RunsStatisticsAdapter
 import com.runwithme.runwithme.databinding.ActivityRunStatBinding
 import com.runwithme.runwithme.model.Run
 
-class RunStatActivity : AppCompatActivity() {
+class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsClick {
 
     private lateinit var binding: ActivityRunStatBinding
 
@@ -46,7 +46,12 @@ class RunStatActivity : AppCompatActivity() {
         binding.runStatList.layoutManager = LinearLayoutManager(this)
         binding.runStatList.setHasFixedSize(true)
         val runsStatisticsAdapter = RunsStatisticsAdapter(this, runStatisticsList)
+        runsStatisticsAdapter.listener = this
         binding.runStatList.adapter = runsStatisticsAdapter
 
+    }
+
+    override fun onRunDetailsClick(run: Run) {
+        // TODO: send user to statistics details activity.
     }
 }

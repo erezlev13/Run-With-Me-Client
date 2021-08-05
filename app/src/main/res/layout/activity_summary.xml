@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.summary.SummaryActivity">
+    tools:context=".view.run.SummaryActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/summary_activity_bar"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summary_activity_bar"
         app:layout_constraintVertical_bias="0.076"
-        tools:context=".view.activity.summary.SummaryActivity" />
+        tools:context=".view.run.SummaryActivity" />
 
 <!--    <ImageView-->
 <!--        android:id="@+id/summary_map_image_view"-->

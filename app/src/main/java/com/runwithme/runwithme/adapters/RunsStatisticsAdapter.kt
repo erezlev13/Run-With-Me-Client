@@ -1,6 +1,7 @@
 package com.runwithme.runwithme.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,12 +9,19 @@ import com.runwithme.runwithme.databinding.RunStatRowLayoutBinding
 import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.utils.TimeUtils
+import com.runwithme.runwithme.view.profile.StatisticsDetailsActivity
 import java.time.format.DateTimeFormatter
 
 
 class RunsStatisticsAdapter(private val context: Context,
                            private var runsList: ArrayList<Run>
 ) : RecyclerView.Adapter<RunsStatisticsAdapter.MyViewHolder>()  {
+
+    var listener: OnRunDetailsClick? = null
+
+    interface OnRunDetailsClick {
+        fun onRunDetailsClick(run: Run)
+    }
 
     override fun getItemCount(): Int {
         return runsList.size
@@ -36,7 +44,9 @@ class RunsStatisticsAdapter(private val context: Context,
             holder.binding.distanceTextView.text = run.runData.distance.toString()+ "KM"
 
             holder.itemView.setOnClickListener {
-                // TODO: send user to statistics details activity.
+                if (listener != null) {
+                    listener!!.onRunDetailsClick(run)
+                }
             }
         }
     }
