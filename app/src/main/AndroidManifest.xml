@@ -23,7 +23,8 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.RunWithMe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.profile.AddFriendActivity"></activity>
+        <activity android:name=".view.profile.ShowAndDeleteFriendActivity"></activity>
+        <activity android:name=".view.profile.AddFriendActivity" />
         <activity android:name=".view.activity.GroupDetailActivity" />
         <activity android:name=".view.activity.summary.SummaryActivity" />
         <activity android:name=".view.activity.SignupActivity" />
@@ -61,8 +62,7 @@
 
         <activity
             android:name=".view.activity.MainActivity"
-            android:screenOrientation="nosensor">
-        </activity>
+            android:screenOrientation="nosensor"></activity>
     </application>
 
 </manifest>

@@ -17,7 +17,7 @@ class RemoteDataSource @Inject constructor(
     suspend fun signup(signupRequest: SignupRequest): Response<LoginResponse> {
         return runWithMeApi.signup(signupRequest)
     }
-    suspend fun isValidToken(@Query("token") token:String) : Response<TokenResponse>{
+    suspend fun isValidToken(token:String) : Response<TokenResponse>{
         return runWithMeApi.isValidToken(token)
     }
     suspend fun updateMe(user:User) : Response<User> {
@@ -26,11 +26,16 @@ class RemoteDataSource @Inject constructor(
     suspend fun getAllUsers() : Response<AllUsersResponse>{
         return runWithMeApi.getAllUsers()
     }
+    suspend fun getAllFriends() : Response<MyFriendsResponse>{
+        return runWithMeApi.getAllFriends()
+    }
     suspend fun addFriend(friendID : String) : Response<User>{
         return runWithMeApi.addFriend(friendID)
     }
-
-    suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run> {
+    suspend fun deleteFriend(friendID : String) : Response<User>{
+        return runWithMeApi.deleteFriend(friendID)
+    }
+    suspend fun saveRunData(runDataRequest: RunDataRequest): Response<Run> {
         return runWithMeApi.saveRunData(runDataRequest)
     }
 

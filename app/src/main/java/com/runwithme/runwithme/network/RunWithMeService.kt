@@ -26,11 +26,19 @@ interface RunWithMeService {
     @GET("users/")
     suspend fun getAllUsers() : Response<AllUsersResponse>
 
-
     @PATCH("users/add-friend")
     suspend fun addFriend(@Query("friendId") friendID : String) : Response<User>
 
+    @PATCH("users/delete-friend")
+    suspend fun deleteFriend(@Query("friendId") friendID : String) : Response<User>
+
+
+    @GET("users/my-friends")
+    suspend fun getAllFriends() : Response<MyFriendsResponse>
+
     @POST("runs/save-run")
     suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run>
+
+
 
 }

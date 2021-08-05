@@ -1,10 +1,12 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.model.network.AllUsersResponse
+import com.runwithme.runwithme.model.network.MyFriendsResponse
 import com.runwithme.runwithme.network.Repository
 import com.runwithme.runwithme.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +26,7 @@ class UserViewModel @Inject constructor(
 
     val readUser : LiveData<List<UserEntity>> = repository.local.readUser().asLiveData()
     val allUsersResponse : MutableLiveData<NetworkResult<AllUsersResponse>> = MutableLiveData()
+    val myFriendsResponse :  MutableLiveData<NetworkResult<MyFriendsResponse>> = MutableLiveData()
 
     fun updateUser(userEntity: UserEntity){
         viewModelScope.launch(Dispatchers.IO){
@@ -66,6 +69,35 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repository.local.updateUser(userToUpdate)
             repository.remote.addFriend(friendID)
+        }
+    }
+
+    fun deleteFriend(userToUpdate: UserEntity,friendID : String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.updateUser(userToUpdate)
+            repository.remote.deleteFriend(friendID)
+        }
+    }
+
+    fun getAllFriends() = viewModelScope.launch {
+        try {
+            val response = repository.remote.getAllFriends()
+            myFriendsResponse.value = handleFriendsResponse(response)
+        } catch (e: Exception) {
+            myFriendsResponse.value = NetworkResult.Error("No Connection")
+        }
+    }
+
+    private fun handleFriendsResponse(response: Response<MyFriendsResponse>): NetworkResult<MyFriendsResponse>? {
+        when {
+            response.isSuccessful -> {
+                val friendsResponse = response.body()
+                return NetworkResult.Success(friendsResponse!!)
+            }
+            else ->{
+                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                return NetworkResult.Error(jsonObj.getString("message"))
+            }
         }
     }
 

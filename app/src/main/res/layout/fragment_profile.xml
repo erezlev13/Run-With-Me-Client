@@ -117,15 +117,18 @@
                         android:textStyle="bold"
                         android:textSize="20sp"
                         />
+
                     <TextView
                         android:id="@+id/total_friends_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1205"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
                         android:paddingTop="10dp"
-                        android:textColor="@color/startBlue"/>
+                        android:clickable="true"
+                        android:text="1205"
+                        android:textColor="@color/startBlue"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/button_add_friend"
                         android:layout_width="wrap_content"

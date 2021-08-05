@@ -50,9 +50,9 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var mViewModel: RunViewModel
 
-    private lateinit var startTime: LocalTime
-    private lateinit var endTime: LocalTime
-    private lateinit var avgPace: SimpleDateFormat
+    private lateinit var startTime: String
+    private lateinit var endTime: String
+    private lateinit var avgPace: String
     private var distance: Float = 0f
     private var steps: Int = 0
     private var locations: ArrayList<LatLng> = ArrayList()
@@ -150,9 +150,9 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     /** Class Methods: */
     private fun getDataAndSetViews() {
-        startTime = LocalTime.parse(intent.getStringExtra(START_TIME))
-        endTime = LocalTime.parse(intent.getStringExtra(END_TIME))
-        avgPace = SimpleDateFormat(intent.getStringExtra(AVG_PACE), Locale.US)
+        startTime = intent.getStringExtra(START_TIME)
+        endTime = intent.getStringExtra(END_TIME)
+        avgPace = intent.getStringExtra(AVG_PACE)
         distance = intent.getStringExtra(DISTANCE)!!.toFloat()
         locations = intent.getParcelableArrayListExtra(LOCATIONS)
         setLocationsPair()
@@ -180,7 +180,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         val request = RunDataRequest(
             startTime,
             endTime,
-            LocalDateTime.now(),
+            LocalDateTime.now().toString(),
             avgPace,
             distance,
             steps,

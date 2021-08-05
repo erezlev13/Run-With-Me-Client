@@ -31,6 +31,7 @@
     <string name="no_groups">No Groups Found Yet.</string>
     <string name="title_run_stat">My Runs Statistics</string>
     <string name="title_my_groups">My Groups</string>
+    <string name="title_my_friends">My Friends</string>
     <string name="title_add_friend">Add Friend</string>
     <string name="email_empty_error">Please insert your email</string>
     <string name="password_empty_error">Please insert your password</string>

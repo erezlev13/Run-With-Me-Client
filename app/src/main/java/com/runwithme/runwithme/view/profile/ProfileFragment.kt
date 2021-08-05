@@ -2,8 +2,6 @@ package com.runwithme.runwithme.view.profile
 
 
 import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,19 +9,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64.*
-import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.runwithme.runwithme.MyApplication
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.databinding.FragmentProfileBinding
-import com.runwithme.runwithme.utils.Constants.IMAGE_DIRECTORY
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ImageUtils.resizeBitmap
 import com.runwithme.runwithme.utils.Permissions.hasExternalStoragePermission
@@ -34,7 +28,6 @@ import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.*
-import java.util.*
 
 
 /**
@@ -89,6 +82,11 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
                 startActivity(it)
             }
 
+        }
+        binding.totalFriendsTextView.setOnClickListener {
+            Intent(requireContext(),ShowAndDeleteFriendActivity::class.java).also{
+                startActivity(it)
+        }
         }
 
     }
