@@ -1,11 +1,8 @@
 package com.runwithme.runwithme.model.network
 
-import android.location.LocationListener
 import com.google.gson.annotations.SerializedName
 import com.runwithme.runwithme.model.RunType
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.LocalTime
+
 
 data class RunDataRequest(
     @SerializedName("startTime")
