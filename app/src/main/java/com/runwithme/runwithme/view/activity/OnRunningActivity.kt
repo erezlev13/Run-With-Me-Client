@@ -19,6 +19,7 @@ import com.runwithme.runwithme.utils.Constants.END_TIME
 import com.runwithme.runwithme.utils.Constants.LOCATIONS
 import com.runwithme.runwithme.utils.Constants.START_TIME
 import com.runwithme.runwithme.utils.Constants.TIME
+import com.runwithme.runwithme.utils.Constants.WAY_POINTS
 import com.runwithme.runwithme.utils.MapUtils
 import com.runwithme.runwithme.view.activity.summary.SummaryActivity
 import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
@@ -34,6 +35,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private lateinit var binding: ActivityOnRunningBinding
 
     private var locationList = mutableListOf<LatLng>()
+    private var wayPoints = mutableListOf<LatLng>()
     private val timer = Timer()
 
     private lateinit var startTime: LocalTime
@@ -89,6 +91,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
             totalDistance += MapUtils.calculateTheDistance(it)
             if (binding.distanceTextView.isVisible) {
                 binding.distanceTextView.text = MapUtils.getDistance(totalDistance)
+                getWayPoint(totalDistance, it)
                 showMeasurements()  // Show current pace, duration and average pace, on every single location received from GPS.
             }
         })
@@ -102,6 +105,12 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         binding.currentPaceTextView.text = calculateCurrentPace(totalDistance, timer.timeInMilliseconds)
         binding.averagePaceTextView.text = calculateAvgPace()
         timer.timeTextView = binding.durationTextView
+    }
+
+    private fun getWayPoint(totalDistance: Double, locationList: MutableList<LatLng>) {
+        if (totalDistance >= 1.0 && totalDistance % (1.0 * KM) == 0.0) {
+            wayPoints.add(locationList.last())
+        }
     }
 
     private fun calculateCurrentPace(totalDistance: Double, timeInMS: Long): String {
@@ -196,6 +205,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
 
     private fun showSummarry() {
         val locations: ArrayList<LatLng> = ArrayList(locationList)
+        val wayPoints: ArrayList<LatLng> = ArrayList(wayPoints)
         val intent = Intent(this, SummaryActivity::class.java)
         intent.putExtra(START_TIME, startTime.toString())
         intent.putExtra(END_TIME, endTime.toString())
@@ -203,6 +213,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         intent.putExtra(AVG_PACE, getTimeInMinutesAndSeconds(avgPace))
         intent.putExtra(DISTANCE, binding.distanceTextView.text.toString())
         intent.putParcelableArrayListExtra(LOCATIONS, locations)
+        intent.putParcelableArrayListExtra(WAY_POINTS, wayPoints)
         // TODO: send steps along with all the running data.
         startActivity(intent)
     }

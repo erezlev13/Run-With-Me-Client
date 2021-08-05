@@ -34,6 +34,10 @@ class RunsStatisticsAdapter(private val context: Context,
                 run.startTime,run.endTime) + "H"
             holder.binding.totalStepsTextView.text = run.runData.steps.toString()
             holder.binding.distanceTextView.text = run.runData.distance.toString()+ "KM"
+
+            holder.itemView.setOnClickListener {
+                // TODO: send user to statistics details activity.
+            }
         }
     }
     class MyViewHolder(val binding: RunStatRowLayoutBinding) :
