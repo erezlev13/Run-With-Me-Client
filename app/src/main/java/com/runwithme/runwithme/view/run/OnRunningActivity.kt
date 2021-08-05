@@ -1,4 +1,4 @@
-package com.runwithme.runwithme.view.activity
+package com.runwithme.runwithme.view.run
 
 import android.content.Context
 import android.content.Intent
@@ -21,7 +21,6 @@ import com.runwithme.runwithme.utils.Constants.START_TIME
 import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.Constants.WAY_POINTS
 import com.runwithme.runwithme.utils.MapUtils
-import com.runwithme.runwithme.view.activity.summary.SummaryActivity
 import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
 import java.time.LocalTime
 
@@ -108,7 +107,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun getWayPoint(totalDistance: Double, locationList: MutableList<LatLng>) {
-        if (totalDistance >= 1.0 && totalDistance % (1.0 * KM) == 0.0) {
+        if (totalDistance >= 1.0 && isPassedAKilometer()) {
             wayPoints.add(locationList.last())
         }
     }
@@ -120,9 +119,9 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         }
 
         // Count current pace every 1KM. So, we can get an average of every 1KM of running.
-        if (totalDistance == 1 * KM) {
+        if (totalDistance == 1.0) {
             sumAndCountPace()
-        } else if (totalDistance > 1 * KM && isPassedAKilometer()) {
+        } else if (totalDistance > 1.0 && isPassedAKilometer()) {
             sumAndCountPace()
         }
 
@@ -137,7 +136,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun calculateAvgPace(): String {
-        if (totalDistance < 1 * KM) {
+        if (totalDistance < 1) {
             // The user is on the first km. So, the average pace is the current pace.
             avgPace = currentPace
         } else if (isPassedAKilometer()) {
@@ -152,7 +151,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun isPassedAKilometer(): Boolean {
-        return (totalDistance % KM).toInt() == paceCounter + 1
+        return (totalDistance % 1.0).toInt() == 0
     }
 
     private fun getTimeInMinutesAndSeconds(time: Double): String {

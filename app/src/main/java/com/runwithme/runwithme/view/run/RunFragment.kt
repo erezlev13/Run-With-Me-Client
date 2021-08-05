@@ -29,7 +29,7 @@ import com.runwithme.runwithme.utils.Permissions.hasBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.hasLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestLocationPermission
-import com.runwithme.runwithme.view.activity.OnRunningActivity
+import com.runwithme.runwithme.view.run.OnRunningActivity
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 
