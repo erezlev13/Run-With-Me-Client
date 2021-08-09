@@ -29,6 +29,12 @@ class RemoteDataSource @Inject constructor(
     suspend fun getAllFriends() : Response<MyFriendsResponse>{
         return runWithMeApi.getAllFriends()
     }
+    suspend fun getMyGroups() : Response<MyGroupsResponse>{
+        return runWithMeApi.getMyGroups()
+    }
+    suspend fun getMyRuns() : Response<MyRunsResponse>{
+        return runWithMeApi.getMyRuns()
+    }
     suspend fun addFriend(friendID : String) : Response<User>{
         return runWithMeApi.addFriend(friendID)
     }
@@ -37,6 +43,9 @@ class RemoteDataSource @Inject constructor(
     }
     suspend fun saveRunData(runDataRequest: RunDataRequest): Response<Run> {
         return runWithMeApi.saveRunData(runDataRequest)
+    }
+    suspend fun saveGroupData(groupDataRequest: GroupDataRequest): Response<Group> {
+        return runWithMeApi.saveGroupData(groupDataRequest)
     }
 
 }

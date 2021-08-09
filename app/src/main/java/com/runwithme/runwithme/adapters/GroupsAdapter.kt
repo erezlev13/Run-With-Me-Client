@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.runwithme.runwithme.databinding.GroupRowLayoutBinding
 import com.runwithme.runwithme.model.Group
+import com.runwithme.runwithme.utils.ImageUtils
 
 class GroupsAdapter(
     private var groupList: ArrayList<Group>
@@ -20,9 +21,11 @@ class GroupsAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val group = groupList[position]
 
-        if (holder is MyViewHolder) {
-            holder.binding.groupNameTextView.text = group.name
+        holder.binding.groupNameTextView.text = group.name
+        if(group.photoUri.isNotEmpty()) {
+            holder.binding.groupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(group.photoUri))
         }
+
 
         holder.itemView.setOnClickListener {
 

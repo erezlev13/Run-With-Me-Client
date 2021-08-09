@@ -18,7 +18,7 @@
     <string name="start_pace_and_duration">00:00</string>
     <string name="current_pace">Current Pace</string>
     <string name="duration">Duration</string>
-    <string name="avg_pace">Avg. Pace</string>
+    <string name="avg_pace">Avg Pace</string>
     <string name="pause">Pause</string>
     <string name="keep_running">Keep Running?</string>
     <string name="continue_running">Continue Running</string>
@@ -31,6 +31,9 @@
     <string name="title_my_groups">My Groups</string>
     <string name="title_my_friends">My Friends</string>
     <string name="title_add_friend">Add Friend</string>
+    <string name="title_create_group">Create New Group</string>
+    <string name="group_name_empty_error">You must enter a name for your group</string>
+    <string name="group_description_empty_error">You must enter a description for your group</string>
     <string name="email_empty_error">Please insert your email</string>
     <string name="password_empty_error">Please insert your password</string>
     <string name="first_name_empty_error">Please insert your first name</string>
@@ -58,5 +61,4 @@
     <string name="speed_icon">Speed Icon</string>
     <string name="speed_example">3.6 km/h</string>
     <string name="steps">Steps</string>
-    <string name="avg_speed">Avg Speed</string>
 </resources>

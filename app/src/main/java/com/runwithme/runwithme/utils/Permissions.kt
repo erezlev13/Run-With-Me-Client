@@ -1,6 +1,7 @@
 package com.runwithme.runwithme.utils
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import androidx.fragment.app.Fragment
@@ -53,6 +54,14 @@ object Permissions {
     fun requestExternalStoragePermission(fragment: Fragment) {
         EasyPermissions.requestPermissions(
             fragment,
+            "External permission is essential for this app, so you can upload photos",
+            PERMISSION_EXTERNAL_STORAGE_REQUEST_CODE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    }
+    fun activityRequestExternalStoragePermission(activity : Activity) {
+        EasyPermissions.requestPermissions(
+            activity,
             "External permission is essential for this app, so you can upload photos",
             PERMISSION_EXTERNAL_STORAGE_REQUEST_CODE,
             Manifest.permission.READ_EXTERNAL_STORAGE

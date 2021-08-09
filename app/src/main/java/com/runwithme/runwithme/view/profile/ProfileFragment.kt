@@ -19,6 +19,8 @@ import com.runwithme.runwithme.R
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.databinding.FragmentProfileBinding
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.ImageUtils.bitmapToEncodedString
+import com.runwithme.runwithme.utils.ImageUtils.encodedStringToBitmap
 import com.runwithme.runwithme.utils.ImageUtils.resizeBitmap
 import com.runwithme.runwithme.utils.Permissions.hasExternalStoragePermission
 import com.runwithme.runwithme.utils.Permissions.requestExternalStoragePermission
@@ -131,14 +133,13 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
             if(database.isNotEmpty()){
                 val user = database[0].user
                 if(!user.photoUri.isNullOrEmpty()){
-                    val imgBytes: ByteArray = decode(user.photoUri,DEFAULT);
-                    val bitmap : Bitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
-                    binding.profileImage.setImageBitmap(bitmap)
+                    binding.profileImage.setImageBitmap(encodedStringToBitmap(user.photoUri))
                 }
                 binding.totalRunsTextView.text = user.runs.size.toString()
                 binding.runnerEmailTextView.text = user.email
                 binding.runnerNameTextView.text = user.firstName + " " +user.lastName
                 binding.totalFriendsTextView.text = user.friends.size.toString()
+                binding.totalRunsTextView.text = user.runs.size.toString()
 
             }
         })
@@ -181,11 +182,7 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         userViewModel.readUser.observeOnce(this,{database ->
             if(database.isNotEmpty()){
                 val user = database[0].user
-                val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val imageBytes: ByteArray = baos.toByteArray()
-                val selectedPicture  = encodeToString(imageBytes, DEFAULT)
-                user.photoUri = selectedPicture
+                user.photoUri = bitmapToEncodedString(bitmap)
                 val updatedUserEntity = UserEntity(database[0].token,user)
                 userViewModel.updateUser(updatedUserEntity)
             }

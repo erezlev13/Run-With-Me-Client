@@ -14,6 +14,7 @@ import com.runwithme.runwithme.databinding.FriendRowLayoutBinding
 import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
+import com.runwithme.runwithme.utils.ImageUtils.encodedStringToBitmap
 
 class FriendSearchAdapter(
     private var friendsList: ArrayList<User>
@@ -33,9 +34,7 @@ class FriendSearchAdapter(
             holder.binding.checkImageView.hide()
             holder.binding.addFriendImageButton.show()
             if(friend.photoUri.isNotEmpty()){
-                val imgBytes: ByteArray = Base64.decode(friend.photoUri, Base64.DEFAULT);
-                val bitmap : Bitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
-                holder.binding.friendImageView.setImageBitmap(bitmap)
+                holder.binding.friendImageView.setImageBitmap(encodedStringToBitmap(friend.photoUri))
             }else{
                 holder.binding.friendImageView.setImageResource(R.drawable.ic_account_circle)
             }

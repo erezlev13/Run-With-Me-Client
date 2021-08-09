@@ -1,19 +1,14 @@
-package com.runwithme.runwithme.model
+package com.runwithme.runwithme.model.network
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
-data class Group(
-    @SerializedName("_id")
-    var _id: String,
+data class GroupDataRequest(
     @SerializedName("name")
     var name: String,
     @SerializedName("description")
-    var description: String,
+    var description : String,
     @SerializedName("photoUri")
     var photoUri: String,
-    @SerializedName("groupRuns")
-    var groupRuns: ArrayList<GroupRun>,
     @SerializedName("groupMembers")
     var groupMembers: ArrayList<String>,
-) : Serializable
+)

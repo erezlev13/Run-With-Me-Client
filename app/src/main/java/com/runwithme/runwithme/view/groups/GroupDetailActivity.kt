@@ -1,4 +1,4 @@
-package com.runwithme.runwithme.view.activity
+package com.runwithme.runwithme.view.groups
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -18,13 +18,16 @@
         android:theme="@style/CustomToolbarStyle"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/run_stat_list"
+        android:id="@+id/my_run_stat_recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginVertical="?attr/actionBarSize"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/no_runs_available_textView"
+        app:layout_constraintTop_toBottomOf="@+id/runs_stat_toolbar"
         tools:itemCount="3"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        tools:visibility="invisible"
+        android:visibility="invisible"/>
 
     <!--This text view we will make it visible when the list size is 0 means no data available to display in list.-->
     <TextView
@@ -35,7 +38,19 @@
         android:text="@string/no_runs_stat"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:visibility="visible"
-        tools:visibility="visible" />
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/run_stat_progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="10"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/no_runs_available_textView"
+        app:layout_constraintStart_toStartOf="@+id/no_runs_available_textView"
+        app:layout_constraintTop_toTopOf="@+id/runs_stat_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

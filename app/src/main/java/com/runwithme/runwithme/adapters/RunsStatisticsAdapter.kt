@@ -2,6 +2,7 @@ package com.runwithme.runwithme.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +11,7 @@ import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.utils.TimeUtils
 import com.runwithme.runwithme.view.profile.StatisticsDetailsActivity
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
@@ -34,21 +36,22 @@ class RunsStatisticsAdapter(private val context: Context,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val run = runsList[position]
 
-        if (holder is MyViewHolder) {
-            holder.binding.runTypeTitle.text = RunType.describe(run.runType) + " Run"
-            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            holder.binding.runDate.text = run.date.format(formatter)
-            holder.binding.totalTimeTextView.text = TimeUtils.calculateTimeDifference(
-                run.startTime,run.endTime) + "H"
-            holder.binding.totalStepsTextView.text = run.runData.steps.toString()
-            holder.binding.distanceTextView.text = run.runData.distance.toString()+ "KM"
+        holder.binding.runTypeTitle.text = run.runType + " Run"
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = TimeUtils.stringToLocalDate(run.date)
+        holder.binding.runDate.text = date.format(formatter)
+        holder.binding.totalTimeTextView.text = TimeUtils.calculateTimeDifference(
+            run.startTime,run.endTime) + "H"
+        holder.binding.totalStepsTextView.text = run.runData.steps.toString()
+        holder.binding.distanceTextView.text = run.runData.distance.toString()+ "KM"
+        holder.binding.avgPaceTextView.text = run.runData.averagePace
 
-            holder.itemView.setOnClickListener {
-                if (listener != null) {
-                    listener!!.onRunDetailsClick(run)
-                }
+        holder.itemView.setOnClickListener {
+            if (listener != null) {
+                listener!!.onRunDetailsClick(run)
             }
         }
+
     }
     class MyViewHolder(val binding: RunStatRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {

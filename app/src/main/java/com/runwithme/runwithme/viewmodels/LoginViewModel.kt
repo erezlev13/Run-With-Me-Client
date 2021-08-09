@@ -24,7 +24,7 @@ class LoginViewModel @Inject constructor(
 ) : AndroidViewModel(application){
 
     //Room Database
-    val readUser : LiveData<List<UserEntity>> = repository.local.readUser().asLiveData()
+    val readUser : LiveData<List<UserEntity>> = repository.local.readUserForCoroutine().asLiveData()
 
     private fun insertUser(userEntity: UserEntity) =
         viewModelScope.launch(Dispatchers.IO){
