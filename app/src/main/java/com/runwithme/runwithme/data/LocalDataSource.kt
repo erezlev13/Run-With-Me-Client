@@ -9,7 +9,11 @@ class LocalDataSource @Inject constructor(
     private val runWithMeDao: RunWithMeDao
 ) {
 
-    fun readUser(): Flow<List<UserEntity>> {
+    fun readUserForCoroutine(): Flow<List<UserEntity>> {
+        return runWithMeDao.readUserForCoroutine()
+    }
+
+    suspend fun readUser(): List<UserEntity>{
         return runWithMeDao.readUser()
     }
 

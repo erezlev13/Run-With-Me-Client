@@ -22,6 +22,8 @@ object Constants {
     const val LOCATION_FASTEST_UPDATE_INTERVAL = 2000L
 
     const val EXTRA_GROUP_DETAILS = "extra_group_details"
+    const val EXTRA_RUN_DETAILS = "extra_run_details"
+    const val NAV_TO_GROUPS = "groups"
 
     //Retrofit
     const val BASE_URL = "http://192.168.1.13:3000/run-with-me/"

@@ -6,17 +6,17 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
-import com.runwithme.runwithme.databinding.ShowAndDeleteFriendRowLayoutBinding
+import com.runwithme.runwithme.databinding.SelectFriendRowLayoutBinding
 import com.runwithme.runwithme.model.User
 
-
-class ShowAndDeleteFriendsAdapter(
+class SelectFriendAdapter(
     private var friendsList: ArrayList<User>
-) : RecyclerView.Adapter<ShowAndDeleteFriendsAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<SelectFriendAdapter.MyViewHolder>() {
 
-    private var onClickListener: OnClickListener? = null
+    private var onCheckListener: OnCheckListener? = null
+    private var onUncheckListener: OnUncheckListener? = null
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,16 +37,16 @@ class ShowAndDeleteFriendsAdapter(
             holder.binding.friendImageView.setImageResource(R.drawable.ic_account_circle)
         }
 
-        holder.binding.deleteFriendImageButton.setOnClickListener {
-            if (onClickListener != null) {
-                onClickListener!!.onClick(position, friend)
-                Snackbar.make(holder.binding.friendCardView,
-                    "${friendsList[position].firstName}" +
-                            " ${friendsList[position].lastName}" +
-                            " is deleted from your friend list", Snackbar.LENGTH_LONG).show()
-                friendsList.removeAt(position)
-                notifyDataSetChanged()
-
+        holder.binding.friendCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                if(onCheckListener != null){
+                    onCheckListener!!.onCheck(position,friend);
+                }
+            }
+            else{
+                if(onUncheckListener != null){
+                    onUncheckListener!!.onUncheck(position,friend);
+                }
             }
         }
     }
@@ -55,22 +55,30 @@ class ShowAndDeleteFriendsAdapter(
         return friendsList.size
     }
 
-    fun setOnClickListener(onClickListener: OnClickListener) {
-        this.onClickListener = onClickListener
+    fun setOnCheckListener(onCheckListener: OnCheckListener) {
+        this.onCheckListener = onCheckListener
     }
 
-    interface OnClickListener {
-        fun onClick(position: Int, model: User)
+    interface OnCheckListener {
+        fun onCheck(position: Int, model: User)
     }
 
-    class MyViewHolder(val binding: ShowAndDeleteFriendRowLayoutBinding) :
+    fun setOnUncheckListener(onUncheckListener: OnUncheckListener) {
+        this.onUncheckListener = onUncheckListener
+    }
+
+    interface OnUncheckListener {
+        fun onUncheck(position: Int, model: User)
+    }
+
+    class MyViewHolder(val binding: SelectFriendRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
 
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ShowAndDeleteFriendRowLayoutBinding.inflate(layoutInflater, parent, false)
+                val binding = SelectFriendRowLayoutBinding.inflate(layoutInflater, parent, false)
                 return MyViewHolder(binding)
             }
         }

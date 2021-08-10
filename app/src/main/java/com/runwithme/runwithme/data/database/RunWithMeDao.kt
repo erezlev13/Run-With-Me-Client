@@ -11,7 +11,10 @@ interface RunWithMeDao {
     suspend fun insertUser(userEntity: UserEntity)
 
     @Query("SELECT * FROM user_table")
-    fun readUser(): Flow<List<UserEntity>>
+    fun readUserForCoroutine(): Flow<List<UserEntity>>
+
+    @Query("SELECT * FROM user_table")
+    suspend fun readUser(): List<UserEntity>
 
     @Update
     suspend fun updateUser(userEntity: UserEntity)

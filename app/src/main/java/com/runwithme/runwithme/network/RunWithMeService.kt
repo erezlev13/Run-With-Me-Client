@@ -8,8 +8,7 @@ import retrofit2.http.*
 
 interface RunWithMeService {
 
-    @GET("my-runs")
-    fun getMyRuns(): Call<ArrayList<Run>>
+
 
     @POST("users/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
@@ -20,7 +19,7 @@ interface RunWithMeService {
     @GET("users/check-token")
     suspend fun isValidToken(@Query("token") token:String) : Response<TokenResponse>
 
-    @PATCH("users/updateMe")
+    @PATCH("users/update-me")
     suspend fun updateMe(@Body user:User) : Response<User>
 
     @GET("users/")
@@ -32,12 +31,20 @@ interface RunWithMeService {
     @PATCH("users/delete-friend")
     suspend fun deleteFriend(@Query("friendId") friendID : String) : Response<User>
 
-
     @GET("users/my-friends")
     suspend fun getAllFriends() : Response<MyFriendsResponse>
 
+    @GET("groups/my-groups")
+    suspend fun getMyGroups() : Response<MyGroupsResponse>
+
+    @GET("runs/my-runs")
+    suspend fun getMyRuns() : Response<MyRunsResponse>
+
     @POST("runs/save-run")
     suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run>
+
+    @POST("groups/save-group")
+    suspend fun saveGroupData(@Body groupDataRequest: GroupDataRequest) :Response<Group>
 
 
 

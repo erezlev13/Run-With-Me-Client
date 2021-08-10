@@ -4,11 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64.*
 import java.io.ByteArrayOutputStream
-import java.util.*
 
 object ImageUtils {
     fun resizeBitmap(source: Bitmap): Bitmap {
-        val maxResolution = 1000    //edit 'maxResolution' to fit your need
+        val maxResolution = 200    //edit 'maxResolution' to fit your need
         val width = source.width
         val height = source.height
         var newWidth = width
@@ -37,7 +36,7 @@ object ImageUtils {
         val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
         return encodeToString(imageBytes, DEFAULT)
     }
-
+    
     fun encodedStringToBitmap(encodedString : String) : Bitmap {
         val imgBytes: ByteArray = decode(encodedString, DEFAULT);
         return BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
