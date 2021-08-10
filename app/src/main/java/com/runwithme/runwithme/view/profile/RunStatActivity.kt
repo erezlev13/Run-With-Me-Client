@@ -79,8 +79,8 @@ class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsC
     }
 
     override fun onRunDetailsClick(run: Run) {
-//        val intent = Intent(this, ::class.java)
-//        intent.putExtra(Constants.EXTRA_RUN_DETAILS, run) // Passing the complete serializable data class to the detail activity using intent.
-//        startActivity(intent)
+        val intent = Intent(this, StatisticsDetailsActivity::class.java)
+        intent.putExtra(Constants.EXTRA_RUN_DETAILS, run) // Passing the complete serializable data class to the detail activity using intent.
+        startActivity(intent)
     }
 }

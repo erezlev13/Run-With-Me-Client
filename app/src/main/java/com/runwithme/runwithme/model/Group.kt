@@ -15,5 +15,5 @@ data class Group(
     @SerializedName("groupRuns")
     var groupRuns: ArrayList<GroupRun>,
     @SerializedName("groupMembers")
-    var groupMembers: ArrayList<String>,
+    var groupMembers: ArrayList<User>,
 ) : Serializable
