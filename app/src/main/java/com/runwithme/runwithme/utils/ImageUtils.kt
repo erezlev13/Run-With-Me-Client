@@ -36,6 +36,7 @@ object ImageUtils {
         val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
         return encodeToString(imageBytes, DEFAULT)
     }
+    
     fun encodedStringToBitmap(encodedString : String) : Bitmap {
         val imgBytes: ByteArray = decode(encodedString, DEFAULT);
         return BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)

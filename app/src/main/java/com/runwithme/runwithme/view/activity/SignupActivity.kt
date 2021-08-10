@@ -60,7 +60,7 @@ class SignupActivity : AppCompatActivity() {
             emailFilled = false
         }
         if(binding.emailTextInputEditText.text!!.isEmpty()){
-            binding.emailTextInputLayout.error = getString(R.string.email_empty_error)
+            binding.emailTextInputEditText.error = getString(R.string.email_empty_error)
             emailFilled = false
         }
         if(binding.passwordTextInputEditText.text!!.isEmpty()){
@@ -70,7 +70,7 @@ class SignupActivity : AppCompatActivity() {
         if(firstNameFilled && lastNameFilled &&emailFilled && passwordFilled){
             binding.firstNameTextInputLayout.error = null
             binding.lastNameTextInputLayout.error = null
-            binding.emailTextInputLayout.error = null
+            binding.emailTextInputEditText.error = null
             binding.passwordTextInputLayout.error = null
             signup()
         }
@@ -96,7 +96,7 @@ class SignupActivity : AppCompatActivity() {
                 }
                 is NetworkResult.Error -> {
                     binding.signUpProgressBar.hide()
-                    binding.emailTextInputLayout.error = getString(R.string.email_exist)
+                    binding.emailTextInputEditText.error = getString(R.string.email_exist)
                 }
                 else -> {
                     binding.signUpProgressBar.hide()
@@ -117,9 +117,9 @@ class SignupActivity : AppCompatActivity() {
             }
         }
         binding.emailTextInputEditText.doOnTextChanged { text, start, before, count ->
-            if(binding.emailTextInputLayout.error == getString(R.string.email_empty_error) ||
-               binding.emailTextInputLayout.error == getString(R.string.email_exist)){
-                binding.emailTextInputLayout.error = null
+            if(binding.emailTextInputEditText.error == getString(R.string.email_empty_error) ||
+               binding.emailTextInputEditText.error == getString(R.string.email_exist)){
+                binding.emailTextInputEditText.error = null
             }
         }
         binding.passwordTextInputEditText.doOnTextChanged { text, start, before, count ->

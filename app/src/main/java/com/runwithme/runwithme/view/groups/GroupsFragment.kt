@@ -82,12 +82,11 @@ class GroupsFragment : Fragment() {
 
         groupsAdapter.setOnClickListener(object :
             GroupsAdapter.OnClickListener {
-            override fun onClick(position: Int, model: Group) {
+            override fun onClick(position: Int, group: Group) {
                 val intent = Intent(activity, GroupDetailActivity::class.java)
-                intent.putExtra(EXTRA_GROUP_DETAILS, model) // Passing the complete serializable data class to the detail activity using intent.
+                intent.putExtra(EXTRA_GROUP_DETAILS, group) // Passing the complete serializable data class to the detail activity using intent.
                 startActivity(intent)
             }
         })
-
     }
 }
