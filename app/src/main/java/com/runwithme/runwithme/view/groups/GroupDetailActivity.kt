@@ -7,8 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.adapters.GroupMembersAdapter
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import com.runwithme.runwithme.databinding.ActivityGroupDetailBinding
 import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
@@ -142,11 +140,11 @@ class GroupDetailActivity : AppCompatActivity() {
         }
 
         if(groupDetail != null){
-            setSupportActionBar(binding.groupDetailToolbar)
+            setSupportActionBar(binding.groupDetailsToolbar)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowTitleEnabled(false);
-            binding.titleToolbar.text = groupDetail!!.name
-            binding.groupDetailToolbar.setNavigationOnClickListener {
+            binding.groupName.text = groupDetail!!.name
+            binding.groupDetailsToolbar.setNavigationOnClickListener {
                 onBackPressed()
             }
         }
