@@ -2,9 +2,11 @@ package com.runwithme.runwithme.view.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -31,7 +33,8 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityStatisticsDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_statistics_details) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         if (intent.hasExtra(Constants.EXTRA_RUN_DETAILS)) {
             mRunDetails =
@@ -41,14 +44,15 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         if(mRunDetails != null){
             setupRunDetails()
         }
+
     }
 
     private fun setupRunDetails(){
-        binding.statisticsDetailsDistanceSummaryTextView.text = mRunDetails!!.runData.distance.toString() + "KM"
+        binding.statisticsDetailsDistanceSummaryTextView.text = mRunDetails!!.runData.distance.toString() + "Km"
         binding.statisticsDetailsPaceTextView.text = mRunDetails!!.runData.averagePace
         binding.statisticsDetailsStepsTextView.text = mRunDetails!!.runData.steps.toString()
         binding.statisticsDetailsTimeTextView.text = TimeUtils.calculateTimeDifference(mRunDetails!!.startTime
-            ,mRunDetails!!.endTime) + "H"
+            ,mRunDetails!!.endTime)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -95,9 +99,15 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun coordinatesToLatLngList() : ArrayList<LatLng>{
         var latLngList : ArrayList<LatLng> = ArrayList()
         val coordinates = mRunDetails!!.runData.route.coordinates
+        Log.d("myapp","${mRunDetails!!.runData.route.coordinates}")
         coordinates.forEach{
+
             latLngList.add(LatLng(it[0],it[1]))
         }
+        Log.d("myapp","${latLngList}")
+//        latLngList.forEach{
+//            Log.d("myapp","lat: ${it.latitude} lng:${it.longitude}")
+//        }
 
         return latLngList
     }
