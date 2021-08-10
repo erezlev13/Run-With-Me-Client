@@ -23,14 +23,20 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.RunWithMe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.profile.StatisticsDetailsActivity"></activity>
-        <activity android:name=".view.profile.ShowAndDeleteFriendActivity"></activity>
-        <activity android:name=".view.activity.StatisticsDetailsActivity"></activity>
+        <activity android:name=".view.groups.CreateGroupActivity"></activity>
+        <activity android:name=".view.profile.StatisticsDetailsActivity" />
+        <activity android:name=".view.profile.ShowAndDeleteFriendActivity" />
         <activity android:name=".view.profile.AddFriendActivity" />
-        <activity android:name=".view.activity.GroupDetailActivity" />
+        <activity android:name=".view.groups.GroupDetailActivity" />
         <activity android:name=".view.run.SummaryActivity" />
         <activity android:name=".view.activity.SignupActivity" />
-        <activity android:name=".view.activity.LoginActivity"></activity>
+        <activity android:name=".view.activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.profile.RunStatActivity" />
 
         <service
@@ -59,11 +65,7 @@
         <activity
             android:name=".view.activity.MainActivity"
             android:screenOrientation="nosensor">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

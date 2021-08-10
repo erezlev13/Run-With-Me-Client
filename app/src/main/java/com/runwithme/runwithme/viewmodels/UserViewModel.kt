@@ -24,7 +24,7 @@ class UserViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
 
-    val readUser : LiveData<List<UserEntity>> = repository.local.readUser().asLiveData()
+    val readUser : LiveData<List<UserEntity>> = repository.local.readUserForCoroutine().asLiveData()
     val allUsersResponse : MutableLiveData<NetworkResult<AllUsersResponse>> = MutableLiveData()
     val myFriendsResponse :  MutableLiveData<NetworkResult<MyFriendsResponse>> = MutableLiveData()
 
