@@ -9,16 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.adapters.GroupsAdapter
-import com.runwithme.runwithme.adapters.RunsStatisticsAdapter
 import com.runwithme.runwithme.databinding.FragmentGroupsBinding
 import com.runwithme.runwithme.model.Group
-import com.runwithme.runwithme.model.Route
-import com.runwithme.runwithme.model.Run
-import com.runwithme.runwithme.model.RunData
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
-import com.runwithme.runwithme.view.activity.GroupDetailActivity
-import java.time.LocalDate
-import java.time.LocalTime
 
 
 /**
@@ -66,12 +59,11 @@ class GroupsFragment : Fragment() {
 
         groupsAdapter.setOnClickListener(object :
             GroupsAdapter.OnClickListener {
-            override fun onClick(position: Int, model: Group) {
+            override fun onClick(position: Int, group: Group) {
                 val intent = Intent(activity, GroupDetailActivity::class.java)
-                intent.putExtra(EXTRA_GROUP_DETAILS, model) // Passing the complete serializable data class to the detail activity using intent.
+                intent.putExtra(EXTRA_GROUP_DETAILS, group) // Passing the complete serializable data class to the detail activity using intent.
                 startActivity(intent)
             }
         })
-
     }
 }
