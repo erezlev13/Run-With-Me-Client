@@ -129,9 +129,9 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
     }
 
     private fun setupProfileData() {
-        userViewModel.readUser.observe(requireActivity(),{database ->
-            if(database.isNotEmpty()){
-                val user = database[0].user
+        userViewModel.readUser.observe(requireActivity(),{userList ->
+            if(userList.isNotEmpty()){
+                val user = userList[0].user
                 if(!user.photoUri.isNullOrEmpty()){
                     binding.profileImage.setImageBitmap(encodedStringToBitmap(user.photoUri))
                 }

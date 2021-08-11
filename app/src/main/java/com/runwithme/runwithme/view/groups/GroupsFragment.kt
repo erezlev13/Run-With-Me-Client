@@ -2,20 +2,25 @@ package com.runwithme.runwithme.view.groups
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.adapters.GroupsAdapter
 import com.runwithme.runwithme.databinding.FragmentGroupsBinding
 import com.runwithme.runwithme.model.*
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.viewmodels.GroupViewModel
+import com.runwithme.runwithme.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -27,10 +32,18 @@ class GroupsFragment : Fragment() {
 
     private lateinit var binding: FragmentGroupsBinding
     private lateinit var groupViewModel: GroupViewModel
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var currentUser : User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        userViewModel.readUser.observeOnce(requireActivity(),{userList ->
+            if(userList.isNotEmpty()){
+                currentUser = userList[0].user
+            }
+        })
     }
 
     override fun onCreateView(
@@ -42,8 +55,14 @@ class GroupsFragment : Fragment() {
 
 
         binding.createGroupButton.setOnClickListener {
-            Intent(requireContext(), CreateGroupActivity::class.java).also {
-                startActivity(it)
+            if(currentUser.friends.size > 0){
+                Intent(requireContext(), CreateGroupActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
+            else{
+                Snackbar.make(binding.createGroupButton, "Please add friends before trying to create new group",
+                    Snackbar.LENGTH_LONG).show()
             }
         }
 
