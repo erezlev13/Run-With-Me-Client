@@ -19,4 +19,6 @@ data class User(
     var friends : ArrayList<String>,
     @SerializedName("runs")
     var runs : ArrayList<Run>,
+    @SerializedName("groups")
+    var groups : ArrayList<String>,
 )

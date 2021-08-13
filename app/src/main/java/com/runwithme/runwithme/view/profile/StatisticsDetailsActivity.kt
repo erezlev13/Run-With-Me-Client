@@ -44,7 +44,6 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         if(mRunDetails != null){
             setupRunDetails()
         }
-
     }
 
     private fun setupRunDetails(){
@@ -102,7 +101,7 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         coordinates.forEach{
             latLngList.add(LatLng(it[0],it[1]))
         }
-
+        
         return latLngList
     }
 

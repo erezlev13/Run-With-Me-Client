@@ -33,7 +33,7 @@ class UserViewModel @Inject constructor(
             repository.local.updateUser(userEntity)
             val userToUpdate = User(userEntity.user._id,userEntity.user.firstName
                 ,userEntity.user.lastName,userEntity.user.email,userEntity.user.photoUri
-            ,userEntity.user.friends,userEntity.user.runs)
+            ,userEntity.user.friends,userEntity.user.runs,userEntity.user.groups)
             repository.remote.updateMe(userToUpdate)
         }
     }
