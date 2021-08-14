@@ -2,6 +2,7 @@ package com.runwithme.runwithme.model
 
 import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.time.LocalDate
 
 data class User(
@@ -21,4 +22,4 @@ data class User(
     var runs : ArrayList<Run>,
     @SerializedName("groups")
     var groups : ArrayList<String>,
-)
+) : Serializable

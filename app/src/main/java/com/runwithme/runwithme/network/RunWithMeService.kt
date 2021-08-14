@@ -46,6 +46,7 @@ interface RunWithMeService {
     @POST("groups/save-group")
     suspend fun saveGroupData(@Body groupDataRequest: GroupDataRequest) :Response<Group>
 
-
+    @POST("group-runs/create-group-run")
+    suspend fun saveScheduleRun(@Body scheduleRunRequest: ScheduleRunRequest): Response<GroupRun>
 
 }

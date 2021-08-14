@@ -102,6 +102,7 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.passwordTextInputEditText.text.toString()
 
         loginViewModel.login(LoginRequest(email,password))
+        binding.loginProgressBar.show()
         loginViewModel.loginResponse.observeOnce(this, { response ->
             when(response){
                 is NetworkResult.Success -> {

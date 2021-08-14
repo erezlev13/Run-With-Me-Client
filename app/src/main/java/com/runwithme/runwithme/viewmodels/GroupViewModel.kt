@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.runwithme.runwithme.model.Group
+import com.runwithme.runwithme.model.GroupRun
 import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.model.network.*
 import com.runwithme.runwithme.network.Repository
@@ -25,6 +26,7 @@ class GroupViewModel@Inject constructor(
 
     val groupData: MutableLiveData<NetworkResult<Group>> = MutableLiveData()
     val myGroupsResponse : MutableLiveData<NetworkResult<MyGroupsResponse>> = MutableLiveData()
+    val scheduleRun: MutableLiveData<NetworkResult<GroupRun>> = MutableLiveData()
 
 
     fun saveGroupData(groupDataRequest: GroupDataRequest) {
@@ -65,6 +67,30 @@ class GroupViewModel@Inject constructor(
             response.isSuccessful -> {
                 val groupsResponse = response.body()
                 return NetworkResult.Success(groupsResponse!!)
+            }
+            else ->{
+                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                return NetworkResult.Error(jsonObj.getString("message"))
+            }
+        }
+    }
+
+    fun saveScheduleRun(scheduleRunRequest: ScheduleRunRequest) {
+        viewModelScope.launch {
+            try {
+                val response = repository.remote.saveScheduleRun(scheduleRunRequest)
+                scheduleRun.value = handleScheduleRunResponse(response)
+            } catch (e: Exception) {
+                scheduleRun.value = NetworkResult.Error(Constants.NO_CONNECTION)
+            }
+        }
+    }
+
+    private fun handleScheduleRunResponse(response: Response<GroupRun>): NetworkResult<GroupRun> {
+        when {
+            response.isSuccessful -> {
+                val groupDataBody = response.body()
+                return NetworkResult.Success(groupDataBody!!)
             }
             else ->{
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())

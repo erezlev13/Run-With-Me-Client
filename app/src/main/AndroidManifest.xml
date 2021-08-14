@@ -23,7 +23,13 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.RunWithMe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.groups.ScheduleRunActivity"></activity>
+        <activity android:name=".view.groups.ScheduleRunActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.groups.CreateGroupActivity"></activity>
         <activity android:name=".view.profile.StatisticsDetailsActivity" />
         <activity android:name=".view.profile.ShowAndDeleteFriendActivity" />
@@ -32,11 +38,11 @@
         <activity android:name=".view.run.SummaryActivity" />
         <activity android:name=".view.activity.SignupActivity" />
         <activity android:name=".view.activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".view.profile.RunStatActivity" />
 

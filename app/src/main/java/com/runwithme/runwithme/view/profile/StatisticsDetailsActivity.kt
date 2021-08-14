@@ -99,9 +99,9 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         var latLngList : ArrayList<LatLng> = ArrayList()
         val coordinates = mRunDetails!!.runData.route.coordinates
         coordinates.forEach{
-
             latLngList.add(LatLng(it[0],it[1]))
         }
+        
         return latLngList
     }
 

@@ -3,7 +3,8 @@ package com.runwithme.runwithme.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.AnimationDrawable
+import android.location.Address
+import android.location.Geocoder
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import com.runwithme.runwithme.R
+import java.io.IOException
 import java.text.DecimalFormat
 
 object MapUtils {
@@ -56,5 +58,24 @@ object MapUtils {
         } else {
             throw NullPointerException("There was no bitmap to create.")
         }
+    }
+
+    fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
+        val coder = Geocoder(context)
+        val address: List<Address>?
+        var position: LatLng? = null
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 2)
+            if (address == null) {
+                return null
+            }
+            val location = address[0]
+            position = LatLng(location.latitude, location.longitude)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+        }
+
+        return position
     }
 }
