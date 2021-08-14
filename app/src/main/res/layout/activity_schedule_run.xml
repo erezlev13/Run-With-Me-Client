@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.groups.ScheduleRunActivity">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="220dp"
@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/login_header" />
+            android:src="@drawable/login_header"
+            android:contentDescription="@string/schedule_a_run" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,12 +44,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/location_textInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="64dp"
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:hint="@string/location"
-            android:inputType="text" />
+            android:inputType="textPostalAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +80,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        app:endIconMode="dropdown_menu"
         app:endIconTint="@color/darkBlue"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:hint="@string/date"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/time_textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        app:endIconTint="@color/darkBlue"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_textInputLayout"
+        app:startIconDrawable="@drawable/ic_date">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/time_textInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/time"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -103,6 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/lightBlue"
         android:text="@string/save"
         android:textColor="@android:color/white"
@@ -110,9 +139,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_textInputLayout"
-        app:layout_constraintVertical_bias="0.85">
-
-    </Button>
+        app:layout_constraintTop_toBottomOf="@+id/time_textInputLayout"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

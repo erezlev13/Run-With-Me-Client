@@ -39,6 +39,9 @@
     <string name="password_empty_error">Please insert your password</string>
     <string name="first_name_empty_error">Please insert your first name</string>
     <string name="last_name_empty_error">Please insert your last name</string>
+    <string name="location_empty_error">Please insert the location</string>
+    <string name="date_empty_error">Please choose a date</string>
+    <string name="time_empty_error">Please pick a time</string>
     <string name="signup_question">"Don't have an account? <font color='#107DAC'>Sign Up</font>"</string>
     <string name="login_question">"Already have an account? <font color='#107DAC'>Login</font>"</string>
     <string name="signup">Sign Up</string>
@@ -74,8 +77,10 @@
     <string name="friends">Friends</string>
     <string name="schedule_a_run">Schedule a Run</string>
     <string name="group_name">Group Name</string>
-    <string name="date">Date:</string>
-    <string name="location">Location:</string>
+    <string name="date">Date</string>
+    <string name="location">Location</string>
     <string name="location_example">Ben Gurion 5, Tel Aviv</string>
     <string name="description">Description</string>
+    <string name="ok">OK</string>
+    <string name="group_description">Group Description</string>
 </resources>

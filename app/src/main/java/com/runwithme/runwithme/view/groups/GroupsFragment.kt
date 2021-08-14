@@ -19,6 +19,7 @@ import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.NetworkResult
+import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import com.runwithme.runwithme.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,8 +52,7 @@ class GroupsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding =  FragmentGroupsBinding.inflate(layoutInflater)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
+        (requireActivity() as MainActivity).supportActionBar?.hide()
 
         binding.createGroupButton.setOnClickListener {
             if(currentUser.friends.size > 0){
