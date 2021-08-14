@@ -29,6 +29,7 @@ import com.runwithme.runwithme.utils.Permissions.hasBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.hasLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestLocationPermission
+import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.view.run.OnRunningActivity
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
@@ -53,6 +54,7 @@ class RunFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        (requireActivity() as MainActivity).supportActionBar?.hide()
     }
 
     override fun onCreateView(

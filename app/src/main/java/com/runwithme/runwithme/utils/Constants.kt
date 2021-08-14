@@ -45,6 +45,7 @@ object Constants {
     const val LOCATIONS = "Locations"
     const val WAY_POINTS = "WayPoints"
     const val STEPS = "Steps"
+    const val GROUP_ID = "Group ID"
 
     // Response Results
     const val NO_CONNECTION = "No Connection"

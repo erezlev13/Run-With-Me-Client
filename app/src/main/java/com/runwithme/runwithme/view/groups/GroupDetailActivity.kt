@@ -3,18 +3,34 @@ package com.runwithme.runwithme.view.groups
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.adapters.GroupMembersAdapter
+import com.runwithme.runwithme.adapters.GroupStatisticsAdapter
+import com.runwithme.runwithme.adapters.ScheduledRunsAdapter
 import com.runwithme.runwithme.databinding.ActivityGroupDetailBinding
+import com.runwithme.runwithme.databinding.GroupFriendsListBinding
+import com.runwithme.runwithme.databinding.GroupStatisticsListBinding
+import com.runwithme.runwithme.databinding.ScheduledRunsListBinding
 import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
+import com.runwithme.runwithme.utils.Constants.GROUP_ID
+import com.runwithme.runwithme.utils.ImageUtils
+import com.runwithme.runwithme.view.dialog.GroupDescriptionDialog
+
+private const val TAG = "GroupDetailActivity"
 
 class GroupDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityGroupDetailBinding
     private lateinit var mMembersAdapter: GroupMembersAdapter
+    private lateinit var mStatisticsAdapter: GroupStatisticsAdapter
+    private lateinit var mScheduleRunsAdapter: ScheduledRunsAdapter
+
+    private var mGroupDetails: Group? = null
 
     private lateinit var avgDistance: String
     private lateinit var avgSteps: String
@@ -33,75 +49,53 @@ class GroupDetailActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)     // Add back button.
         }
 
-        var groupDetails: Group? = null
-
         if (intent.hasExtra(EXTRA_GROUP_DETAILS)) {
             // get the Serializable data model class with the details in it
-            groupDetails =
+            mGroupDetails =
                 intent.getSerializableExtra(EXTRA_GROUP_DETAILS) as Group
         }
 
-        if(groupDetails != null){
-//            setSupportActionBar(binding.groupDetailsToolbar)
-//            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-//            supportActionBar!!.setDisplayShowTitleEnabled(false);
-            binding.groupName.text = groupDetails!!.name
-            showFriendList(groupDetails)
-            showStatistics(groupDetails)
-            showAndSchedulFutureRuns(groupDetails)
-//            binding.groupDetailToolbar.setNavigationOnClickListener {
-//                onBackPressed()
-//            }
+        if(mGroupDetails != null){
+            binding.groupNameTitleToolbar.text = mGroupDetails!!.name
+            setGroupImage(mGroupDetails!!)
+            showFriendList(mGroupDetails!!)
+            showStatistics(mGroupDetails!!)
+            showAndScheduleFutureRuns(mGroupDetails!!)
+        }
+    }
+
+    private fun setGroupImage(groupDetails: Group) {
+        if (groupDetails.photoUri.isNotEmpty()) {
+            binding.groupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(groupDetails.photoUri))
         }
     }
 
     private fun showFriendList(groupDetails: Group) {
+        binding.friendsListInclude.friendsListRecyclerView
+        binding.friendsListInclude.friendsListRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.friendsListInclude.friendsListRecyclerView.setHasFixedSize(true)
         mMembersAdapter = GroupMembersAdapter(groupDetails.groupMembers)
+        binding.friendsListInclude.friendsListRecyclerView.adapter = mMembersAdapter
     }
 
     private fun showStatistics(groupDetails: Group) {
-        calculateAverages(groupDetails)
+//        mBindingStatistics.statisticeRecyclerView.layoutManager = LinearLayoutManager(this)
+//        mBindingStatistics.statisticeRecyclerView.setHasFixedSize(true)
+//        mStatisticsAdapter = GroupStatisticsAdapter()
+//        mBindingStatistics.statisticeRecyclerView.adapter = mStatisticsAdapter
     }
 
-    private fun calculateAverages(groupDetails: Group) {
-        var sumDistance = 0.0
-        var avgDistance = 0.0
-        var sumSteps = 0.0
-        var avgSteps = 0.0
-
-//        groupDetails.groupRuns.forEach {
-//            sumDistance = 0.0
-//            avgDistance = 0.0
-//            sumSteps = 0.0
-//            avgSteps = 0.0
-//            it.runners.forEach {
-//                sumDistance += it.runData.distance
-//                sumSteps += it.runData.steps
-//            }
-//        }
-
-        groupDetails.groupMembers.forEach {
-            sumDistance = 0.0
-            avgDistance = 0.0
-            sumSteps = 0.0
-            avgSteps = 0.0
-            it.runs.forEach {
-                sumDistance += it.runData.distance
-                sumSteps += it.runData.steps
-            }
-
-            avgDistance = sumDistance / groupDetails.groupMembers.size
-            avgSteps = sumSteps / groupDetails.groupMembers.size
-            val runDataMap = HashMap<String, String>()
-            runDataMap["Distance"] = avgDistance.toString()
-            runDataMap["Steps"] = avgSteps.toString()
-            runDataList.add(runDataMap)
+    private fun showAndScheduleFutureRuns(groupDetails: Group) {
+        binding.scheduledRunsInclude.scheduledRunsRecyclerView
+        binding.scheduledRunsInclude.scheduledRunsRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.scheduledRunsInclude.scheduledRunsRecyclerView.setHasFixedSize(true)
+        mScheduleRunsAdapter = ScheduledRunsAdapter(groupDetails.groupRuns)
+        binding.scheduledRunsInclude.scheduledRunsRecyclerView.adapter = mMembersAdapter
+        binding.scheduledRunsInclude.scheduledARunButton.setOnClickListener {
+            val intent = Intent(this, ScheduleRunActivity::class.java)
+            intent.putExtra(GROUP_ID, groupDetails._id)
+            startActivity(intent)
         }
-    }
-
-    private fun showAndSchedulFutureRuns(groupDetails: Group) {
-        val intent = Intent(this, ScheduleRunActivity::class.java)
-        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -114,7 +108,7 @@ class GroupDetailActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.group_description -> {
-                showDescription()
+                showDescription(mGroupDetails)
                 isSelected = true
             }
 
@@ -129,24 +123,10 @@ class GroupDetailActivity : AppCompatActivity() {
         return isSelected
     }
 
-    private fun showDescription() {
-        // TODO: show group's description in a dialog.
-        var groupDetail: Group? = null
-
-        if (intent.hasExtra(EXTRA_GROUP_DETAILS)) {
-            // get the Serializable data model class with the details in it
-            groupDetail =
-                intent.getSerializableExtra(EXTRA_GROUP_DETAILS) as Group
-        }
-
-        if(groupDetail != null){
-            setSupportActionBar(binding.groupDetailsToolbar)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowTitleEnabled(false);
-            binding.groupName.text = groupDetail!!.name
-            binding.groupDetailsToolbar.setNavigationOnClickListener {
-                onBackPressed()
-            }
+    private fun showDescription(groupDetails: Group?) {
+        if (groupDetails != null) {
+            val dialog = GroupDescriptionDialog(groupDetails.description)
+            dialog.show(supportFragmentManager, GroupDescriptionDialog.TAG)
         }
     }
 }

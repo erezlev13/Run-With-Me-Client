@@ -11,6 +11,7 @@ import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivityMainBinding
 import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.NAV_TO_GROUPS
+import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
             setDisplayHomeAsUpEnabled(false)
+            hide()
         }
 
         val appBarConfiguration = AppBarConfiguration(
