@@ -26,6 +26,8 @@
     <string name="button_add_friend">Add friend</string>
     <string name="no_runs_stat">No Runs Found Yet.</string>
     <string name="no_groups">No Groups Found Yet.</string>
+    <string name="no_group_runs">No Group Runs Found For Today</string>
+    <string name="select_group_run_title">Your Group Runs for Today</string>
     <string name="title_run_stat">My Runs Statistics</string>
     <string name="title_my_groups">My Groups</string>
     <string name="title_my_friends">My Friends</string>
@@ -52,7 +54,8 @@
     <string name="save">Save</string>
     <string name="delete_summary">Delete Summary</string>
     <string name="start">Start</string>
-    <string name="group_run">Group Run</string>
+    <string name="solo_run">Solo</string>
+    <string name="group_run">Group</string>
     <string name="date_example">04/09/2021</string>
     <string name="step_icon">Step Icon</string>
     <string name="steps_example">15000</string>

@@ -9,14 +9,21 @@ import androidx.core.view.isVisible
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.databinding.ActivityOnRunningBinding
+import com.runwithme.runwithme.model.Group
+import com.runwithme.runwithme.model.GroupRun
+import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.model.Timer
 import com.runwithme.runwithme.service.TrackerService
+import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
 import com.runwithme.runwithme.utils.Constants.AVG_PACE
 import com.runwithme.runwithme.utils.Constants.DISTANCE
 import com.runwithme.runwithme.utils.Constants.END_TIME
+import com.runwithme.runwithme.utils.Constants.GROUP_RUN
+import com.runwithme.runwithme.utils.Constants.GROUP_RUN_ID
 import com.runwithme.runwithme.utils.Constants.LOCATIONS
+import com.runwithme.runwithme.utils.Constants.RUN_TYPE
 import com.runwithme.runwithme.utils.Constants.START_TIME
 import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.Constants.WAY_POINTS
@@ -36,6 +43,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private var locationList = mutableListOf<LatLng>()
     private var wayPoints = mutableListOf<LatLng>()
     private val timer = Timer()
+    private var groupRun : GroupRun? = null
 
     private lateinit var startTime: LocalTime
     private lateinit var endTime: LocalTime
@@ -53,6 +61,10 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         super.onCreate(savedInstanceState)
         binding = ActivityOnRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (intent.hasExtra(GROUP_RUN)) {
+            groupRun = intent.getSerializableExtra(GROUP_RUN) as GroupRun
+        }
 
         startRun()
         observeTrackerService()
@@ -206,6 +218,13 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         val locations: ArrayList<LatLng> = ArrayList(locationList)
         val wayPoints: ArrayList<LatLng> = ArrayList(wayPoints)
         val intent = Intent(this, SummaryActivity::class.java)
+        var runType : RunType = RunType.PERSONAL
+        if(groupRun != null){
+            runType = RunType.GROUP
+            intent.putExtra(GROUP_RUN_ID,groupRun!!._id)
+        }
+
+        intent.putExtra(RUN_TYPE, runType)
         intent.putExtra(START_TIME, startTime.toString())
         intent.putExtra(END_TIME, endTime.toString())
         intent.putExtra(TIME, timer.timeTextView.text.toString())

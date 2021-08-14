@@ -1,5 +1,6 @@
 package com.runwithme.runwithme.view.run
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
@@ -20,7 +21,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
+import com.runwithme.runwithme.adapters.GroupsAdapter
 import com.runwithme.runwithme.databinding.FragmentRunBinding
+import com.runwithme.runwithme.model.Group
+import com.runwithme.runwithme.model.GroupRun
+import com.runwithme.runwithme.utils.Constants
+import com.runwithme.runwithme.utils.Constants.GROUP_RUN
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
 import com.runwithme.runwithme.utils.MapUtils.createCustomMarker
@@ -29,8 +35,11 @@ import com.runwithme.runwithme.utils.Permissions.hasBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.hasLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestLocationPermission
+import com.runwithme.runwithme.view.groups.GroupDetailActivity
 import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.view.run.OnRunningActivity
+import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
+import com.runwithme.runwithme.view.run.bottomsheet.SelectGroupRunBottomSheet
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 
@@ -40,7 +49,7 @@ import com.vmadalin.easypermissions.dialogs.SettingsDialog
 class RunFragment :
         Fragment(),
         OnMapReadyCallback,
-        EasyPermissions.PermissionCallbacks {
+        EasyPermissions.PermissionCallbacks{
 
     /** Properties: */
     private lateinit var mMap: GoogleMap
@@ -80,12 +89,12 @@ class RunFragment :
         mapFragment.getMapAsync(this)
 
         onStartClick()
+        onSoloRunClick()
+        onGroupRunClick()
     }
 
-    private fun onStartClick() {
-        // Starting running activity by tapping on "start".
-        // Start new activity, that will show all measurements.
-        binding.startRunningButton.setOnClickListener {
+    private fun onSoloRunClick() {
+        binding.soloRunningButton.setOnClickListener {
             binding.runProgressBar.show()
             runAnimation.start()
             Handler(Looper.getMainLooper()).postDelayed({
@@ -95,6 +104,51 @@ class RunFragment :
                     startActivity(it)
                 }
             }, 3000)
+        }
+    }
+
+    private fun onGroupRunClick() {
+        binding.groupRunningButton.setOnClickListener {
+            showSelectGroupRunBottomSheet()
+        }
+    }
+
+    private fun showSelectGroupRunBottomSheet() {
+        val selectGroupRunBottomSheet = SelectGroupRunBottomSheet()
+
+        selectGroupRunBottomSheet.setOnSelectGroupRunListener(object :
+            SelectGroupRunBottomSheet.OnSelectGroupRun{
+            override fun selectGroupRun(groupRun: GroupRun) {
+                binding.runProgressBar.show()
+                runAnimation.start()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.runProgressBar.hide()
+                    runAnimation.stop()
+                    val intent = Intent(requireContext(), OnRunningActivity::class.java)
+                    intent.putExtra(GROUP_RUN, groupRun)
+                    startActivity(intent)
+
+                }, 3000)
+            }
+        })
+        selectGroupRunBottomSheet.show(requireActivity().supportFragmentManager, SelectGroupRunBottomSheet.TAG)
+    }
+
+    private fun onStartClick() {
+        // Starting running activity by tapping on "start".
+        // Start new activity, that will show all measurements.
+        binding.startRunningButton.setOnClickListener {
+            binding.soloRunningButton.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(binding.soloRunningButton, "translationY", -100f).apply {
+                duration = 1000
+                start()
+            }
+            binding.groupRunningButton.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(binding.groupRunningButton, "translationY", -100f).apply {
+                duration = 1000
+                start()
+            }
+            binding.startRunningButton.visibility = View.INVISIBLE
         }
     }
 
@@ -187,4 +241,5 @@ class RunFragment :
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         showCurrentLocation()
     }
+
 }

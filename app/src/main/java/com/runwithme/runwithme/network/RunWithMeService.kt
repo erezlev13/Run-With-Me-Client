@@ -40,6 +40,9 @@ interface RunWithMeService {
     @GET("runs/my-runs")
     suspend fun getMyRuns() : Response<MyRunsResponse>
 
+    @GET("group-runs/today-group-runs")
+    suspend fun getMyTodayGroupRuns() : Response<MyTodayGroupRunsResponse>
+
     @POST("runs/save-run")
     suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run>
 

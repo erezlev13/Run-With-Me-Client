@@ -1,6 +1,8 @@
 package com.runwithme.runwithme.utils
 
 object Constants {
+
+
     // Permissions
     const val PERMISSION_LOCATION_REQUEST_CODE = 1
     const val PERMISSION_BACKGROUND_LOCATION_REQUEST_CODE = 2
@@ -35,7 +37,11 @@ object Constants {
 
     //Preferences
     const val USER_TOKEN = "user_token"
-    
+
+    //Group Run
+    const val GROUP_RUN = "GroupRun"
+    const val GROUP_RUN_ID = "GroupId"
+
     // Run Data
     const val START_TIME = "Start Time"
     const val END_TIME = "End Time"
@@ -44,6 +50,7 @@ object Constants {
     const val DISTANCE = "Distance"
     const val LOCATIONS = "Locations"
     const val WAY_POINTS = "WayPoints"
+    const val RUN_TYPE = "RunType"
     const val STEPS = "Steps"
     const val GROUP_ID = "Group ID"
 

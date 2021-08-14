@@ -20,5 +20,7 @@ data class RunDataRequest(
     @SerializedName("locations")
     var locations: ArrayList<Pair<Double, Double>>,
     @SerializedName("runType")
-    var runType: RunType = RunType.PERSONAL
+    var runType: RunType,
+    @SerializedName("groupRunId")
+    var groupRunId: String?
 )

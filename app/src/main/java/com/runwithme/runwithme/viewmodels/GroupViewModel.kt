@@ -26,7 +26,9 @@ class GroupViewModel@Inject constructor(
 
     val groupData: MutableLiveData<NetworkResult<Group>> = MutableLiveData()
     val myGroupsResponse : MutableLiveData<NetworkResult<MyGroupsResponse>> = MutableLiveData()
+    val myTodayGroupRunsResponse : MutableLiveData<NetworkResult<MyTodayGroupRunsResponse>> = MutableLiveData()
     val scheduleRun: MutableLiveData<NetworkResult<GroupRun>> = MutableLiveData()
+
 
 
     fun saveGroupData(groupDataRequest: GroupDataRequest) {
@@ -74,6 +76,25 @@ class GroupViewModel@Inject constructor(
             }
         }
     }
+
+
+    fun getMyTodayGroupRuns() = viewModelScope.launch {
+        try {
+            val response = repository.remote.getMyTodayGroupRuns()
+            myTodayGroupRunsResponse.value = handleMyTodayGroupRunsResponse(response)
+        } catch (e: Exception) {
+            Log.d("myapp","in err ${e.message}")
+            myTodayGroupRunsResponse.value = NetworkResult.Error("No Connection")
+        }
+    }
+
+    private fun handleMyTodayGroupRunsResponse(response: Response<MyTodayGroupRunsResponse>): NetworkResult<MyTodayGroupRunsResponse>? {
+        when {
+            response.isSuccessful -> {
+                Log.d("myapp","in succ")
+                val groupsResponse = response.body()
+                Log.d("myapp","${groupsResponse}")
+                return NetworkResult.Success(groupsResponse!!)
 
     fun saveScheduleRun(scheduleRunRequest: ScheduleRunRequest) {
         viewModelScope.launch {

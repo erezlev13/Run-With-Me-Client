@@ -35,6 +35,9 @@ class RemoteDataSource @Inject constructor(
     suspend fun getMyRuns() : Response<MyRunsResponse>{
         return runWithMeApi.getMyRuns()
     }
+    suspend fun getMyTodayGroupRuns() : Response<MyTodayGroupRunsResponse>{
+        return runWithMeApi.getMyTodayGroupRuns()
+    }
     suspend fun addFriend(friendID : String) : Response<User>{
         return runWithMeApi.addFriend(friendID)
     }

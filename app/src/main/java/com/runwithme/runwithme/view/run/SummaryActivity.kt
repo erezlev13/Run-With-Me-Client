@@ -12,15 +12,19 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivitySummaryBinding
+import com.runwithme.runwithme.model.GroupRun
 import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.model.network.RunDataRequest
+import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.AVG_PACE
 import com.runwithme.runwithme.utils.Constants.DISTANCE
 import com.runwithme.runwithme.utils.Constants.END_TIME
 import com.runwithme.runwithme.utils.Constants.LOCATIONS
 import com.runwithme.runwithme.utils.Constants.NO_CONNECTION
+import com.runwithme.runwithme.utils.Constants.RUN_TYPE
 import com.runwithme.runwithme.utils.Constants.START_TIME
 import com.runwithme.runwithme.utils.Constants.TIME
+import com.runwithme.runwithme.utils.Constants.GROUP_RUN_ID
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
@@ -42,12 +46,14 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var startTime: String
     private lateinit var endTime: String
     private lateinit var avgPace: String
+    private lateinit var runType: RunType
+    private var groupRunId : String? = null
     private var distance: Float = 0f
     private var steps: Int = 0
     private var locations: ArrayList<LatLng> = ArrayList()
     private var wayPoints: ArrayList<LatLng> = ArrayList()
     private var locationsPair: ArrayList<Pair<Double, Double>> = ArrayList()
-    private lateinit var runType: RunType
+
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,8 +152,13 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         startTime = intent.getStringExtra(START_TIME)
         endTime = intent.getStringExtra(END_TIME)
         avgPace = intent.getStringExtra(AVG_PACE)
+        runType = intent.getSerializableExtra(RUN_TYPE) as RunType
         distance = intent.getStringExtra(DISTANCE)!!.toFloat()
         locations = intent.getParcelableArrayListExtra(LOCATIONS)
+        if (intent.hasExtra(GROUP_RUN_ID)) {
+            groupRunId = intent.getStringExtra(GROUP_RUN_ID)
+        }
+
         setLocationsPair()
 
         binding.timeTextView.text = intent.getStringExtra(TIME)
@@ -179,7 +190,8 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
             distance,
             steps,
             locationsPair,
-            RunType.PERSONAL
+            runType,
+            groupRunId
         )
         mViewModel.saveRunData(request)
     }
