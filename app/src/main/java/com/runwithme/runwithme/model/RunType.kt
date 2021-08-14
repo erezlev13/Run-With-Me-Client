@@ -1,6 +1,8 @@
 package com.runwithme.runwithme.model
 
-enum class RunType {
+import java.io.Serializable
+
+enum class RunType() : Serializable {
     PERSONAL,
     GROUP;
 
@@ -10,6 +12,5 @@ enum class RunType {
             RunType.GROUP  -> "Group"
         }
     }
-
 
 }

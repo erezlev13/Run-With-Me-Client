@@ -27,6 +27,11 @@ object TimeUtils {
         return LocalTime.of(splitedString[1].toInt(),splitedString[2].toInt(),splitedString[3].toInt())
     }
 
+    fun dateStringToTimeString(dateString : String) : String{
+        val splitString = dateString.split("T",":")
+        return "${splitString[1]}" + ":" + "${splitString[2]}"
+    }
+
     private fun convertSecondsToHours(seconds:Long): String {
         val numberOfHours : Int = (seconds / 3600).toInt()
         val numberOfMinutes : Int = (seconds / 60).toInt()

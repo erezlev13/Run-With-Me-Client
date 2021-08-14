@@ -7,11 +7,13 @@ data class GroupRun(
     @SerializedName("_id")
     var _id: String,
     @SerializedName("runners")
-    var runners: ArrayList<User>,
+    var runners: ArrayList<String>,
     @SerializedName("location")
     var location: String,
     @SerializedName("date")
     var date: String,
     @SerializedName("groupRunData")
-    var groupRunData: GroupRunData,
+    var groupRunData: String,
+    @SerializedName("group")
+    var group: Group,
 ) : Serializable
