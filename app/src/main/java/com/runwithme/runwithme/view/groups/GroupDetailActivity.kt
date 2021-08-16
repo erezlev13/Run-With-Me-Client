@@ -3,18 +3,15 @@ package com.runwithme.runwithme.view.groups
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.adapters.GroupMembersAdapter
 import com.runwithme.runwithme.adapters.GroupStatisticsAdapter
 import com.runwithme.runwithme.adapters.ScheduledRunsAdapter
 import com.runwithme.runwithme.databinding.ActivityGroupDetailBinding
-import com.runwithme.runwithme.databinding.GroupFriendsListBinding
-import com.runwithme.runwithme.databinding.GroupStatisticsListBinding
-import com.runwithme.runwithme.databinding.ScheduledRunsListBinding
 import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.Constants.GROUP_ID
@@ -86,15 +83,24 @@ class GroupDetailActivity : AppCompatActivity() {
     }
 
     private fun showAndScheduleFutureRuns(groupDetails: Group) {
-        binding.scheduledRunsInclude.scheduledRunsRecyclerView
         binding.scheduledRunsInclude.scheduledRunsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.scheduledRunsInclude.scheduledRunsRecyclerView.setHasFixedSize(true)
         mScheduleRunsAdapter = ScheduledRunsAdapter(groupDetails.groupRuns)
-        binding.scheduledRunsInclude.scheduledRunsRecyclerView.adapter = mMembersAdapter
+        binding.scheduledRunsInclude.scheduledRunsRecyclerView.adapter = mScheduleRunsAdapter
+        if(groupDetails.groupRuns.size == 0){
+            binding.scheduledRunsInclude.scheduledRunsRecyclerView.visibility = View.GONE
+            binding.scheduledRunsInclude.noFutureRunsAvailableTextView.visibility = View.VISIBLE
+        }
+        else{
+            binding.scheduledRunsInclude.scheduledRunsRecyclerView.visibility = View.VISIBLE
+            binding.scheduledRunsInclude.noFutureRunsAvailableTextView.visibility = View.GONE
+        }
         binding.scheduledRunsInclude.scheduledARunButton.setOnClickListener {
             val intent = Intent(this, ScheduleRunActivity::class.java)
+            intent.putExtra(EXTRA_GROUP_DETAILS, mGroupDetails)
             intent.putExtra(GROUP_ID, groupDetails._id)
             startActivity(intent)
+
         }
     }
 

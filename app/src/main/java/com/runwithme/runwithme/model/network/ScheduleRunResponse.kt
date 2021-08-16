@@ -5,5 +5,5 @@ import com.runwithme.runwithme.model.GroupRun
 
 data class ScheduleRunResponse(
     @SerializedName("groupRun")
-    private var groupRun: GroupRun
+    val groupRun: GroupRun
 )

@@ -27,7 +27,7 @@ class GroupViewModel@Inject constructor(
     val groupData: MutableLiveData<NetworkResult<Group>> = MutableLiveData()
     val myGroupsResponse : MutableLiveData<NetworkResult<MyGroupsResponse>> = MutableLiveData()
     val myTodayGroupRunsResponse : MutableLiveData<NetworkResult<MyTodayGroupRunsResponse>> = MutableLiveData()
-    val scheduleRun: MutableLiveData<NetworkResult<GroupRun>> = MutableLiveData()
+    val scheduleRun: MutableLiveData<NetworkResult<ScheduleRunResponse>> = MutableLiveData()
 
 
 
@@ -60,6 +60,7 @@ class GroupViewModel@Inject constructor(
             val response = repository.remote.getMyGroups()
             myGroupsResponse.value = handleMyGroupsResponse(response)
         } catch (e: Exception) {
+            Log.d("myapp","${e.message}")
             myGroupsResponse.value = NetworkResult.Error("No Connection")
         }
     }
@@ -83,7 +84,6 @@ class GroupViewModel@Inject constructor(
             val response = repository.remote.getMyTodayGroupRuns()
             myTodayGroupRunsResponse.value = handleMyTodayGroupRunsResponse(response)
         } catch (e: Exception) {
-            Log.d("myapp","in err ${e.message}")
             myTodayGroupRunsResponse.value = NetworkResult.Error("No Connection")
         }
     }
@@ -91,10 +91,15 @@ class GroupViewModel@Inject constructor(
     private fun handleMyTodayGroupRunsResponse(response: Response<MyTodayGroupRunsResponse>): NetworkResult<MyTodayGroupRunsResponse>? {
         when {
             response.isSuccessful -> {
-                Log.d("myapp","in succ")
                 val groupsResponse = response.body()
-                Log.d("myapp","${groupsResponse}")
                 return NetworkResult.Success(groupsResponse!!)
+            }
+            else ->{
+                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                return NetworkResult.Error(jsonObj.getString("message"))
+            }
+        }
+    }
 
     fun saveScheduleRun(scheduleRunRequest: ScheduleRunRequest) {
         viewModelScope.launch {
@@ -102,16 +107,17 @@ class GroupViewModel@Inject constructor(
                 val response = repository.remote.saveScheduleRun(scheduleRunRequest)
                 scheduleRun.value = handleScheduleRunResponse(response)
             } catch (e: Exception) {
+                Log.d("myapp","${e.message}")
                 scheduleRun.value = NetworkResult.Error(Constants.NO_CONNECTION)
             }
         }
     }
 
-    private fun handleScheduleRunResponse(response: Response<GroupRun>): NetworkResult<GroupRun> {
+    private fun handleScheduleRunResponse(response: Response<ScheduleRunResponse>): NetworkResult<ScheduleRunResponse> {
         when {
             response.isSuccessful -> {
-                val groupDataBody = response.body()
-                return NetworkResult.Success(groupDataBody!!)
+                val groupRunDataBody = response.body()
+                return NetworkResult.Success(groupRunDataBody!!)
             }
             else ->{
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())

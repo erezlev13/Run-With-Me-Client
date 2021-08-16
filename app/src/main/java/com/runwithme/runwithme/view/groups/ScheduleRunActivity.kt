@@ -3,6 +3,7 @@ package com.runwithme.runwithme.view.groups
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -12,11 +13,11 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivityScheduleRunBinding
-import com.runwithme.runwithme.databinding.GroupRowLayoutBindingImpl
-import com.runwithme.runwithme.model.GroupRun
+import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.network.ScheduleRunRequest
+import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.Constants.GROUP_ID
-import com.runwithme.runwithme.utils.NetworkResult
+import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -27,6 +28,7 @@ class ScheduleRunActivity : AppCompatActivity() {
     /** Properties: */
     private lateinit var mViewModel: GroupViewModel
     private lateinit var binding: ActivityScheduleRunBinding
+    private var mGroupDetails: Group? = null
     private var groupId: String = ""
     private var location = ""
     private var date = ""
@@ -41,7 +43,11 @@ class ScheduleRunActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
-
+        if (intent.hasExtra(EXTRA_GROUP_DETAILS)) {
+            // get the Serializable data model class with the details in it
+            mGroupDetails =
+                intent.getSerializableExtra(EXTRA_GROUP_DETAILS) as Group
+        }
         groupId = intent.getStringExtra(GROUP_ID) ?: ""
 
         onLocationWriteUpdate()
@@ -75,11 +81,12 @@ class ScheduleRunActivity : AppCompatActivity() {
                 location = binding.locationTextInputEditText.text.toString()
                 val scheduleRunRequest = ScheduleRunRequest(groupId, location, date, time)
                 mViewModel.saveScheduleRun(scheduleRunRequest)
-                mViewModel.scheduleRun.observe(this,  {
-                    if (it.data != null && it.data._id == groupId) {
+                mViewModel.scheduleRun.observeOnce(this,  { response ->
+                    if (response.data?.groupRun != null) {
                         // Move to the next screen.
+                        mGroupDetails!!.groupRuns.add(response.data!!.groupRun)
                         val intent = Intent(this, GroupDetailActivity::class.java)
-//                        intent.putExtra(SCHEDULED_RUN, )
+                        intent.putExtra(EXTRA_GROUP_DETAILS, mGroupDetails)
                         startActivity(intent)
                     } else {
                         Snackbar.make(binding.root, "Something went wrong, please try again", Snackbar.LENGTH_LONG)

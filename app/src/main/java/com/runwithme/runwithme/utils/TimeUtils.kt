@@ -1,5 +1,6 @@
 package com.runwithme.runwithme.utils
 
+import android.util.Log
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -21,7 +22,7 @@ object TimeUtils {
         return LocalDate.of(splitedString[0].toInt(),splitedString[1].toInt(),splitedString[2].toInt())
     }
 
-    private fun stringToLocalTime(stringTime : String) : LocalTime{
+     private fun stringToLocalTime(stringTime : String) : LocalTime{
 
         val splitedString = stringTime.split("T",":",".")
         return LocalTime.of(splitedString[1].toInt(),splitedString[2].toInt(),splitedString[3].toInt())
