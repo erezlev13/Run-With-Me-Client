@@ -1,6 +1,5 @@
 package com.runwithme.runwithme.di
 
-
 import android.content.Context
 import com.runwithme.runwithme.network.AuthInterceptor
 import com.runwithme.runwithme.network.RunWithMeService
@@ -16,11 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
 
     @Singleton
     @Provides

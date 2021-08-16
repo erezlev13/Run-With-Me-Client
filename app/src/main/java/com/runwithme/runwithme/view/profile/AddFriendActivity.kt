@@ -1,12 +1,9 @@
 package com.runwithme.runwithme.view.profile
 
-
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.adapters.FriendSearchAdapter
@@ -17,7 +14,6 @@ import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class AddFriendActivity : AppCompatActivity() {

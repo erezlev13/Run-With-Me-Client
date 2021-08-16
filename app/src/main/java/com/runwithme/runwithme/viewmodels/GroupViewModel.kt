@@ -1,13 +1,10 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.runwithme.runwithme.model.Group
-import com.runwithme.runwithme.model.GroupRun
-import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.model.network.*
 import com.runwithme.runwithme.network.Repository
 import com.runwithme.runwithme.utils.Constants
@@ -60,7 +57,6 @@ class GroupViewModel@Inject constructor(
             val response = repository.remote.getMyGroups()
             myGroupsResponse.value = handleMyGroupsResponse(response)
         } catch (e: Exception) {
-            Log.d("myapp","${e.message}")
             myGroupsResponse.value = NetworkResult.Error("No Connection")
         }
     }
@@ -107,7 +103,6 @@ class GroupViewModel@Inject constructor(
                 val response = repository.remote.saveScheduleRun(scheduleRunRequest)
                 scheduleRun.value = handleScheduleRunResponse(response)
             } catch (e: Exception) {
-                Log.d("myapp","${e.message}")
                 scheduleRun.value = NetworkResult.Error(Constants.NO_CONNECTION)
             }
         }

@@ -3,7 +3,6 @@ package com.runwithme.runwithme.view.run
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
@@ -12,10 +11,8 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivitySummaryBinding
-import com.runwithme.runwithme.model.GroupRun
 import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.model.network.RunDataRequest
-import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.AVG_PACE
 import com.runwithme.runwithme.utils.Constants.DISTANCE
 import com.runwithme.runwithme.utils.Constants.END_TIME
@@ -25,6 +22,7 @@ import com.runwithme.runwithme.utils.Constants.RUN_TYPE
 import com.runwithme.runwithme.utils.Constants.START_TIME
 import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.Constants.GROUP_RUN_ID
+import com.runwithme.runwithme.utils.Constants.STEPS
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
@@ -49,7 +47,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var runType: RunType
     private var groupRunId : String? = null
     private var distance: Float = 0f
-    private var steps: Int = 0
+    private var steps: Float = 0f
     private var locations: ArrayList<LatLng> = ArrayList()
     private var wayPoints: ArrayList<LatLng> = ArrayList()
     private var locationsPair: ArrayList<Pair<Double, Double>> = ArrayList()
@@ -149,9 +147,10 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     /** Class Methods: */
     private fun getDataAndSetViews() {
-        startTime = intent.getStringExtra(START_TIME)
-        endTime = intent.getStringExtra(END_TIME)
-        avgPace = intent.getStringExtra(AVG_PACE)
+        startTime = intent.getStringExtra(START_TIME) ?: ""
+        endTime = intent.getStringExtra(END_TIME) ?: ""
+        avgPace = intent.getStringExtra(AVG_PACE) ?: ""
+        steps = intent.getFloatExtra(STEPS, 0f)
         runType = intent.getSerializableExtra(RUN_TYPE) as RunType
         distance = intent.getStringExtra(DISTANCE)!!.toFloat()
         locations = intent.getParcelableArrayListExtra(LOCATIONS)
@@ -164,7 +163,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.timeTextView.text = intent.getStringExtra(TIME)
         binding.paceTextView.text = intent.getStringExtra(AVG_PACE)
         binding.distanceSummaryTextView.text = intent.getStringExtra(DISTANCE)
-        binding.stepsTextView.text = "3728"
+        binding.stepsTextView.text = (steps.toInt()).toString()
     }
 
     private fun setLocationsPair() {
@@ -188,7 +187,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
             LocalDateTime.now().toString(),
             avgPace,
             distance,
-            steps,
+            steps.toInt(),
             locationsPair,
             runType,
             groupRunId
@@ -202,7 +201,6 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun observeResult() {
         mViewModel.runData.observeOnce(this) {
-            Log.d("Summary", "${it.message}, ${it.data}")
             when {
                 it.message == NO_CONNECTION -> {
                     binding.summaryProgressBar.hide()

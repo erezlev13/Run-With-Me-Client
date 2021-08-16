@@ -4,17 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.databinding.ActivityOnRunningBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.GroupRun
 import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.model.Timer
 import com.runwithme.runwithme.service.TrackerService
-import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
 import com.runwithme.runwithme.utils.Constants.AVG_PACE
@@ -25,15 +22,12 @@ import com.runwithme.runwithme.utils.Constants.GROUP_RUN_ID
 import com.runwithme.runwithme.utils.Constants.LOCATIONS
 import com.runwithme.runwithme.utils.Constants.RUN_TYPE
 import com.runwithme.runwithme.utils.Constants.START_TIME
+import com.runwithme.runwithme.utils.Constants.STEPS
 import com.runwithme.runwithme.utils.Constants.TIME
 import com.runwithme.runwithme.utils.Constants.WAY_POINTS
 import com.runwithme.runwithme.utils.MapUtils
 import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
 import java.time.LocalTime
-
-/** Constants: */
-private const val TAG = "OnRunningActivity"
-private const val KM = 1000.0
 
 class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClick {
 
@@ -52,12 +46,12 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private var paceCounter = 0
     private var currentPace = 0.0
     private var avgPace = 0.0
+    private var steps = 0f
     private var lastPace = 0.0
     private var isContinued = false
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
         binding = ActivityOnRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -69,7 +63,6 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         startRun()
         observeTrackerService()
         onPauseClickListener()
-        // TODO: calculate steps!!
     }
 
     override fun onBackPressed() {
@@ -86,11 +79,9 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         // Set timer, so the time will appear on the screen.
         TrackerService.isStarted.observe(this, { isStarted ->
             if (isStarted && !isContinued) {
-                Log.d(TAG, "started")
                 timer.start()
                 startTime()
             } else if (isContinued) {
-                Log.d(TAG, "continued")
                 timer.continueTime()
                 isContinued = false
             }
@@ -105,6 +96,10 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
                 getWayPoint(totalDistance, it)
                 showMeasurements()  // Show current pace, duration and average pace, on every single location received from GPS.
             }
+        })
+
+        TrackerService.steps.observe(this, {
+            steps = it
         })
     }
 
@@ -186,7 +181,6 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun sendActionCommandToService(action: String) {
-        Log.d(TAG, "sendActionCommandToService: called")
         Intent(
             this as Context,
             TrackerService::class.java
@@ -230,9 +224,9 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
         intent.putExtra(TIME, timer.timeTextView.text.toString())
         intent.putExtra(AVG_PACE, getTimeInMinutesAndSeconds(avgPace))
         intent.putExtra(DISTANCE, binding.distanceTextView.text.toString())
+        intent.putExtra(STEPS, steps)
         intent.putParcelableArrayListExtra(LOCATIONS, locations)
         intent.putParcelableArrayListExtra(WAY_POINTS, wayPoints)
-        // TODO: send steps along with all the running data.
         startActivity(intent)
     }
 }
