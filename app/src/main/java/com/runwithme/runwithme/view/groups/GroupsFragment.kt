@@ -2,13 +2,10 @@ package com.runwithme.runwithme.view.groups
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +14,6 @@ import com.runwithme.runwithme.databinding.FragmentGroupsBinding
 import com.runwithme.runwithme.model.*
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
-import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.viewmodels.GroupViewModel

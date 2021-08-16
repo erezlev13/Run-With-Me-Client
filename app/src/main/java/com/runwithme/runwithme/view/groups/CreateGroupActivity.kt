@@ -7,7 +7,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -220,6 +219,4 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         intent.putExtra(NAV_TO_GROUPS,true)
         startActivity(intent)
     }
-
-
 }

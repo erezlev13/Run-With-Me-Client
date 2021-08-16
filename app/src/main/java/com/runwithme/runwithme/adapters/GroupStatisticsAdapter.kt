@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.runwithme.runwithme.R
-import com.runwithme.runwithme.utils.ImageUtils
 
 class GroupStatisticsAdapter(private val allRunData: ArrayList<HashMap<String, String>> =  ArrayList()) :
     RecyclerView.Adapter<GroupStatisticsAdapter.GroupStatisticsViewHolder>() {

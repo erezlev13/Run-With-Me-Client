@@ -11,7 +11,6 @@ import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ShowAndDeleteFriendRowLayoutBinding
 import com.runwithme.runwithme.model.User
 
-
 class ShowAndDeleteFriendsAdapter(
     private var friendsList: ArrayList<User>
 ) : RecyclerView.Adapter<ShowAndDeleteFriendsAdapter.MyViewHolder>() {
@@ -74,6 +73,5 @@ class ShowAndDeleteFriendsAdapter(
                 return MyViewHolder(binding)
             }
         }
-
     }
 }

@@ -1,7 +1,6 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.model.network.LoginRequest

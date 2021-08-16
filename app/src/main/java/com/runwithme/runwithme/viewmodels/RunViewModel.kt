@@ -1,22 +1,15 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.model.Run
-import com.runwithme.runwithme.model.User
-import com.runwithme.runwithme.model.network.MyGroupsResponse
 import com.runwithme.runwithme.model.network.MyRunsResponse
 import com.runwithme.runwithme.model.network.RunDataRequest
 import com.runwithme.runwithme.network.Repository
 import com.runwithme.runwithme.utils.Constants.NO_CONNECTION
-import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.NetworkResult
-import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Response
