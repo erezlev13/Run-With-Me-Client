@@ -3,24 +3,15 @@ package com.runwithme.runwithme.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.runwithme.runwithme.databinding.ScheduledRunRowLayoutBinding
 import com.runwithme.runwithme.databinding.ScheduledRunsListBinding
 import com.runwithme.runwithme.model.GroupRun
+import com.runwithme.runwithme.utils.TimeUtils
+import java.time.format.DateTimeFormatter
 
 class ScheduledRunsAdapter(private var scheduledRuns: ArrayList<GroupRun> = ArrayList()) :
         RecyclerView.Adapter<ScheduledRunsAdapter.ScheduledRunsViewHolder>() {
-    class ScheduledRunsViewHolder(binding: ScheduledRunsListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(run: GroupRun) {
 
-        }
-
-        companion object {
-            fun from(parent: ViewGroup): ScheduledRunsViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ScheduledRunsListBinding.inflate(layoutInflater, parent, false)
-                return ScheduledRunsViewHolder(binding)
-            }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduledRunsViewHolder {
         return ScheduledRunsViewHolder.from(parent)
@@ -31,4 +22,23 @@ class ScheduledRunsAdapter(private var scheduledRuns: ArrayList<GroupRun> = Arra
     }
 
     override fun getItemCount(): Int = scheduledRuns.size
+
+    class ScheduledRunsViewHolder(val binding: ScheduledRunRowLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(run: GroupRun) {
+            binding.scheduledRunGroupName.text = run.group.name
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val date = TimeUtils.stringToLocalDate(run.date)
+            binding.scheduledRunDateValueTextView.text  = date.format(formatter)+ ", At ${TimeUtils.dateStringToTimeString(run.date)}"
+            binding.scheduledRunLocationValueTextView.text = run.location
+
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ScheduledRunsViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ScheduledRunRowLayoutBinding.inflate(layoutInflater, parent, false)
+                return ScheduledRunsViewHolder(binding)
+            }
+        }
+    }
 }

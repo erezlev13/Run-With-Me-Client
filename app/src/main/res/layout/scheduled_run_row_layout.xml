@@ -1,68 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/scheduled_run_group_name"
-        android:layout_width="wrap_content"
+    <data>
+        <variable
+            name="result"
+            type="com.runwithme.runwithme.model.GroupRun" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/group_name"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/scheduled_run_date_value_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/date_example"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/scheduled_run_date_title_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/scheduled_run_group_name" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/future_run_cardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/lightMediumGray"
+            app:strokeWidth="1dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/white">
+                <TextView
+                    android:id="@+id/scheduled_run_group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/group_name"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/scheduled_run_date_value_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/date_example"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/scheduled_run_date_title_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/scheduled_run_group_name" />
 
-    <TextView
-        android:id="@+id/scheduled_run_date_title_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/date"
-        android:textColor="@color/darkBlue"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/scheduled_run_group_name"
-        app:layout_constraintTop_toBottomOf="@+id/scheduled_run_group_name" />
+                <TextView
+                    android:id="@+id/scheduled_run_date_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/date"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/scheduled_run_group_name"
+                    app:layout_constraintTop_toBottomOf="@+id/scheduled_run_group_name" />
 
-    <TextView
-        android:id="@+id/scheduled_run_location_title_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/location"
-        android:textColor="@color/darkBlue"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/scheduled_run_date_title_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/scheduled_run_date_title_text_view" />
+                <TextView
+                    android:id="@+id/scheduled_run_location_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/location"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/scheduled_run_date_title_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/scheduled_run_date_title_text_view" />
 
-    <TextView
-        android:id="@+id/scheduled_run_location_value_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/location_example"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/scheduled_run_location_title_text_view"
-        app:layout_constraintStart_toEndOf="@+id/scheduled_run_location_title_text_view"
-        app:layout_constraintTop_toTopOf="@+id/scheduled_run_location_title_text_view"
-        app:layout_constraintVertical_bias="1.0" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/scheduled_run_location_value_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/location_example"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/scheduled_run_location_title_text_view"
+                    app:layout_constraintStart_toEndOf="@+id/scheduled_run_location_title_text_view"
+                    app:layout_constraintTop_toTopOf="@+id/scheduled_run_location_title_text_view"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

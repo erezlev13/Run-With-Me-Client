@@ -161,7 +161,7 @@
             <ScrollView
                 android:id="@+id/scheduled_runs_scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"

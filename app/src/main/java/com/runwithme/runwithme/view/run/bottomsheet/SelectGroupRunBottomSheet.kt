@@ -82,8 +82,8 @@ class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {
 
         selectGroupRunAdapter.setOnGroupRunClickListener(object :
             SelectGroupRunAdapter.OnGroupRunClickListener {
-            override fun onGroupRunClick(group: GroupRun) {
-                selectedGroupRun = group
+            override fun onGroupRunClick(groupRun: GroupRun) {
+                selectedGroupRun = groupRun
                 if(onSelectGroupRunListener != null){
                     onSelectGroupRunListener!!.selectGroupRun(selectedGroupRun)
                 }
