@@ -20,39 +20,40 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: Repository,
     application: Application
-) : AndroidViewModel(application){
+) : AndroidViewModel(application) {
 
     //Room Database
-    val readUser : LiveData<List<UserEntity>> = repository.local.readUserForCoroutine().asLiveData()
+    val readUser: LiveData<List<UserEntity>> = repository.local.readUserForCoroutine().asLiveData()
 
     private fun insertUser(userEntity: UserEntity) =
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repository.local.insertUser(userEntity)
         }
 
     //Retrofit
     var loginResponse: MutableLiveData<NetworkResult<LoginResponse>> = MutableLiveData()
-    val tokenResponse : MutableLiveData<NetworkResult<TokenResponse>> = MutableLiveData()
+    val tokenResponse: MutableLiveData<NetworkResult<TokenResponse>> = MutableLiveData()
 
 
-    fun login(loginRequest : LoginRequest) = viewModelScope.launch{
+    fun login(loginRequest: LoginRequest) = viewModelScope.launch {
         performLogin(loginRequest)
     }
 
-    private suspend fun performLogin(loginRequest : LoginRequest){
+    private suspend fun performLogin(loginRequest: LoginRequest) {
         try {
             val response = repository.remote.login(loginRequest)
             loginResponse.value = handleLoginResponse(response)
         } catch (e: Exception) {
-            loginResponse.value = NetworkResult.Error("Wrong Username or Password Please try again!")
+            loginResponse.value =
+                NetworkResult.Error("Wrong Username or Password Please try again!")
         }
     }
 
-    fun signup(signupRequest: SignupRequest) = viewModelScope.launch{
+    fun signup(signupRequest: SignupRequest) = viewModelScope.launch {
         performSignup(signupRequest)
     }
 
-    private suspend fun performSignup(signupRequest: SignupRequest){
+    private suspend fun performSignup(signupRequest: SignupRequest) {
         try {
             val response = repository.remote.signup(signupRequest)
             loginResponse.value = handleLoginResponse(response)
@@ -65,27 +66,28 @@ class LoginViewModel @Inject constructor(
         when {
             response.isSuccessful -> {
                 val loginResponse = response.body()
-                if(loginResponse != null){
+                if (loginResponse != null) {
                     offlineCacheUser(loginResponse!!)
                 }
                 return NetworkResult.Success(loginResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
         }
     }
+
     private fun offlineCacheUser(loginResponse: LoginResponse) {
         val userEntity = UserEntity(loginResponse.token, loginResponse.user)
         insertUser(userEntity)
     }
 
-    fun isValidToken(token : String) =viewModelScope.launch {
+    fun isValidToken(token: String) = viewModelScope.launch {
         checkToken(token)
     }
 
-    private suspend fun checkToken(token :String){
+    private suspend fun checkToken(token: String) {
         try {
             val response = repository.remote.isValidToken(token)
             tokenResponse.value = handleTokenResponse(response)
@@ -100,11 +102,10 @@ class LoginViewModel @Inject constructor(
                 val tokenResponse = response.body()
                 return NetworkResult.Success(tokenResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
         }
     }
-
 }

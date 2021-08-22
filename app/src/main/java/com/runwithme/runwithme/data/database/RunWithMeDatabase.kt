@@ -11,7 +11,5 @@ import androidx.room.TypeConverters
 )
 @TypeConverters(UserTypeConverter::class,PhotoTypeConverter::class)
 abstract class RunWithMeDatabase :RoomDatabase() {
-
     abstract fun runWithMeDao() : RunWithMeDao
-
 }

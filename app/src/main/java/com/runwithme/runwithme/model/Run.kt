@@ -2,10 +2,6 @@ package com.runwithme.runwithme.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-
 
 data class Run(
     @SerializedName("_id")
@@ -20,4 +16,4 @@ data class Run(
     val runType: String,
     @SerializedName("runData")
     val runData: RunData,
-    ) :Serializable
+) : Serializable

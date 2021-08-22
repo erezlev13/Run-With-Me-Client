@@ -22,7 +22,7 @@ class RunViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     val runData: MutableLiveData<NetworkResult<Run>> = MutableLiveData()
-    val myRunsResponse : MutableLiveData<NetworkResult<MyRunsResponse>> = MutableLiveData()
+    val myRunsResponse: MutableLiveData<NetworkResult<MyRunsResponse>> = MutableLiveData()
 
     fun saveRunData(runDataRequest: RunDataRequest) {
         viewModelScope.launch {
@@ -42,19 +42,19 @@ class RunViewModel @Inject constructor(
                 val runDataBody = response.body()
                 return NetworkResult.Success(runDataBody!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
         }
     }
 
-    private suspend fun addRunToLocalDB(run : Run){
-        val readUser : UserEntity = repository.local.readUser().toList()[0]
-        if(readUser != null){
+    private suspend fun addRunToLocalDB(run: Run) {
+        val readUser: UserEntity = repository.local.readUser().toList()[0]
+        if (readUser != null) {
             val user = readUser.user
             user.runs.add(run)
-            val updatedUserEntity = UserEntity(readUser.token,user)
+            val updatedUserEntity = UserEntity(readUser.token, user)
             repository.local.updateUser(updatedUserEntity)
         }
 
@@ -75,7 +75,7 @@ class RunViewModel @Inject constructor(
                 val runsResponse = response.body()
                 return NetworkResult.Success(runsResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }

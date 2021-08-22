@@ -11,5 +11,4 @@ data class SignupRequest(
     var email: String,
     @SerializedName("password")
     var password: String
-
 )

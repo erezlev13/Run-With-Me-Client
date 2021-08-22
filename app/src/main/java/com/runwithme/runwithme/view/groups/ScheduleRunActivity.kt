@@ -21,7 +21,6 @@ import com.runwithme.runwithme.model.network.ScheduleRunRequest
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.Constants.GROUP_ID
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
-import com.runwithme.runwithme.utils.MapUtils
 import com.runwithme.runwithme.view.dialog.LocationDialog
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,8 +30,8 @@ import java.util.*
 class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose {
 
     /** Properties: */
-    private lateinit var mViewModel: GroupViewModel
     private lateinit var binding: ActivityScheduleRunBinding
+    private lateinit var mViewModel: GroupViewModel
     private var mGroupDetails: Group? = null
     private var groupId: String = ""
     private var location = ""
@@ -67,17 +66,26 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
         var isTimeEmpty = false
         binding.saveScheudleButton.setOnClickListener {
             if (binding.locationTextInputEditText.text!!.isEmpty()) {
-                showErrorInEditText(binding.locationTextInputEditText, getString(R.string.location_empty_error))
+                showErrorInEditText(
+                    binding.locationTextInputEditText,
+                    getString(R.string.location_empty_error)
+                )
                 isLocationEmpty = true
             }
 
             if (binding.dateTextInputEditText.text!!.isEmpty()) {
-                showErrorInEditText(binding.dateTextInputEditText, getString(R.string.date_empty_error))
+                showErrorInEditText(
+                    binding.dateTextInputEditText,
+                    getString(R.string.date_empty_error)
+                )
                 isDateEmpty = true
             }
 
             if (binding.timeTextInputEditText.text!!.isEmpty()) {
-                showErrorInEditText(binding.timeTextInputEditText, getString(R.string.time_empty_error))
+                showErrorInEditText(
+                    binding.timeTextInputEditText,
+                    getString(R.string.time_empty_error)
+                )
                 isTimeEmpty = true
             }
 
@@ -86,7 +94,7 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
                 location = binding.locationTextInputEditText.text.toString()
                 val scheduleRunRequest = ScheduleRunRequest(groupId, location, date, time)
                 mViewModel.saveScheduleRun(scheduleRunRequest)
-                mViewModel.scheduleRun.observeOnce(this,  { response ->
+                mViewModel.scheduleRun.observeOnce(this, { response ->
                     if (response.data?.groupRun != null) {
                         // Move to the next screen.
                         mGroupDetails!!.groupRuns.add(response.data!!.groupRun)
@@ -94,7 +102,11 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
                         intent.putExtra(EXTRA_GROUP_DETAILS, mGroupDetails)
                         startActivity(intent)
                     } else {
-                        Snackbar.make(binding.root, "Something went wrong, please try again", Snackbar.LENGTH_LONG)
+                        Snackbar.make(
+                            binding.root,
+                            "Something went wrong, please try again",
+                            Snackbar.LENGTH_LONG
+                        )
                     }
                 })
             }
@@ -106,7 +118,7 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
             showLocationDialog()
         }
         binding.locationTextInputEditText.doOnTextChanged { _, _, _, _ ->
-            if(binding.locationTextInputEditText.error == getString(R.string.location_empty_error)){
+            if (binding.locationTextInputEditText.error == getString(R.string.location_empty_error)) {
                 binding.locationTextInputEditText.error = null
             }
         }
@@ -129,18 +141,21 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
     }
 
     private fun onDateClickListener() {
-            binding.dateTextInputEditText.setOnClickListener {
-                showDatePickerDialog()
+        binding.dateTextInputEditText.setOnClickListener {
+            showDatePickerDialog()
         }
     }
 
     private fun showDatePickerDialog() {
         val datePicker =
-                MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Select date")
-                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .setCalendarConstraints(CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setCalendarConstraints(
+                    CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now())
                         .build()
+                )
+                .build()
         datePicker.show(supportFragmentManager, "DatePicker")
 
         datePicker.addOnPositiveButtonClickListener {
@@ -159,7 +174,9 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
     }
 
     private fun setDate(calendar: Calendar) {
-        date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) +1}/${calendar.get(Calendar.YEAR)}"
+        date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) + 1}/${
+            calendar.get(Calendar.YEAR)
+        }"
     }
 
     private fun showDateOnEditText(date: String) {
@@ -174,12 +191,12 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
 
     private fun showTimePicker() {
         val timePicker =
-                MaterialTimePicker.Builder()
-                        .setTimeFormat(TimeFormat.CLOCK_24H)
-                        .setHour(12)
-                        .setMinute(0)
-                        .setTitleText("Select Run time")
-                        .build()
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(12)
+                .setMinute(0)
+                .setTitleText("Select Run time")
+                .build()
         timePicker.show(supportFragmentManager, "Time Picker")
 
         timePicker.addOnPositiveButtonClickListener {

@@ -3,7 +3,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.almatechnologies.datatracker.utils.GenericDiffUtil
+import com.runwithme.runwithme.utils.GenericDiffUtil
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.FriendRowLayoutBinding
 import com.runwithme.runwithme.model.User
@@ -38,7 +38,7 @@ class FriendSearchAdapter(
             if (onClickListener != null) {
                 holder.binding.checkImageView.show()
                 holder.binding.addFriendImageButton.hide()
-                onClickListener!!.onClick(position, friend)
+                onClickListener!!.onClick(friend)
 
             }
         }
@@ -61,7 +61,7 @@ class FriendSearchAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(position: Int, model: User)
+        fun onClick(model: User)
     }
 
     class MyViewHolder(val binding: FriendRowLayoutBinding) :

@@ -16,15 +16,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ShowAndDeleteFriendActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityShowAndDeleteFriendBinding
-    private lateinit var userViewModel: UserViewModel
-    private lateinit var friendList: ArrayList<User>
+    private lateinit var binding: ActivityShowAndDeleteFriendBinding
+    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mFriendList: ArrayList<User>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShowAndDeleteFriendBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         setSupportActionBar(binding.showAndDeleteFriendToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -35,15 +35,16 @@ class ShowAndDeleteFriendActivity : AppCompatActivity() {
 
         getAllFriendsFromDB()
     }
+
     private fun getAllFriendsFromDB() {
-        userViewModel.readUser.observeOnce(this,{userList ->
-            if(userList.isNotEmpty()){
-                userViewModel.getAllFriends()
-                userViewModel.myFriendsResponse.observeOnce(this, { response ->
-                    when(response){
+        mUserViewModel.readUser.observeOnce(this, { userList ->
+            if (userList.isNotEmpty()) {
+                mUserViewModel.getAllFriends()
+                mUserViewModel.myFriendsResponse.observeOnce(this, { response ->
+                    when (response) {
                         is NetworkResult.Success -> {
-                            if(response.data?.friends != null) {
-                                friendList = response.data.friends
+                            if (response.data?.friends != null) {
+                                mFriendList = response.data.friends
                                 setupShowAndDeleteFriendRecyclerView()
                             }
                         }
@@ -58,7 +59,7 @@ class ShowAndDeleteFriendActivity : AppCompatActivity() {
     private fun setupShowAndDeleteFriendRecyclerView() {
         binding.friendsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.friendsRecyclerView.setHasFixedSize(true)
-        val showAndDeleteFriendsAdapter = ShowAndDeleteFriendsAdapter(friendList)
+        val showAndDeleteFriendsAdapter = ShowAndDeleteFriendsAdapter(mFriendList)
         binding.friendsRecyclerView.adapter = showAndDeleteFriendsAdapter
 
         showAndDeleteFriendsAdapter.setOnClickListener(object :
@@ -69,16 +70,14 @@ class ShowAndDeleteFriendActivity : AppCompatActivity() {
         })
     }
 
-    private fun deleteFriend(Friend: User){
-        userViewModel.readUser.observeOnce(this,{userList ->
-            if(userList.isNotEmpty()){
+    private fun deleteFriend(Friend: User) {
+        mUserViewModel.readUser.observeOnce(this, { userList ->
+            if (userList.isNotEmpty()) {
                 val user = userList[0].user
                 user.friends.remove(Friend._id)
-                val updatedUserEntity = UserEntity(userList[0].token,user)
-                userViewModel.deleteFriend(updatedUserEntity,Friend._id)
+                val updatedUserEntity = UserEntity(userList[0].token, user)
+                mUserViewModel.deleteFriend(updatedUserEntity, Friend._id)
             }
         })
     }
-
-
 }

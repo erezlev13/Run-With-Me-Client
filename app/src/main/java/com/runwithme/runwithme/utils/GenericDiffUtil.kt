@@ -1,4 +1,4 @@
-package com.almatechnologies.datatracker.utils
+package com.runwithme.runwithme.utils
 
 import androidx.recyclerview.widget.DiffUtil
 

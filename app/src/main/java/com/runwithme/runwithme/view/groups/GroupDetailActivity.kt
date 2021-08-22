@@ -3,7 +3,6 @@ package com.runwithme.runwithme.view.groups
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -24,8 +23,6 @@ import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.view.dialog.GroupDescriptionDialog
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
-private const val TAG = "GroupDetailActivity"
 
 @AndroidEntryPoint
 class GroupDetailActivity : AppCompatActivity() {

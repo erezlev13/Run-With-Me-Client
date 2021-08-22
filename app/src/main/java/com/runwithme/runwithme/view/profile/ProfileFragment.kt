@@ -31,38 +31,45 @@ import dagger.hilt.android.AndroidEntryPoint
  * A simple [Fragment] subclass.
  */
 @AndroidEntryPoint
-class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
+class ProfileFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var binding: FragmentProfileBinding
-    private var currentPhotoPath: Uri? = null
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var mUserViewModel: UserViewModel
+    private var mCurrentPhotoPath: Uri? = null
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            if(result.data != null){
-                currentPhotoPath = result.data!!.data
-            }
-            try {
-                @Suppress("DEPRECATION")
-                val selectedImageBitmap =
-                    MediaStore.Images.Media.getBitmap(requireContext().contentResolver, currentPhotoPath)
-                binding.profileImage.setImageBitmap(selectedImageBitmap)
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (result.data != null) {
+                    mCurrentPhotoPath = result.data!!.data
+                }
+                try {
+                    @Suppress("DEPRECATION")
+                    val selectedImageBitmap =
+                        MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            mCurrentPhotoPath
+                        )
+                    binding.profileImage.setImageBitmap(selectedImageBitmap)
 
-                updateUserPhoto(resizeBitmap(selectedImageBitmap))
+                    updateUserPhoto(resizeBitmap(selectedImageBitmap))
 
-            } catch (e: java.lang.RuntimeException) {
-                Snackbar.make(binding.root, "something went wrong... Please try again", Snackbar.LENGTH_LONG).show()
+                } catch (e: java.lang.RuntimeException) {
+                    Snackbar.make(
+                        binding.root,
+                        "something went wrong... Please try again",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         binding = FragmentProfileBinding.inflate(layoutInflater)
-        binding.pickPhotoActionButton.setOnClickListener{
+        binding.pickPhotoActionButton.setOnClickListener {
             if (hasExternalStoragePermission(requireContext())) {
                 uploadImageFromPhotoLibrary()
             } else {
@@ -81,9 +88,9 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
 
         }
         binding.totalFriendsTextView.setOnClickListener {
-            Intent(requireContext(),ShowAndDeleteFriendActivity::class.java).also{
+            Intent(requireContext(), ShowAndDeleteFriendActivity::class.java).also {
                 startActivity(it)
-        }
+            }
         }
 
     }
@@ -95,8 +102,7 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         binding.profileToolbar.inflateMenu(R.menu.profile_menu)
         binding.profileToolbar.setOnMenuItemClickListener {
-            when(it.itemId)
-            {
+            when (it.itemId) {
                 R.id.logout_item -> {
                     logout()
                     true
@@ -116,7 +122,7 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
     }
 
 
-    private fun logout(){
+    private fun logout() {
         deleteUserFromLocalDB()
         val intent = Intent(requireContext(), LoginActivity::class.java)
         startActivity(intent)
@@ -124,15 +130,15 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
     }
 
     private fun setupProfileData() {
-        userViewModel.readUser.observe(requireActivity(),{userList ->
-            if(userList.isNotEmpty()){
+        mUserViewModel.readUser.observe(requireActivity(), { userList ->
+            if (userList.isNotEmpty()) {
                 val user = userList[0].user
-                if(!user.photoUri.isNullOrEmpty()){
+                if (!user.photoUri.isNullOrEmpty()) {
                     binding.profileImage.setImageBitmap(encodedStringToBitmap(user.photoUri))
                 }
                 binding.totalRunsTextView.text = user.runs.size.toString()
                 binding.runnerEmailTextView.text = user.email
-                binding.runnerNameTextView.text = user.firstName + " " +user.lastName
+                binding.runnerNameTextView.text = user.firstName + " " + user.lastName
                 binding.totalFriendsTextView.text = user.friends.size.toString()
                 binding.totalRunsTextView.text = user.runs.size.toString()
 
@@ -158,13 +164,13 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,this)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             SettingsDialog.Builder(requireActivity()).build().show()
-        } else{
+        } else {
             requestExternalStoragePermission(this)
         }
     }
@@ -173,29 +179,22 @@ class ProfileFragment : Fragment(),EasyPermissions.PermissionCallbacks{
         uploadImageFromPhotoLibrary()
     }
 
-    private fun updateUserPhoto(bitmap: Bitmap){
-        userViewModel.readUser.observeOnce(this,{database ->
-            if(database.isNotEmpty()){
+    private fun updateUserPhoto(bitmap: Bitmap) {
+        mUserViewModel.readUser.observeOnce(this, { database ->
+            if (database.isNotEmpty()) {
                 val user = database[0].user
                 user.photoUri = bitmapToEncodedString(bitmap)
-                val updatedUserEntity = UserEntity(database[0].token,user)
-                userViewModel.updateUser(updatedUserEntity)
+                val updatedUserEntity = UserEntity(database[0].token, user)
+                mUserViewModel.updateUser(updatedUserEntity)
             }
         })
     }
 
-    private fun deleteUserFromLocalDB(){
-        userViewModel.readUser.observeOnce(this,{ database ->
-            if(database.isNotEmpty()){
-                userViewModel.deleteUser(database[0])
+    private fun deleteUserFromLocalDB() {
+        mUserViewModel.readUser.observeOnce(this, { database ->
+            if (database.isNotEmpty()) {
+                mUserViewModel.deleteUser(database[0])
             }
         })
     }
-
-
-
-
-
-
-
 }

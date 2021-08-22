@@ -45,7 +45,7 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var endTime: String
     private lateinit var avgPace: String
     private lateinit var runType: RunType
-    private var groupRunId : String? = null
+    private var groupRunId: String? = null
     private var distance: Float = 0f
     private var steps: Float = 0f
     private var locations: ArrayList<LatLng> = ArrayList()
@@ -75,7 +75,8 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Set progress bar and map.
         binding.summaryProgressBar.show()
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_summary) as SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.map_summary) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         onSaveClickListener()
@@ -83,7 +84,11 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onBackPressed() {
         // Override this so the functionality won't work
-        Snackbar.make(binding.saveSummaryButton, "Please save or delete this summary", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            binding.saveSummaryButton,
+            "Please save or delete this summary",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     /** Map Methods: */
@@ -100,16 +105,17 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add the starting point marker.
         if (locations.isNotEmpty()) {
-            mMap.addMarker(MarkerOptions()
-                .icon(createCustomMarker(this))
-                .position(locations.first())
+            mMap.addMarker(
+                MarkerOptions()
+                    .icon(createCustomMarker(this))
+                    .position(locations.first())
             )
         }
 
         // Set the camera to be at the starting point position, with large zoom so we could see the full course.
         mMap.animateCamera(
             CameraUpdateFactory
-            .newCameraPosition(CameraPosition(locations.first(), 12f, 0f, 0f)),
+                .newCameraPosition(CameraPosition(locations.first(), 12f, 0f, 0f)),
             2000,
             object : GoogleMap.CancelableCallback {
                 override fun onFinish() {
@@ -117,7 +123,11 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
 
                 override fun onCancel() {
-                    Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        binding.root,
+                        "Oops... something went wrong",
+                        Snackbar.LENGTH_LONG
+                    )
                 }
             }
         )
@@ -204,16 +214,28 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
             when {
                 it.message == NO_CONNECTION -> {
                     binding.summaryProgressBar.hide()
-                    Snackbar.make(binding.saveSummaryButton, "No internet connection", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.saveSummaryButton,
+                        "No internet connection",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
                 it.data == null -> {
                     binding.summaryProgressBar.hide()
-                    Snackbar.make(binding.saveSummaryButton, "Unsuccessful save. Please try again", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.saveSummaryButton,
+                        "Unsuccessful save. Please try again",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
                 else -> {
                     // There's connection and we got a runData object as a response.
                     binding.summaryProgressBar.hide()
-                    Snackbar.make(binding.saveSummaryButton, "Successfully saved", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.saveSummaryButton,
+                        "Successfully saved",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                     getBackToMainActivity()
                 }
             }
@@ -237,9 +259,10 @@ class SummaryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun addWayPoints() {
         wayPoints.forEach { wayPoint ->
-            mMap.addMarker(MarkerOptions()
-                .icon(createCustomMarker(this))
-                .position(wayPoint)
+            mMap.addMarker(
+                MarkerOptions()
+                    .icon(createCustomMarker(this))
+                    .position(wayPoint)
             )
         }
     }

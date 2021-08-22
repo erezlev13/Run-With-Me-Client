@@ -36,39 +36,49 @@ import dagger.hilt.android.AndroidEntryPoint
 class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var binding: ActivityCreateGroupBinding
-    private lateinit var userViewModel: UserViewModel
-    private lateinit var groupViewModel: GroupViewModel
-    private lateinit var friendList: ArrayList<User>
-    private var checkedFriendList: ArrayList<String> = ArrayList()
-    private var selectedImageBitmap : Bitmap? = null
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            var photoPath : Uri? = null
-            if(result.data != null){
-                photoPath = result.data!!.data!!
-            }
-            try {
-                @Suppress("DEPRECATION")
-                selectedImageBitmap =
-                    resizeBitmap(MediaStore.Images.Media.getBitmap(this.contentResolver, photoPath))
-                binding.groupImageView.setImageBitmap(selectedImageBitmap)
+    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mGroupViewModel: GroupViewModel
+    private lateinit var mFriendList: ArrayList<User>
+    private var mCheckedFriendList: ArrayList<String> = ArrayList()
+    private var mSelectedImageBitmap: Bitmap? = null
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                var photoPath: Uri? = null
+                if (result.data != null) {
+                    photoPath = result.data!!.data!!
+                }
+                try {
+                    @Suppress("DEPRECATION")
+                    mSelectedImageBitmap =
+                        resizeBitmap(
+                            MediaStore.Images.Media.getBitmap(
+                                this.contentResolver,
+                                photoPath
+                            )
+                        )
+                    binding.groupImageView.setImageBitmap(mSelectedImageBitmap)
 
 
-            } catch (e: java.lang.RuntimeException) {
-                Snackbar.make(binding.root, "something went wrong... Please try again", Snackbar.LENGTH_LONG).show()
+                } catch (e: java.lang.RuntimeException) {
+                    Snackbar.make(
+                        binding.root,
+                        "something went wrong... Please try again",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mGroupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
 
-        binding.groupImageView.setOnClickListener{
+        binding.groupImageView.setOnClickListener {
             if (Permissions.hasExternalStoragePermission(this)) {
                 uploadImageFromPhotoLibrary()
             } else {
@@ -90,18 +100,20 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         getAllFriendsFromDB()
 
     }
-    private fun onClickCreateGroupButton(){
-        var nameFilled : Boolean = true
-        var descriptionFilled : Boolean = true
-        if(binding.groupNameTextInputEditText.text!!.isEmpty()){
+
+    private fun onClickCreateGroupButton() {
+        var nameFilled: Boolean = true
+        var descriptionFilled: Boolean = true
+        if (binding.groupNameTextInputEditText.text!!.isEmpty()) {
             binding.groupNameTextInputLayout.error = getString(R.string.group_name_empty_error)
             nameFilled = false
         }
-        if(binding.groupDescriptionTextInputEditText.text!!.isEmpty()){
-            binding.groupDescriptionTextInputLayout.error = getString(R.string.group_description_empty_error)
+        if (binding.groupDescriptionTextInputEditText.text!!.isEmpty()) {
+            binding.groupDescriptionTextInputLayout.error =
+                getString(R.string.group_description_empty_error)
             descriptionFilled = false
         }
-        if(nameFilled && descriptionFilled ){
+        if (nameFilled && descriptionFilled) {
             binding.groupNameTextInputLayout.error = null
             binding.groupDescriptionTextInputLayout.error = null
 
@@ -111,25 +123,40 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     private fun createGroup() {
-        val groupName= binding.groupNameTextInputEditText.text.toString()
+        val groupName = binding.groupNameTextInputEditText.text.toString()
         val groupDescription = binding.groupDescriptionTextInputEditText.text.toString()
-        var groupImageString : String = ""
-        if(selectedImageBitmap != null){
-            groupImageString = bitmapToEncodedString(resizeBitmap(selectedImageBitmap!!))
+        var groupImageString: String = ""
+        if (mSelectedImageBitmap != null) {
+            groupImageString = bitmapToEncodedString(resizeBitmap(mSelectedImageBitmap!!))
         }
 
+        mGroupViewModel.saveGroupData(
+            GroupDataRequest(
+                groupName,
+                groupDescription,
+                groupImageString,
+                mCheckedFriendList
+            )
+        )
 
-        groupViewModel.saveGroupData(GroupDataRequest(groupName,groupDescription,groupImageString,checkedFriendList))
         binding.createGroupProgressBar.show()
-        groupViewModel.groupData.observeOnce(this, { response ->
+        mGroupViewModel.groupData.observeOnce(this, { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    Snackbar.make(binding.createGroupButton, "Group created successfully ", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.createGroupButton,
+                        "Group created successfully ",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                     getBackToGroupsFragment()
                 }
-                is NetworkResult.Error ->{
-                    if(response.message == NO_CONNECTION){
-                        Snackbar.make(binding.createGroupButton, "No internet connection", Snackbar.LENGTH_LONG).show()
+                is NetworkResult.Error -> {
+                    if (response.message == NO_CONNECTION) {
+                        Snackbar.make(
+                            binding.createGroupButton,
+                            "No internet connection",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
@@ -137,14 +164,14 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     private fun getAllFriendsFromDB() {
-        userViewModel.readUser.observeOnce(this,{userList ->
-            if(userList.isNotEmpty()){
-                userViewModel.getAllFriends()
-                userViewModel.myFriendsResponse.observeOnce(this, { response ->
-                    when(response){
+        mUserViewModel.readUser.observeOnce(this, { userList ->
+            if (userList.isNotEmpty()) {
+                mUserViewModel.getAllFriends()
+                mUserViewModel.myFriendsResponse.observeOnce(this, { response ->
+                    when (response) {
                         is NetworkResult.Success -> {
-                            if(response.data?.friends != null) {
-                                friendList = response.data.friends
+                            if (response.data?.friends != null) {
+                                mFriendList = response.data.friends
                                 setupMyFriendRecyclerView()
                             }
                         }
@@ -153,7 +180,6 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 })
             }
         })
-
     }
 
     private fun uploadImageFromPhotoLibrary() {
@@ -178,9 +204,9 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             SettingsDialog.Builder(this).build().show()
-        } else{
+        } else {
             Permissions.activityRequestExternalStoragePermission(this)
         }
     }
@@ -192,22 +218,22 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     private fun setupMyFriendRecyclerView() {
         binding.myFriendsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.myFriendsRecyclerView.setHasFixedSize(true)
-        val selectFriendAdapter = SelectFriendAdapter(friendList)
+        val selectFriendAdapter = SelectFriendAdapter(mFriendList)
         binding.myFriendsRecyclerView.adapter = selectFriendAdapter
 
         selectFriendAdapter.setOnCheckListener(object :
             SelectFriendAdapter.OnCheckListener {
-            override fun onCheck(position: Int, model: User) {
-                if(!checkedFriendList.contains(model._id)){
-                    checkedFriendList.add(model._id)
+            override fun onCheck(model: User) {
+                if (!mCheckedFriendList.contains(model._id)) {
+                    mCheckedFriendList.add(model._id)
                 }
             }
         })
         selectFriendAdapter.setOnUncheckListener(object :
             SelectFriendAdapter.OnUncheckListener {
-            override fun onUncheck(position: Int, model: User) {
-                if(checkedFriendList.contains(model._id)){
-                    checkedFriendList.remove(model._id)
+            override fun onUncheck(model: User) {
+                if (mCheckedFriendList.contains(model._id)) {
+                    mCheckedFriendList.remove(model._id)
                 }
             }
         })
@@ -216,7 +242,7 @@ class CreateGroupActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     private fun getBackToGroupsFragment() {
         binding.createGroupProgressBar.hide()
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(NAV_TO_GROUPS,true)
+        intent.putExtra(NAV_TO_GROUPS, true)
         startActivity(intent)
     }
 }

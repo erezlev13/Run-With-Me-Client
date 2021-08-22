@@ -28,17 +28,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class GroupsFragment : Fragment() {
 
     private lateinit var binding: FragmentGroupsBinding
-    private lateinit var groupViewModel: GroupViewModel
-    private lateinit var userViewModel: UserViewModel
-    private lateinit var currentUser : User
+    private lateinit var mGroupViewModel: GroupViewModel
+    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mCurrentUser: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        userViewModel.readUser.observeOnce(requireActivity(),{userList ->
-            if(userList.isNotEmpty()){
-                currentUser = userList[0].user
+        mGroupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mUserViewModel.readUser.observeOnce(requireActivity(), { userList ->
+            if (userList.isNotEmpty()) {
+                mCurrentUser = userList[0].user
             }
         })
     }
@@ -47,18 +47,20 @@ class GroupsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =  FragmentGroupsBinding.inflate(layoutInflater)
+        binding = FragmentGroupsBinding.inflate(layoutInflater)
         (requireActivity() as MainActivity).supportActionBar?.hide()
 
         binding.createGroupButton.setOnClickListener {
-            if(currentUser.friends.size > 0){
+            if (mCurrentUser.friends.size > 0) {
                 Intent(requireContext(), CreateGroupActivity::class.java).also {
                     startActivity(it)
                 }
-            }
-            else{
-                Snackbar.make(binding.createGroupButton, "Please add friends before trying to create new group",
-                    Snackbar.LENGTH_LONG).show()
+            } else {
+                Snackbar.make(
+                    binding.createGroupButton,
+                    "Please add friends before trying to create new group",
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -67,18 +69,18 @@ class GroupsFragment : Fragment() {
     }
 
     private fun getGroupListFromDB() {
-        var groupList : ArrayList<Group> = ArrayList()
-        groupViewModel.getMyGroups()
-        groupViewModel.myGroupsResponse.observeOnce(this,{response ->
-            when(response){
+        var groupList: ArrayList<Group> = ArrayList()
+        mGroupViewModel.getMyGroups()
+        mGroupViewModel.myGroupsResponse.observeOnce(this, { response ->
+            when (response) {
                 is NetworkResult.Success -> {
-                    if(response.data?.groups != null) {
+                    if (response.data?.groups != null) {
                         groupList = response.data.groups
                         if (groupList.size > 0) {
                             binding.myGroupsRecyclerView.visibility = View.VISIBLE
                             binding.noGroupsAvailableTextView.visibility = View.INVISIBLE
                             setupGroupsRecyclerView(groupList)
-                        }else{
+                        } else {
                             binding.myGroupsRecyclerView.visibility = View.INVISIBLE
                             binding.noGroupsAvailableTextView.visibility = View.VISIBLE
                         }
@@ -97,9 +99,12 @@ class GroupsFragment : Fragment() {
 
         groupsAdapter.setOnClickListener(object :
             GroupsAdapter.OnClickListener {
-            override fun onClick(position: Int, group: Group) {
+            override fun onClick(group: Group) {
                 val intent = Intent(activity, GroupDetailActivity::class.java)
-                intent.putExtra(EXTRA_GROUP_DETAILS, group) // Passing the complete serializable data class to the detail activity using intent.
+                intent.putExtra(
+                    EXTRA_GROUP_DETAILS,
+                    group
+                ) // Passing the complete serializable data class to the detail activity using intent.
                 startActivity(intent)
             }
         })

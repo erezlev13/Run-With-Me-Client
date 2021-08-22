@@ -41,9 +41,9 @@ import com.vmadalin.easypermissions.dialogs.SettingsDialog
  * A simple [Fragment] subclass.
  */
 class RunFragment :
-        Fragment(),
-        OnMapReadyCallback,
-        EasyPermissions.PermissionCallbacks{
+    Fragment(),
+    OnMapReadyCallback,
+    EasyPermissions.PermissionCallbacks {
 
     /** Properties: */
     private lateinit var mMap: GoogleMap
@@ -56,7 +56,8 @@ class RunFragment :
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
         (requireActivity() as MainActivity).supportActionBar?.hide()
     }
 
@@ -65,7 +66,7 @@ class RunFragment :
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding =  FragmentRunBinding.inflate(inflater, container, false)
+        _binding = FragmentRunBinding.inflate(inflater, container, false)
 
         binding.runProgressBar.apply {
             setBackgroundResource(R.drawable.run_anim)
@@ -111,7 +112,7 @@ class RunFragment :
         val selectGroupRunBottomSheet = SelectGroupRunBottomSheet()
 
         selectGroupRunBottomSheet.setOnSelectGroupRunListener(object :
-            SelectGroupRunBottomSheet.OnSelectGroupRun{
+            SelectGroupRunBottomSheet.OnSelectGroupRun {
             override fun selectGroupRun(groupRun: GroupRun) {
                 binding.runProgressBar.show()
                 runAnimation.start()
@@ -125,7 +126,10 @@ class RunFragment :
                 }, 3000)
             }
         })
-        selectGroupRunBottomSheet.show(requireActivity().supportFragmentManager, SelectGroupRunBottomSheet.TAG)
+        selectGroupRunBottomSheet.show(
+            requireActivity().supportFragmentManager,
+            SelectGroupRunBottomSheet.TAG
+        )
     }
 
     private fun onStartClick() {
@@ -169,7 +173,10 @@ class RunFragment :
 
         hideUiSettings()
 
-        if (hasLocationPermission(requireContext()) && hasBackgroundLocationPermission(requireContext())) {
+        if (hasLocationPermission(requireContext()) && hasBackgroundLocationPermission(
+                requireContext()
+            )
+        ) {
             showCurrentLocation()
         } else {
             requestLocationPermission(this)
@@ -193,16 +200,20 @@ class RunFragment :
 
                 mMap.animateCamera(
                     CameraUpdateFactory.newCameraPosition(setCameraPosition(lastKnownLocation)),
-                        2000,
-                        object : GoogleMap.CancelableCallback {
-                            override fun onFinish() {
-                                // Leave this empty
-                            }
-
-                            override fun onCancel() {
-                                Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
-                            }
+                    2000,
+                    object : GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            // Leave this empty
                         }
+
+                        override fun onCancel() {
+                            Snackbar.make(
+                                binding.root,
+                                "Oops... something went wrong",
+                                Snackbar.LENGTH_LONG
+                            )
+                        }
+                    }
                 )
 
                 mMap.addMarker(
@@ -211,7 +222,11 @@ class RunFragment :
                         .icon(createCustomMarker(requireContext()))
                 )
             } else {
-                val noGPSMsg = Snackbar.make(binding.runContainer, "No GPS signal yet", Snackbar.LENGTH_INDEFINITE)
+                val noGPSMsg = Snackbar.make(
+                    binding.runContainer,
+                    "No GPS signal yet",
+                    Snackbar.LENGTH_INDEFINITE
+                )
                 noGPSMsg.setAction("OK") {
                     noGPSMsg.duration = 1
                 }
@@ -220,7 +235,11 @@ class RunFragment :
     }
 
     /** Permissions: */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
@@ -235,5 +254,4 @@ class RunFragment :
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         showCurrentLocation()
     }
-
 }

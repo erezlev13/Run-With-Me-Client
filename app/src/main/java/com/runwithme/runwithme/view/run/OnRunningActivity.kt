@@ -34,10 +34,13 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     /** Properties: */
     private lateinit var binding: ActivityOnRunningBinding
 
-    private var locationList = mutableListOf<LatLng>()
-    private var wayPoints = mutableListOf<LatLng>()
+    private var mLocationList = mutableListOf<LatLng>()
+    private var mWayPoints = mutableListOf<LatLng>()
+
+    private var mIsContinued = false
+
+    private var groupRun: GroupRun? = null
     private val timer = Timer()
-    private var groupRun : GroupRun? = null
 
     private lateinit var startTime: LocalTime
     private lateinit var endTime: LocalTime
@@ -48,7 +51,6 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private var avgPace = 0.0
     private var steps = 0f
     private var lastPace = 0.0
-    private var isContinued = false
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,18 +80,18 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     private fun observeTrackerService() {
         // Set timer, so the time will appear on the screen.
         TrackerService.isStarted.observe(this, { isStarted ->
-            if (isStarted && !isContinued) {
+            if (isStarted && !mIsContinued) {
                 timer.start()
                 startTime()
-            } else if (isContinued) {
+            } else if (mIsContinued) {
                 timer.continueTime()
-                isContinued = false
+                mIsContinued = false
             }
         })
 
         // Get coordinates and calculates distance.
         TrackerService.locationList.observe(this, {
-            locationList = it
+            mLocationList = it
             totalDistance += MapUtils.calculateTheDistance(it)
             if (binding.distanceTextView.isVisible) {
                 binding.distanceTextView.text = MapUtils.getDistance(totalDistance)
@@ -108,14 +110,15 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun showMeasurements() {
-        binding.currentPaceTextView.text = calculateCurrentPace(totalDistance, timer.timeInMilliseconds)
+        binding.currentPaceTextView.text =
+            calculateCurrentPace(totalDistance, timer.timeInMilliseconds)
         binding.averagePaceTextView.text = calculateAvgPace()
         timer.timeTextView = binding.durationTextView
     }
 
     private fun getWayPoint(totalDistance: Double, locationList: MutableList<LatLng>) {
         if (totalDistance >= 1.0 && isPassedAKilometer()) {
-            wayPoints.add(locationList.last())
+            mWayPoints.add(locationList.last())
         }
     }
 
@@ -197,7 +200,7 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
 
     /** Implementations: */
     override fun onContinueClick() {
-        isContinued = true
+        mIsContinued = true
         startRun()
     }
 
@@ -209,13 +212,13 @@ class OnRunningActivity : AppCompatActivity(), RunBottomSheet.OnContinueStopClic
     }
 
     private fun showSummarry() {
-        val locations: ArrayList<LatLng> = ArrayList(locationList)
-        val wayPoints: ArrayList<LatLng> = ArrayList(wayPoints)
+        val locations: ArrayList<LatLng> = ArrayList(mLocationList)
+        val wayPoints: ArrayList<LatLng> = ArrayList(mWayPoints)
         val intent = Intent(this, SummaryActivity::class.java)
-        var runType : RunType = RunType.PERSONAL
-        if(groupRun != null){
+        var runType: RunType = RunType.PERSONAL
+        if (groupRun != null) {
             runType = RunType.GROUP
-            intent.putExtra(GROUP_RUN_ID,groupRun!!._id)
+            intent.putExtra(GROUP_RUN_ID, groupRun!!._id)
         }
 
         intent.putExtra(RUN_TYPE, runType)

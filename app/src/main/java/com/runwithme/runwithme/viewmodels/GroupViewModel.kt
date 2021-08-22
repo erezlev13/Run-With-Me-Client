@@ -16,18 +16,20 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class GroupViewModel@Inject constructor(
+class GroupViewModel @Inject constructor(
     private val repository: Repository,
     application: Application
 ) : AndroidViewModel(application) {
 
     val groupData: MutableLiveData<NetworkResult<Group>> = MutableLiveData()
-    val myGroupsResponse : MutableLiveData<NetworkResult<MyGroupsResponse>> = MutableLiveData()
-    val myTodayGroupRunsResponse : MutableLiveData<NetworkResult<MyTodayGroupRunsResponse>> = MutableLiveData()
+    val myGroupsResponse: MutableLiveData<NetworkResult<MyGroupsResponse>> = MutableLiveData()
+    val myTodayGroupRunsResponse: MutableLiveData<NetworkResult<MyTodayGroupRunsResponse>> =
+        MutableLiveData()
     val scheduleRun: MutableLiveData<NetworkResult<ScheduleRunResponse>> = MutableLiveData()
-    val futureGroupRunResponse : MutableLiveData<NetworkResult<FutureGroupRunResponse>> = MutableLiveData()
-    val pastGroupRunResponse : MutableLiveData<NetworkResult<PastGroupRunResponse>> = MutableLiveData()
-
+    val futureGroupRunResponse: MutableLiveData<NetworkResult<FutureGroupRunResponse>> =
+        MutableLiveData()
+    val pastGroupRunResponse: MutableLiveData<NetworkResult<PastGroupRunResponse>> =
+        MutableLiveData()
 
 
     fun saveGroupData(groupDataRequest: GroupDataRequest) {
@@ -47,7 +49,7 @@ class GroupViewModel@Inject constructor(
                 val groupDataBody = response.body()
                 return NetworkResult.Success(groupDataBody!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
@@ -69,7 +71,7 @@ class GroupViewModel@Inject constructor(
                 val groupsResponse = response.body()
                 return NetworkResult.Success(groupsResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
@@ -92,7 +94,7 @@ class GroupViewModel@Inject constructor(
                 val groupsResponse = response.body()
                 return NetworkResult.Success(groupsResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
@@ -116,14 +118,14 @@ class GroupViewModel@Inject constructor(
                 val groupRunDataBody = response.body()
                 return NetworkResult.Success(groupRunDataBody!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
         }
     }
 
-    fun getFutureGroupRuns(groupId:String) {
+    fun getFutureGroupRuns(groupId: String) {
         viewModelScope.launch {
             try {
                 val response = repository.remote.getFutureGroupRuns(groupId)
@@ -140,14 +142,14 @@ class GroupViewModel@Inject constructor(
                 val futureGroupRunsResponse = response.body()
                 return NetworkResult.Success(futureGroupRunsResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
         }
     }
 
-    fun getPastGroupRuns(groupId:String) {
+    fun getPastGroupRuns(groupId: String) {
         viewModelScope.launch {
             try {
                 val response = repository.remote.getPastGroupRuns(groupId)
@@ -164,7 +166,7 @@ class GroupViewModel@Inject constructor(
                 val pastGroupRunsResponse = response.body()
                 return NetworkResult.Success(pastGroupRunsResponse!!)
             }
-            else ->{
+            else -> {
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                 return NetworkResult.Error(jsonObj.getString("message"))
             }
