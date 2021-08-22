@@ -1,5 +1,6 @@
 package com.runwithme.runwithme.adapters
 
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,19 +19,8 @@ class GroupsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val group = groupList[position]
-
-        holder.binding.groupNameTextView.text = group.name
-        if(group.photoUri.isNotEmpty()) {
-            holder.binding.groupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(group.photoUri))
-        }
-
-
-        holder.itemView.setOnClickListener {
-
-            if (onClickListener != null) {
-                onClickListener!!.onClick(group)
-            }
+        if(onClickListener != null){
+            holder.bind(groupList[position],onClickListener!!)
         }
     }
 
@@ -49,6 +39,19 @@ class GroupsAdapter(
     class MyViewHolder(val binding: GroupRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        fun bind(group: Group, onClickListener: OnClickListener) {
+            binding.groupNameTextView.text = group.name
+            if(group.photoUri.isNotEmpty()) {
+                binding.groupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(group.photoUri))
+            }
+            itemView.setOnClickListener {
+
+                if (onClickListener != null) {
+                    onClickListener!!.onClick(group)
+                }
+            }
+
+        }
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)

@@ -8,15 +8,15 @@ import com.runwithme.runwithme.databinding.FriendInGroupRowLayoutBinding
 import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.utils.ImageUtils
 
-private const val TAG = "GroupMembersAdapter"
 
 class GroupMembersAdapter(private var members: ArrayList<User> =  ArrayList()) : RecyclerView.Adapter<GroupMembersAdapter.GroupMembersViewHolder>() {
+
 
     /** View Holder: */
     class GroupMembersViewHolder(val binding: FriendInGroupRowLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(member: User) {
-           binding.friendInGroupNameTextView.text = "${member.firstName} ${member.lastName}"
+            binding.friendInGroupNameTextView.text = "${member.firstName} ${member.lastName}"
             if (member.photoUri.isNotEmpty()) {
                 binding.friendInGroupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(member.photoUri))
             }
@@ -43,4 +43,5 @@ class GroupMembersAdapter(private var members: ArrayList<User> =  ArrayList()) :
     override fun getItemCount(): Int {
         return members.size
     }
+
 }

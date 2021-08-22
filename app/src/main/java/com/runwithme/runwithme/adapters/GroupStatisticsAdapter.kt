@@ -1,16 +1,10 @@
 package com.runwithme.runwithme.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.runwithme.runwithme.R
-import com.runwithme.runwithme.databinding.ScheduledRunRowLayoutBinding
 import com.runwithme.runwithme.databinding.StatisticsGroupRowLayoutBinding
 import com.runwithme.runwithme.model.GroupRun
-import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.TimeUtils
 import java.time.format.DateTimeFormatter
 

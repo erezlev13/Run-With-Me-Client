@@ -26,29 +26,11 @@ class SelectFriendAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val friend = friendsList[position]
-
-        holder.binding.friendNameTextView.text = friend.firstName + " " + friend.lastName
-        if(friend.photoUri.isNotEmpty()){
-            val imgBytes: ByteArray = Base64.decode(friend.photoUri, Base64.DEFAULT);
-            val bitmap : Bitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
-            holder.binding.friendImageView.setImageBitmap(bitmap)
-        }else{
-            holder.binding.friendImageView.setImageResource(R.drawable.ic_account_circle)
+        if(onCheckListener != null && onUncheckListener != null){
+            holder.bind(friendsList[position],onCheckListener!!,onUncheckListener!!)
         }
 
-        holder.binding.friendCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                if(onCheckListener != null){
-                    onCheckListener!!.onCheck(friend);
-                }
-            }
-            else{
-                if(onUncheckListener != null){
-                    onUncheckListener!!.onUncheck(friend);
-                }
-            }
-        }
+
     }
 
     override fun getItemCount(): Int {
@@ -74,6 +56,30 @@ class SelectFriendAdapter(
     class MyViewHolder(val binding: SelectFriendRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        fun bind(friend: User,onCheckListener:OnCheckListener,onUncheckListener: OnUncheckListener) {
+            binding.friendNameTextView.text = friend.firstName + " " + friend.lastName
+            if(friend.photoUri.isNotEmpty()){
+                val imgBytes: ByteArray = Base64.decode(friend.photoUri, Base64.DEFAULT);
+                val bitmap : Bitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
+                binding.friendImageView.setImageBitmap(bitmap)
+            }else{
+                binding.friendImageView.setImageResource(R.drawable.ic_account_circle)
+            }
+
+            binding.friendCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                if(isChecked){
+                    if(onCheckListener != null){
+                        onCheckListener!!.onCheck(friend);
+                    }
+                }
+                else{
+                    if(onUncheckListener != null){
+                        onUncheckListener!!.onUncheck(friend);
+                    }
+                }
+            }
+
+        }
 
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {

@@ -9,7 +9,10 @@ import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.utils.TimeUtils
 import java.time.format.DateTimeFormatter
 
-class RunsStatisticsAdapter(private var runsList: ArrayList<Run>) : RecyclerView.Adapter<RunsStatisticsAdapter.MyViewHolder>()  {
+
+class RunsStatisticsAdapter(
+    private var runsList: ArrayList<Run>
+) : RecyclerView.Adapter<RunsStatisticsAdapter.MyViewHolder>()  {
 
     var listener: OnRunDetailsClick? = null
 
@@ -26,27 +29,30 @@ class RunsStatisticsAdapter(private var runsList: ArrayList<Run>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val run = runsList[position]
-
-        holder.binding.runTypeTitle.text = run.runType + " Run"
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        val date = TimeUtils.stringToLocalDate(run.date)
-        holder.binding.runDate.text = date.format(formatter)
-        holder.binding.totalTimeTextView.text = TimeUtils.calculateTimeDifference(
-            run.startTime,run.endTime) + "H"
-        holder.binding.totalStepsTextView.text = run.runData.steps.toString()
-        holder.binding.distanceTextView.text = run.runData.distance.toString()+ "KM"
-        holder.binding.avgPaceTextView.text = run.runData.averagePace
-
-        holder.itemView.setOnClickListener {
-            if (listener != null) {
-                listener!!.onRunDetailsClick(run)
-            }
+        if(listener != null){
+            holder.bind(runsList[position],listener!!)
         }
-
     }
+
     class MyViewHolder(val binding: RunStatRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind(run: Run,listener:OnRunDetailsClick) {
+            binding.runTypeTitle.text = run.runType + " Run"
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val date = TimeUtils.stringToLocalDate(run.date)
+            binding.runDate.text = date.format(formatter)
+            binding.totalTimeTextView.text = TimeUtils.calculateTimeDifference(
+                run.startTime,run.endTime) + "H"
+            binding.totalStepsTextView.text = run.runData.steps.toString()
+            binding.distanceTextView.text = run.runData.distance.toString()+ "KM"
+            binding.avgPaceTextView.text = run.runData.averagePace
+
+            itemView.setOnClickListener {
+                if (listener != null) {
+                    listener!!.onRunDetailsClick(run)
+                }
+            }
+        }
 
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {
