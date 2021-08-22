@@ -26,7 +26,7 @@ class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {
     private var onSelectGroupRunListener: OnSelectGroupRun? = null
 
     interface OnSelectGroupRun {
-        fun selectGroupRun(group:GroupRun)
+        fun selectGroupRun(group: GroupRun)
     }
 
     override fun onCreateView(
@@ -41,13 +41,13 @@ class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun getGroupRunListFromDB() {
-        var groupRunList : ArrayList<GroupRun> = ArrayList()
+        var groupRunList: ArrayList<GroupRun> = ArrayList()
         binding.selectGroupRunProgressBar.show()
         groupViewModel.getMyTodayGroupRuns()
-        groupViewModel.myTodayGroupRunsResponse.observeOnce(this,{response ->
-            when(response){
+        groupViewModel.myTodayGroupRunsResponse.observeOnce(this, { response ->
+            when (response) {
                 is NetworkResult.Success -> {
-                    if(response.data?.groupRuns != null) {
+                    if (response.data?.groupRuns != null) {
                         binding.selectGroupRunProgressBar.hide()
                         groupRunList = response.data.groupRuns
                         if (groupRunList.size > 0) {
@@ -55,7 +55,7 @@ class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {
                             binding.selectGroupRunRecycleView.visibility = View.VISIBLE
                             binding.noGroupsRunAvailableTextView.visibility = View.GONE
                             setupGroupsRecyclerView(groupRunList)
-                        }else{
+                        } else {
                             binding.selectGroupRunTitle.visibility = View.GONE
                             binding.noGroupsRunAvailableTextView.visibility = View.GONE
                             binding.selectGroupRunRecycleView.visibility = View.VISIBLE
@@ -77,7 +77,7 @@ class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {
             SelectGroupRunAdapter.OnGroupRunClickListener {
             override fun onGroupRunClick(groupRun: GroupRun) {
                 selectedGroupRun = groupRun
-                if(onSelectGroupRunListener != null){
+                if (onSelectGroupRunListener != null) {
                     onSelectGroupRunListener!!.selectGroupRun(selectedGroupRun)
                 }
 

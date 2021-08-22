@@ -17,20 +17,20 @@ import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.MapUtils
 import com.runwithme.runwithme.utils.TimeUtils
-import java.time.Duration
 
 class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
-    private var mRunDetails : Run? = null
     private lateinit var binding: ActivityStatisticsDetailsBinding
+    private lateinit var mMap: GoogleMap
+    private var mRunDetails: Run? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStatisticsDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_statistics_details) as SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.map_statistics_details) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         if (intent.hasExtra(Constants.EXTRA_RUN_DETAILS)) {
@@ -38,17 +38,19 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                 intent.getSerializableExtra(Constants.EXTRA_RUN_DETAILS) as Run
         }
 
-        if(mRunDetails != null){
+        if (mRunDetails != null) {
             setupRunDetails()
         }
     }
 
-    private fun setupRunDetails(){
-        binding.statisticsDetailsDistanceSummaryTextView.text = mRunDetails!!.runData.distance.toString() + "Km"
+    private fun setupRunDetails() {
+        binding.statisticsDetailsDistanceSummaryTextView.text =
+            mRunDetails!!.runData.distance.toString() + "Km"
         binding.statisticsDetailsPaceTextView.text = mRunDetails!!.runData.averagePace
         binding.statisticsDetailsStepsTextView.text = mRunDetails!!.runData.steps.toString()
-        binding.statisticsDetailsTimeTextView.text = TimeUtils.calculateTimeDifference(mRunDetails!!.startTime
-            ,mRunDetails!!.endTime)
+        binding.statisticsDetailsTimeTextView.text = TimeUtils.calculateTimeDifference(
+            mRunDetails!!.startTime, mRunDetails!!.endTime
+        )
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -59,8 +61,8 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (latLngList.isNotEmpty()) {
             mMap.addMarker(
                 MarkerOptions()
-                .icon(MapUtils.createCustomMarker(this))
-                .position(latLngList.first())
+                    .icon(MapUtils.createCustomMarker(this))
+                    .position(latLngList.first())
             )
         }
 
@@ -75,14 +77,18 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
 
                 override fun onCancel() {
-                    Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        binding.root,
+                        "Oops... something went wrong",
+                        Snackbar.LENGTH_LONG
+                    )
                 }
             }
         )
 
     }
 
-    private fun showPolyline(latLngList : ArrayList<LatLng>) {
+    private fun showPolyline(latLngList: ArrayList<LatLng>) {
         mMap.addPolyline(
             PolylineOptions()
                 .color(R.color.colorPrimary)
@@ -92,14 +98,13 @@ class StatisticsDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun coordinatesToLatLngList() : ArrayList<LatLng>{
-        var latLngList : ArrayList<LatLng> = ArrayList()
+    private fun coordinatesToLatLngList(): ArrayList<LatLng> {
+        var latLngList: ArrayList<LatLng> = ArrayList()
         val coordinates = mRunDetails!!.runData.route.coordinates
-        coordinates.forEach{
-            latLngList.add(LatLng(it[0],it[1]))
+        coordinates.forEach {
+            latLngList.add(LatLng(it[0], it[1]))
         }
-        
+
         return latLngList
     }
-
 }

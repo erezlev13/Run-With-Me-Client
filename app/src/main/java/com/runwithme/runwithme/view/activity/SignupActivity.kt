@@ -20,20 +20,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivitySignupBinding
-    private lateinit var loginViewModel : LoginViewModel
-    private lateinit var sessionManager : SessionManager
+    private lateinit var binding: ActivitySignupBinding
+    private lateinit var mLoginViewModel: LoginViewModel
+    private lateinit var mSessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        sessionManager = SessionManager(this)
+        mLoginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        mSessionManager = SessionManager(this)
         onTextChangeAllFields()
-
-
 
         binding.signupButton.setOnClickListener {
             onClickSignupButton()
@@ -45,29 +43,29 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun onClickSignupButton(){
-        var firstNameFilled : Boolean = true
-        var lastNameFilled : Boolean = true
-        var emailFilled : Boolean = true
-        var passwordFilled : Boolean = true
+    private fun onClickSignupButton() {
+        var firstNameFilled: Boolean = true
+        var lastNameFilled: Boolean = true
+        var emailFilled: Boolean = true
+        var passwordFilled: Boolean = true
 
-        if(binding.firstNameTextInputEditText.text!!.isEmpty()){
+        if (binding.firstNameTextInputEditText.text!!.isEmpty()) {
             binding.firstNameTextInputLayout.error = getString(R.string.first_name_empty_error)
             emailFilled = false
         }
-        if(binding.lastNameTextInputEditText.text!!.isEmpty()){
+        if (binding.lastNameTextInputEditText.text!!.isEmpty()) {
             binding.lastNameTextInputLayout.error = getString(R.string.last_name_empty_error)
             emailFilled = false
         }
-        if(binding.emailTextInputEditText.text!!.isEmpty()){
+        if (binding.emailTextInputEditText.text!!.isEmpty()) {
             binding.emailTextInputEditText.error = getString(R.string.email_empty_error)
             emailFilled = false
         }
-        if(binding.passwordTextInputEditText.text!!.isEmpty()){
+        if (binding.passwordTextInputEditText.text!!.isEmpty()) {
             binding.passwordTextInputLayout.error = getString(R.string.password_empty_error)
             passwordFilled = false
         }
-        if(firstNameFilled && lastNameFilled &&emailFilled && passwordFilled){
+        if (firstNameFilled && lastNameFilled && emailFilled && passwordFilled) {
             binding.firstNameTextInputLayout.error = null
             binding.lastNameTextInputLayout.error = null
             binding.emailTextInputEditText.error = null
@@ -75,20 +73,21 @@ class SignupActivity : AppCompatActivity() {
             signup()
         }
     }
-    private fun signup(){
-        val firstName= binding.firstNameTextInputEditText.text.toString()
+
+    private fun signup() {
+        val firstName = binding.firstNameTextInputEditText.text.toString()
         val lastName = binding.lastNameTextInputEditText.text.toString()
-        val email= binding.emailTextInputEditText.text.toString()
+        val email = binding.emailTextInputEditText.text.toString()
         val password = binding.passwordTextInputEditText.text.toString()
 
-        loginViewModel.signup(SignupRequest(firstName,lastName,email,password))
+        mLoginViewModel.signup(SignupRequest(firstName, lastName, email, password))
         binding.signUpProgressBar.show()
-        loginViewModel.loginResponse.observeOnce(this, { response ->
-            when(response){
+        mLoginViewModel.loginResponse.observeOnce(this, { response ->
+            when (response) {
                 is NetworkResult.Success -> {
                     binding.signUpProgressBar.hide()
-                    if(response.data?.user != null) {
-                        sessionManager.saveAuthToken(response.data?.token)
+                    if (response.data?.user != null) {
+                        mSessionManager.saveAuthToken(response.data?.token)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -100,30 +99,36 @@ class SignupActivity : AppCompatActivity() {
                 }
                 else -> {
                     binding.signUpProgressBar.hide()
-                    Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        binding.root,
+                        "Oops... something went wrong",
+                        Snackbar.LENGTH_LONG
+                    )
                 }
             }
         })
     }
-    private fun onTextChangeAllFields(){
+
+    private fun onTextChangeAllFields() {
         binding.firstNameTextInputEditText.doOnTextChanged { text, start, before, count ->
-            if(binding.firstNameTextInputLayout.error == getString(R.string.first_name_empty_error)){
+            if (binding.firstNameTextInputLayout.error == getString(R.string.first_name_empty_error)) {
                 binding.firstNameTextInputLayout.error = null
             }
         }
         binding.lastNameTextInputEditText.doOnTextChanged { text, start, before, count ->
-            if(binding.lastNameTextInputLayout.error == getString(R.string.last_name_empty_error)){
+            if (binding.lastNameTextInputLayout.error == getString(R.string.last_name_empty_error)) {
                 binding.lastNameTextInputLayout.error = null
             }
         }
         binding.emailTextInputEditText.doOnTextChanged { text, start, before, count ->
-            if(binding.emailTextInputEditText.error == getString(R.string.email_empty_error) ||
-               binding.emailTextInputEditText.error == getString(R.string.email_exist)){
+            if (binding.emailTextInputEditText.error == getString(R.string.email_empty_error) ||
+                binding.emailTextInputEditText.error == getString(R.string.email_exist)
+            ) {
                 binding.emailTextInputEditText.error = null
             }
         }
         binding.passwordTextInputEditText.doOnTextChanged { text, start, before, count ->
-            if(binding.passwordTextInputLayout.error == getString(R.string.password_empty_error)){
+            if (binding.passwordTextInputLayout.error == getString(R.string.password_empty_error)) {
                 binding.passwordTextInputLayout.error = null
             }
         }

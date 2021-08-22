@@ -2,7 +2,6 @@ package com.runwithme.runwithme.model
 
 import android.os.Handler
 import android.os.SystemClock
-import android.util.Log
 import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*

@@ -29,7 +29,7 @@ class GroupsAdapter(
         holder.itemView.setOnClickListener {
 
             if (onClickListener != null) {
-                onClickListener!!.onClick(position, group)
+                onClickListener!!.onClick(group)
             }
         }
     }
@@ -43,7 +43,7 @@ class GroupsAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(position: Int, model: Group)
+        fun onClick(model: Group)
     }
 
     class MyViewHolder(val binding: GroupRowLayoutBinding) :

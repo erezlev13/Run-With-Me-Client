@@ -30,8 +30,6 @@ import com.runwithme.runwithme.utils.MapUtils.getDistance
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-private const val TAG = "TrackerService"
-
 @AndroidEntryPoint
 class TrackerService : LifecycleService() {
 

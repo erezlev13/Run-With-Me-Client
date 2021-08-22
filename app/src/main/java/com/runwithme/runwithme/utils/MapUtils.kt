@@ -59,23 +59,4 @@ object MapUtils {
             throw NullPointerException("There was no bitmap to create.")
         }
     }
-
-    fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
-        val coder = Geocoder(context)
-        val address: List<Address>?
-        var position: LatLng? = null
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 2)
-            if (address == null) {
-                return null
-            }
-            val location = address[0]
-            position = LatLng(location.latitude, location.longitude)
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-
-        return position
-    }
 }

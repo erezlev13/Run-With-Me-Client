@@ -1,14 +1,11 @@
 package com.runwithme.runwithme.utils
 
-import android.util.Log
 import java.time.Duration
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 object TimeUtils {
-
     fun calculateTimeDifference(startTime:String, endTime:String): String{
         val start = stringToLocalTime(startTime)
         val end = stringToLocalTime(endTime)

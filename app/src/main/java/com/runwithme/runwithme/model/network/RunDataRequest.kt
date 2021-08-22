@@ -3,7 +3,6 @@ package com.runwithme.runwithme.model.network
 import com.google.gson.annotations.SerializedName
 import com.runwithme.runwithme.model.RunType
 
-
 data class RunDataRequest(
     @SerializedName("startTime")
     var startTime: String,

@@ -9,9 +9,7 @@ import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.utils.TimeUtils
 import java.time.format.DateTimeFormatter
 
-class RunsStatisticsAdapter(private val context: Context,
-                           private var runsList: ArrayList<Run>
-) : RecyclerView.Adapter<RunsStatisticsAdapter.MyViewHolder>()  {
+class RunsStatisticsAdapter(private var runsList: ArrayList<Run>) : RecyclerView.Adapter<RunsStatisticsAdapter.MyViewHolder>()  {
 
     var listener: OnRunDetailsClick? = null
 

@@ -67,5 +67,4 @@ object Permissions {
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }
-
 }

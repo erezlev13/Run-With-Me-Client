@@ -3,9 +3,7 @@ package com.runwithme.runwithme.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.almatechnologies.datatracker.utils.GenericDiffUtil
 import com.runwithme.runwithme.databinding.FriendInGroupRowLayoutBinding
 import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.utils.ImageUtils

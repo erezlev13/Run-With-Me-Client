@@ -19,10 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddFriendActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddFriendBinding
-    private lateinit var friendSearchAdapter: FriendSearchAdapter
-    private var userList: List<User> = ArrayList<User>()
-    private lateinit var userViewModel: UserViewModel
-    private lateinit var  currentUser :User
+    private lateinit var mFriendSearchAdapter: FriendSearchAdapter
+    private lateinit var mUserViewModel: UserViewModel
+    private lateinit var mCurrentUser: User
+    private var mUserList: List<User> = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +36,12 @@ class AddFriendActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        friendSearchAdapter = FriendSearchAdapter( ArrayList<User>())
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        mFriendSearchAdapter = FriendSearchAdapter(ArrayList<User>())
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
-        userViewModel.readUser.observeOnce(this,{userList ->
-            if(userList.isNotEmpty()){
-                currentUser = userList[0].user
+        mUserViewModel.readUser.observeOnce(this, { userList ->
+            if (userList.isNotEmpty()) {
+                mCurrentUser = userList[0].user
             }
         })
 
@@ -51,12 +51,16 @@ class AddFriendActivity : AppCompatActivity() {
                 filterFriends(s.toString())
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
 
             }
         })
@@ -66,13 +70,13 @@ class AddFriendActivity : AppCompatActivity() {
 
     }
 
-    private fun getAllUserFromDB(){
-        userViewModel.getAllUsers()
-        userViewModel.allUsersResponse.observeOnce(this, { response ->
-            when(response){
+    private fun getAllUserFromDB() {
+        mUserViewModel.getAllUsers()
+        mUserViewModel.allUsersResponse.observeOnce(this, { response ->
+            when (response) {
                 is NetworkResult.Success -> {
-                    if(response.data?.users != null) {
-                        userList = response.data.users
+                    if (response.data?.users != null) {
+                        mUserList = response.data.users
                     }
                     setupAddFriendRecyclerView()
                 }
@@ -82,23 +86,23 @@ class AddFriendActivity : AppCompatActivity() {
     }
 
     private fun filterFriends(text: String) {
-        val filteredList : ArrayList<User> = ArrayList()
-        if(!text.isEmpty()){
-            for(user: User in userList){
-                if(!currentUser._id.equals(user._id) && !isExistInFriendList(user._id)){
-                    if(user.firstName.toLowerCase().contains(text.toLowerCase())){
+        val filteredList: ArrayList<User> = ArrayList()
+        if (!text.isEmpty()) {
+            for (user: User in mUserList) {
+                if (!mCurrentUser._id.equals(user._id) && !isExistInFriendList(user._id)) {
+                    if (user.firstName.toLowerCase().contains(text.toLowerCase())) {
                         filteredList.add(user)
                     }
                 }
 
             }
         }
-        friendSearchAdapter.filterList(filteredList)
+        mFriendSearchAdapter.filterList(filteredList)
     }
 
-    private fun isExistInFriendList(friendId :String) : Boolean{
-        for(userId in currentUser.friends){
-            if(userId.equals(friendId)){
+    private fun isExistInFriendList(friendId: String): Boolean {
+        for (userId in mCurrentUser.friends) {
+            if (userId.equals(friendId)) {
                 return true
             }
         }
@@ -109,23 +113,24 @@ class AddFriendActivity : AppCompatActivity() {
 
         binding.friendsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.friendsRecyclerView.setHasFixedSize(true)
-        binding.friendsRecyclerView.adapter = friendSearchAdapter
+        binding.friendsRecyclerView.adapter = mFriendSearchAdapter
 
-        friendSearchAdapter.setOnClickListener(object :
+        mFriendSearchAdapter.setOnClickListener(object :
             FriendSearchAdapter.OnClickListener {
-            override fun onClick(position: Int, model: User) {
+            override fun onClick(model: User) {
                 addFriend(model)
             }
         })
 
     }
-    private fun addFriend(newFriend: User){
-        userViewModel.readUser.observeOnce(this,{userList ->
-            if(userList.isNotEmpty()){
+
+    private fun addFriend(newFriend: User) {
+        mUserViewModel.readUser.observeOnce(this, { userList ->
+            if (userList.isNotEmpty()) {
                 val user = userList[0].user
                 user.friends.add(newFriend._id)
-                val updatedUserEntity = UserEntity(userList[0].token,user)
-                userViewModel.addFriend(updatedUserEntity,newFriend._id)
+                val updatedUserEntity = UserEntity(userList[0].token, user)
+                mUserViewModel.addFriend(updatedUserEntity, newFriend._id)
             }
         })
     }

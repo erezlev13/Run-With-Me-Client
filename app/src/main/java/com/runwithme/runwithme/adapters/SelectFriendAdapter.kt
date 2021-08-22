@@ -40,12 +40,12 @@ class SelectFriendAdapter(
         holder.binding.friendCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 if(onCheckListener != null){
-                    onCheckListener!!.onCheck(position,friend);
+                    onCheckListener!!.onCheck(friend);
                 }
             }
             else{
                 if(onUncheckListener != null){
-                    onUncheckListener!!.onUncheck(position,friend);
+                    onUncheckListener!!.onUncheck(friend);
                 }
             }
         }
@@ -60,7 +60,7 @@ class SelectFriendAdapter(
     }
 
     interface OnCheckListener {
-        fun onCheck(position: Int, model: User)
+        fun onCheck(model: User)
     }
 
     fun setOnUncheckListener(onUncheckListener: OnUncheckListener) {
@@ -68,7 +68,7 @@ class SelectFriendAdapter(
     }
 
     interface OnUncheckListener {
-        fun onUncheck(position: Int, model: User)
+        fun onUncheck(model: User)
     }
 
     class MyViewHolder(val binding: SelectFriendRowLayoutBinding) :

@@ -14,5 +14,4 @@ data class GroupRunData(
     var averageSteps: Int,
     @SerializedName("averageOfAveragePace")
     var averageOfAveragePace: String,
-
 ): Serializable

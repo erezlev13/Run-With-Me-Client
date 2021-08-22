@@ -17,12 +17,11 @@ import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.viewmodels.RunViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsClick {
 
     private lateinit var binding: ActivityRunStatBinding
-    private lateinit var runViewModel: RunViewModel
+    private lateinit var mRunViewModel: RunViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,26 +35,27 @@ class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsC
         binding.runStatisticsToolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        runViewModel = ViewModelProvider(this).get(RunViewModel::class.java)
+        mRunViewModel = ViewModelProvider(this).get(RunViewModel::class.java)
 
         getRunListFromDB()
 
     }
+
     private fun getRunListFromDB() {
-        var runList : ArrayList<Run> = ArrayList()
+        var runList: ArrayList<Run> = ArrayList()
         binding.runStatProgressBar.show()
-        runViewModel.getMyRuns()
-        runViewModel.myRunsResponse.observeOnce(this,{response ->
-            when(response){
+        mRunViewModel.getMyRuns()
+        mRunViewModel.myRunsResponse.observeOnce(this, { response ->
+            when (response) {
                 is NetworkResult.Success -> {
-                    if(response.data!!.runs != null) {
+                    if (response.data!!.runs != null) {
                         binding.runStatProgressBar.hide()
                         runList = response.data.runs
                         if (runList.size > 0) {
                             binding.myRunStatRecycleView.visibility = View.VISIBLE
                             binding.noRunsAvailableTextView.visibility = View.INVISIBLE
                             setupRunStatisticsRecyclerView(runList)
-                        }else{
+                        } else {
                             binding.myRunStatRecycleView.visibility = View.INVISIBLE
                             binding.noRunsAvailableTextView.visibility = View.VISIBLE
                         }
@@ -69,7 +69,7 @@ class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsC
 
         binding.myRunStatRecycleView.layoutManager = LinearLayoutManager(this)
         binding.myRunStatRecycleView.setHasFixedSize(true)
-        val runsStatisticsAdapter = RunsStatisticsAdapter(this, runStatisticsList)
+        val runsStatisticsAdapter = RunsStatisticsAdapter(runStatisticsList)
         runsStatisticsAdapter.listener = this
         binding.myRunStatRecycleView.adapter = runsStatisticsAdapter
 
@@ -77,7 +77,10 @@ class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsC
 
     override fun onRunDetailsClick(run: Run) {
         val intent = Intent(this, StatisticsDetailsActivity::class.java)
-        intent.putExtra(Constants.EXTRA_RUN_DETAILS, run) // Passing the complete serializable data class to the detail activity using intent.
+        intent.putExtra(
+            Constants.EXTRA_RUN_DETAILS,
+            run
+        ) // Passing the complete serializable data class to the detail activity using intent.
         startActivity(intent)
     }
 }

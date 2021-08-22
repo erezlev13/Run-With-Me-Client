@@ -2,14 +2,10 @@ package com.runwithme.runwithme.network
 
 import com.runwithme.runwithme.model.*
 import com.runwithme.runwithme.model.network.*
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
 interface RunWithMeService {
-
-
-
     @POST("users/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
@@ -57,7 +53,4 @@ interface RunWithMeService {
 
     @POST("group-runs/create-group-run")
     suspend fun saveScheduleRun(@Body scheduleRunRequest: ScheduleRunRequest): Response<ScheduleRunResponse>
-
-
-
 }

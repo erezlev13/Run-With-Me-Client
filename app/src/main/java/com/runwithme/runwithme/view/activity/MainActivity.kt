@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainNavigationMenu.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        if(intent.hasExtra(NAV_TO_GROUPS)){
+        if (intent.hasExtra(NAV_TO_GROUPS)) {
             navController.navigate(R.id.groupsFragment)
         }
 

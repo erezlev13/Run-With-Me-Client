@@ -30,11 +30,11 @@ class LocationDialog(private val listener: OnLocationChoose) :
     EasyPermissions.PermissionCallbacks {
 
     private lateinit var binding: LocationDialogBinding
-    private var chosenPosition: LatLng? = null
+    private var mChosenPosition: LatLng? = null
 
     private lateinit var mMap: GoogleMap
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var currentMarker: Marker
+    private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var mCurrentMarker: Marker
 
     interface OnLocationChoose {
         fun onLocationChooseSuccess(position: LatLng)
@@ -43,7 +43,8 @@ class LocationDialog(private val listener: OnLocationChoose) :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        mFusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -56,8 +57,8 @@ class LocationDialog(private val listener: OnLocationChoose) :
                 .findFragmentById(R.id.choose_location_map) as SupportMapFragment
             mapFragment.getMapAsync(this)
             binding.saveLocationButton.setOnClickListener {
-                if (chosenPosition != null) {
-                    listener.onLocationChooseSuccess(chosenPosition!!)
+                if (mChosenPosition != null) {
+                    listener.onLocationChooseSuccess(mChosenPosition!!)
                     dialog?.cancel()
                 }
             }
@@ -68,16 +69,16 @@ class LocationDialog(private val listener: OnLocationChoose) :
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMapLongClickListener {
-            if (chosenPosition != null) {
-                currentMarker.remove()
+            if (mChosenPosition != null) {
+                mCurrentMarker.remove()
             }
 
             googleMap.addMarker(
                 MarkerOptions()
                     .position(it)
                     .icon(MapUtils.createCustomMarker(listener as Context))
-            ).also { currentMarker = it }
-            chosenPosition = it
+            ).also { mCurrentMarker = it }
+            mChosenPosition = it
         }
 
         if (Permissions.hasLocationPermission(requireContext()) && Permissions.hasBackgroundLocationPermission(
@@ -98,7 +99,7 @@ class LocationDialog(private val listener: OnLocationChoose) :
 
     @SuppressLint("MissingPermission")
     private fun showCurrentLocation() {
-        fusedLocationProviderClient.lastLocation.addOnCompleteListener {
+        mFusedLocationProviderClient.lastLocation.addOnCompleteListener {
             if (it.isSuccessful && it.result != null) {
                 val lastKnownLocation = LatLng(
                     it.result.latitude,
@@ -118,13 +119,21 @@ class LocationDialog(private val listener: OnLocationChoose) :
                         }
 
                         override fun onCancel() {
-                            Snackbar.make(binding.root, "Oops... something went wrong", Snackbar.LENGTH_LONG)
+                            Snackbar.make(
+                                binding.root,
+                                "Oops... something went wrong",
+                                Snackbar.LENGTH_LONG
+                            )
                         }
                     }
                 )
 
             } else {
-                val noGPSMsg = Snackbar.make(binding.saveLocationButton, "No GPS signal yet", Snackbar.LENGTH_INDEFINITE)
+                val noGPSMsg = Snackbar.make(
+                    binding.saveLocationButton,
+                    "No GPS signal yet",
+                    Snackbar.LENGTH_INDEFINITE
+                )
                 noGPSMsg.setAction("OK") {
                     noGPSMsg.duration = 1
                 }
@@ -133,7 +142,11 @@ class LocationDialog(private val listener: OnLocationChoose) :
     }
 
     /** Permissions: */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 

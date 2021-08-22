@@ -8,26 +8,23 @@ import javax.inject.Inject
 class LocalDataSource @Inject constructor(
     private val runWithMeDao: RunWithMeDao
 ) {
-
     fun readUserForCoroutine(): Flow<List<UserEntity>> {
         return runWithMeDao.readUserForCoroutine()
     }
 
-    suspend fun readUser(): List<UserEntity>{
+    suspend fun readUser(): List<UserEntity> {
         return runWithMeDao.readUser()
     }
 
-    suspend fun deleteUser(userEntity: UserEntity){
+    suspend fun deleteUser(userEntity: UserEntity) {
         runWithMeDao.deleteUser(userEntity)
     }
+
     suspend fun insertUser(userEntity: UserEntity) {
         runWithMeDao.insertUser(userEntity)
     }
 
-    suspend fun updateUser(userEntity: UserEntity){
+    suspend fun updateUser(userEntity: UserEntity) {
         runWithMeDao.updateUser(userEntity)
     }
-
-
-
 }
