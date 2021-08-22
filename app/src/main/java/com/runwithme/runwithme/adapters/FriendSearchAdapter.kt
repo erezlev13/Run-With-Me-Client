@@ -1,4 +1,6 @@
 package com.runwithme.runwithme.adapters
+
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -22,25 +24,8 @@ class FriendSearchAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val friend = friendsList[position]
-
-        if (holder is MyViewHolder) {
-            holder.binding.friendNameTextView.text = friend.firstName + " " + friend.lastName
-            holder.binding.checkImageView.hide()
-            holder.binding.addFriendImageButton.show()
-            if(friend.photoUri.isNotEmpty()){
-                holder.binding.friendImageView.setImageBitmap(encodedStringToBitmap(friend.photoUri))
-            }else{
-                holder.binding.friendImageView.setImageResource(R.drawable.ic_account_circle)
-            }
-        }
-        holder.binding.addFriendImageButton.setOnClickListener {
-            if (onClickListener != null) {
-                holder.binding.checkImageView.show()
-                holder.binding.addFriendImageButton.hide()
-                onClickListener!!.onClick(friend)
-
-            }
+        if(onClickListener != null){
+            holder.bind(friendsList[position],onClickListener!!)
         }
     }
 
@@ -66,7 +51,24 @@ class FriendSearchAdapter(
 
     class MyViewHolder(val binding: FriendRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind(friend: User,onClickListener: OnClickListener) {
+            binding.friendNameTextView.text = friend.firstName + " " + friend.lastName
+            binding.checkImageView.hide()
+            binding.addFriendImageButton.show()
+            if(friend.photoUri.isNotEmpty()){
+                binding.friendImageView.setImageBitmap(encodedStringToBitmap(friend.photoUri))
+            }else{
+                binding.friendImageView.setImageResource(R.drawable.ic_account_circle)
+            }
+            binding.addFriendImageButton.setOnClickListener {
+                if (onClickListener != null) {
+                    binding.checkImageView.show()
+                    binding.addFriendImageButton.hide()
+                    onClickListener!!.onClick(friend)
 
+                }
+            }
+        }
 
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {

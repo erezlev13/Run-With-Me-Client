@@ -57,8 +57,9 @@ class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {
                             setupGroupsRecyclerView(groupRunList)
                         } else {
                             binding.selectGroupRunTitle.visibility = View.GONE
-                            binding.noGroupsRunAvailableTextView.visibility = View.GONE
-                            binding.selectGroupRunRecycleView.visibility = View.VISIBLE
+                            binding.selectGroupRunRecycleView.visibility = View.INVISIBLE
+                            binding.noGroupsRunAvailableTextView.visibility = View.VISIBLE
+
                         }
                     }
                 }

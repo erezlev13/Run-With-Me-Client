@@ -13,6 +13,7 @@ class SelectGroupRunAdapter( private var groupRunList: ArrayList<GroupRun>
 
     private var onGroupRunClickListener: OnGroupRunClickListener? = null
 
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,25 +35,29 @@ class SelectGroupRunAdapter( private var groupRunList: ArrayList<GroupRun>
     }
 
     override fun onBindViewHolder(holder: SelectGroupRunViewHolder, position: Int) {
-        val groupRun = groupRunList[position]
-
-        holder.binding.selectGroupRunGroupNameTextView.text = groupRun.group.name
-        holder.binding.selectGroupRunTimeTextView.text = "At ${TimeUtils.dateStringToTimeString(groupRun.date)}, ${groupRun.location}"
-        if(groupRun.group.photoUri.isNotEmpty()) {
-            holder.binding.selectGroupRunGroupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(groupRun.group.photoUri))
+        if(onGroupRunClickListener != null){
+            holder.bind(groupRunList[position],onGroupRunClickListener!!)
         }
 
-
-        holder.itemView.setOnClickListener {
-
-            if (onGroupRunClickListener != null) {
-                onGroupRunClickListener!!.onGroupRunClick(groupRun)
-            }
-        }
     }
 
     class SelectGroupRunViewHolder(val binding: SelectGroupRunRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(groupRun: GroupRun,onGroupRunClickListener: OnGroupRunClickListener) {
+            binding.selectGroupRunGroupNameTextView.text = groupRun.group.name
+            binding.selectGroupRunTimeTextView.text = "At ${TimeUtils.dateStringToTimeString(groupRun.date)}, ${groupRun.location}"
+            if(groupRun.group.photoUri.isNotEmpty()) {
+                binding.selectGroupRunGroupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(groupRun.group.photoUri))
+            }
+
+            itemView.setOnClickListener {
+                if (onGroupRunClickListener != null) {
+                    onGroupRunClickListener!!.onGroupRunClick(groupRun)
+                }
+            }
+
+        }
 
         companion object {
             fun from(parent: ViewGroup): SelectGroupRunViewHolder {
