@@ -37,7 +37,7 @@ class SelectGroupRunAdapter( private var groupRunList: ArrayList<GroupRun>
         val groupRun = groupRunList[position]
 
         holder.binding.selectGroupRunGroupNameTextView.text = groupRun.group.name
-        holder.binding.selectGroupRunTimeTextView.text = "At ${TimeUtils.dateStringToTimeString(groupRun.date)}"
+        holder.binding.selectGroupRunTimeTextView.text = "At ${TimeUtils.dateStringToTimeString(groupRun.date)}, ${groupRun.location}"
         if(groupRun.group.photoUri.isNotEmpty()) {
             holder.binding.selectGroupRunGroupImageView.setImageBitmap(ImageUtils.encodedStringToBitmap(groupRun.group.photoUri))
         }

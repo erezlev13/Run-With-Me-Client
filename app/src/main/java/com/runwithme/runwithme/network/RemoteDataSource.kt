@@ -54,4 +54,13 @@ class RemoteDataSource @Inject constructor(
     suspend fun saveScheduleRun(scheduleRunRequest: ScheduleRunRequest): Response<ScheduleRunResponse> {
         return runWithMeApi.saveScheduleRun(scheduleRunRequest)
     }
+
+    suspend fun getFutureGroupRuns(groupId:String): Response<FutureGroupRunResponse> {
+        return runWithMeApi.getFutureGroupRuns(groupId)
+    }
+
+    suspend fun getPastGroupRuns(groupId:String): Response<PastGroupRunResponse> {
+        return runWithMeApi.getPastGroupRuns(groupId)
+
+    }
 }

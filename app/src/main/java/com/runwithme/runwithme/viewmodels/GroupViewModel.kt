@@ -25,6 +25,8 @@ class GroupViewModel@Inject constructor(
     val myGroupsResponse : MutableLiveData<NetworkResult<MyGroupsResponse>> = MutableLiveData()
     val myTodayGroupRunsResponse : MutableLiveData<NetworkResult<MyTodayGroupRunsResponse>> = MutableLiveData()
     val scheduleRun: MutableLiveData<NetworkResult<ScheduleRunResponse>> = MutableLiveData()
+    val futureGroupRunResponse : MutableLiveData<NetworkResult<FutureGroupRunResponse>> = MutableLiveData()
+    val pastGroupRunResponse : MutableLiveData<NetworkResult<PastGroupRunResponse>> = MutableLiveData()
 
 
 
@@ -113,6 +115,54 @@ class GroupViewModel@Inject constructor(
             response.isSuccessful -> {
                 val groupRunDataBody = response.body()
                 return NetworkResult.Success(groupRunDataBody!!)
+            }
+            else ->{
+                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                return NetworkResult.Error(jsonObj.getString("message"))
+            }
+        }
+    }
+
+    fun getFutureGroupRuns(groupId:String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.remote.getFutureGroupRuns(groupId)
+                futureGroupRunResponse.value = handleFutureGroupRunsResponse(response)
+            } catch (e: Exception) {
+                futureGroupRunResponse.value = NetworkResult.Error(Constants.NO_CONNECTION)
+            }
+        }
+    }
+
+    private fun handleFutureGroupRunsResponse(response: Response<FutureGroupRunResponse>): NetworkResult<FutureGroupRunResponse> {
+        when {
+            response.isSuccessful -> {
+                val futureGroupRunsResponse = response.body()
+                return NetworkResult.Success(futureGroupRunsResponse!!)
+            }
+            else ->{
+                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                return NetworkResult.Error(jsonObj.getString("message"))
+            }
+        }
+    }
+
+    fun getPastGroupRuns(groupId:String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.remote.getPastGroupRuns(groupId)
+                pastGroupRunResponse.value = handlePastGroupRunsResponse(response)
+            } catch (e: Exception) {
+                pastGroupRunResponse.value = NetworkResult.Error(Constants.NO_CONNECTION)
+            }
+        }
+    }
+
+    private fun handlePastGroupRunsResponse(response: Response<PastGroupRunResponse>): NetworkResult<PastGroupRunResponse> {
+        when {
+            response.isSuccessful -> {
+                val pastGroupRunsResponse = response.body()
+                return NetworkResult.Success(pastGroupRunsResponse!!)
             }
             else ->{
                 val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())

@@ -35,17 +35,6 @@
                 android:background="@color/white">
 
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/run_route_imageView"-->
-<!--                    android:layout_width="130dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:layout_constraintVertical_bias="1.0"-->
-<!--                    tools:srcCompat="@drawable/route" />-->
-
                 <TextView
                     android:id="@+id/run_type_title"
                     android:layout_width="0dp"

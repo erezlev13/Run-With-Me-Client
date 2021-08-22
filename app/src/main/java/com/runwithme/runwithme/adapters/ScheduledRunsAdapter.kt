@@ -24,7 +24,6 @@ class ScheduledRunsAdapter(private var scheduledRuns: ArrayList<GroupRun> = Arra
 
     class ScheduledRunsViewHolder(val binding: ScheduledRunRowLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(run: GroupRun) {
-            binding.scheduledRunGroupName.text = run.group.name
             val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
             val date = TimeUtils.stringToLocalDate(run.date)
             binding.scheduledRunDateValueTextView.text  = date.format(formatter)+ ", At ${TimeUtils.dateStringToTimeString(run.date)}"
