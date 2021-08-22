@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="My Run Group"
-                    android:textColor="@color/endBlue"
+                    android:textColor="@color/darkBlue"
                     android:textSize="25dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

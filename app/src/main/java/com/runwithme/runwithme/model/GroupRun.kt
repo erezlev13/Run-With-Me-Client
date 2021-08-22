@@ -13,7 +13,7 @@ data class GroupRun(
     @SerializedName("date")
     var date: String,
     @SerializedName("groupRunData")
-    var groupRunData: String,
+    var groupRunData: GroupRunData,
     @SerializedName("group")
     var group: Group,
 ) : Serializable

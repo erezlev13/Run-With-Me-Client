@@ -43,6 +43,12 @@ interface RunWithMeService {
     @GET("group-runs/today-group-runs")
     suspend fun getMyTodayGroupRuns() : Response<MyTodayGroupRunsResponse>
 
+    @GET("group-runs/future-group-runs")
+    suspend fun getFutureGroupRuns(@Query("groupId") groupId:String) : Response<FutureGroupRunResponse>
+
+    @GET("group-runs/past-group-runs")
+    suspend fun getPastGroupRuns(@Query("groupId") groupId:String) : Response<PastGroupRunResponse>
+
     @POST("runs/save-run")
     suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run>
 
@@ -51,5 +57,7 @@ interface RunWithMeService {
 
     @POST("group-runs/create-group-run")
     suspend fun saveScheduleRun(@Body scheduleRunRequest: ScheduleRunRequest): Response<ScheduleRunResponse>
+
+
 
 }

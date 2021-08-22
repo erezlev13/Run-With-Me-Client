@@ -33,6 +33,7 @@
     <string name="title_my_groups">My Groups</string>
     <string name="title_my_friends">My Friends</string>
     <string name="title_add_friend">Add Friend</string>
+    <string name="title_my_profile">My Profile</string>
     <string name="title_create_group">Create New Group</string>
     <string name="group_name_empty_error">You must enter a name for your group</string>
     <string name="group_description_empty_error">You must enter a description for your group</string>

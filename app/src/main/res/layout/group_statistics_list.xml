@@ -7,14 +7,12 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/statistice_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
+        android:id="@+id/statistics_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_title_text_view"
         tools:listitem="@layout/statistics_group_row_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

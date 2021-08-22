@@ -134,7 +134,7 @@ class ScheduleRunActivity : AppCompatActivity() {
     }
 
     private fun setDate(calendar: Calendar) {
-        date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)}/${calendar.get(Calendar.YEAR)}"
+        date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) +1}/${calendar.get(Calendar.YEAR)}"
     }
 
     private fun showDateOnEditText(date: String) {

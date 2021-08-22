@@ -33,10 +33,11 @@ class RunStatActivity : AppCompatActivity(), RunsStatisticsAdapter.OnRunDetailsC
         binding = ActivityRunStatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.runsStatToolbar)
+        setSupportActionBar(binding.runStatisticsToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false);
 
-        binding.runsStatToolbar.setNavigationOnClickListener {
+        binding.runStatisticsToolbar.setNavigationOnClickListener {
             onBackPressed()
         }
         runViewModel = ViewModelProvider(this).get(RunViewModel::class.java)

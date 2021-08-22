@@ -3,9 +3,11 @@ package com.runwithme.runwithme.view.groups
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.R
 import com.runwithme.runwithme.adapters.GroupMembersAdapter
@@ -13,19 +15,28 @@ import com.runwithme.runwithme.adapters.GroupStatisticsAdapter
 import com.runwithme.runwithme.adapters.ScheduledRunsAdapter
 import com.runwithme.runwithme.databinding.ActivityGroupDetailBinding
 import com.runwithme.runwithme.model.Group
+import com.runwithme.runwithme.model.GroupRun
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.Constants.GROUP_ID
+import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ImageUtils
+import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.view.dialog.GroupDescriptionDialog
+import com.runwithme.runwithme.viewmodels.GroupViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "GroupDetailActivity"
 
+@AndroidEntryPoint
 class GroupDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityGroupDetailBinding
     private lateinit var mMembersAdapter: GroupMembersAdapter
     private lateinit var mStatisticsAdapter: GroupStatisticsAdapter
     private lateinit var mScheduleRunsAdapter: ScheduledRunsAdapter
+    private lateinit var mViewModel : GroupViewModel
+    private var mFutureGroupRuns : ArrayList<GroupRun> = ArrayList()
+    private var mPastGroupRuns : ArrayList<GroupRun> = ArrayList()
 
     private var mGroupDetails: Group? = null
 
@@ -45,7 +56,7 @@ class GroupDetailActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
             setDisplayHomeAsUpEnabled(true)     // Add back button.
         }
-
+        mViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         if (intent.hasExtra(EXTRA_GROUP_DETAILS)) {
             // get the Serializable data model class with the details in it
             mGroupDetails =
@@ -56,9 +67,38 @@ class GroupDetailActivity : AppCompatActivity() {
             binding.groupNameTitleToolbar.text = mGroupDetails!!.name
             setGroupImage(mGroupDetails!!)
             showFriendList(mGroupDetails!!)
-            showStatistics(mGroupDetails!!)
-            showAndScheduleFutureRuns(mGroupDetails!!)
+            getPastGroupRunsFromDB()
+            getFutureGroupRunsFromDB()
+
         }
+    }
+
+    private fun getFutureGroupRunsFromDB() {
+        mViewModel.getFutureGroupRuns(mGroupDetails!!._id)
+        mViewModel.futureGroupRunResponse.observeOnce(this,{response ->
+            when(response){
+                is NetworkResult.Success -> {
+                    if(response.data != null) {
+                        mFutureGroupRuns = response.data.groupRuns
+                        showAndScheduleFutureRuns(mGroupDetails!!)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getPastGroupRunsFromDB() {
+        mViewModel.getPastGroupRuns(mGroupDetails!!._id)
+        mViewModel.pastGroupRunResponse.observeOnce(this,{response ->
+            when(response){
+                is NetworkResult.Success -> {
+                    if(response.data != null) {
+                        mPastGroupRuns = response.data.pastGroupRuns
+                        showStatistics()
+                    }
+                }
+            }
+        })
     }
 
     private fun setGroupImage(groupDetails: Group) {
@@ -75,19 +115,19 @@ class GroupDetailActivity : AppCompatActivity() {
         binding.friendsListInclude.friendsListRecyclerView.adapter = mMembersAdapter
     }
 
-    private fun showStatistics(groupDetails: Group) {
-//        mBindingStatistics.statisticeRecyclerView.layoutManager = LinearLayoutManager(this)
-//        mBindingStatistics.statisticeRecyclerView.setHasFixedSize(true)
-//        mStatisticsAdapter = GroupStatisticsAdapter()
-//        mBindingStatistics.statisticeRecyclerView.adapter = mStatisticsAdapter
+    private fun showStatistics() {
+        binding.statisticsListInclude.statisticsRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.statisticsListInclude.statisticsRecyclerView.setHasFixedSize(true)
+        mStatisticsAdapter = GroupStatisticsAdapter(mPastGroupRuns)
+        binding.statisticsListInclude.statisticsRecyclerView.adapter = mStatisticsAdapter
     }
 
     private fun showAndScheduleFutureRuns(groupDetails: Group) {
         binding.scheduledRunsInclude.scheduledRunsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.scheduledRunsInclude.scheduledRunsRecyclerView.setHasFixedSize(true)
-        mScheduleRunsAdapter = ScheduledRunsAdapter(groupDetails.groupRuns)
+        mScheduleRunsAdapter = ScheduledRunsAdapter(mFutureGroupRuns)
         binding.scheduledRunsInclude.scheduledRunsRecyclerView.adapter = mScheduleRunsAdapter
-        if(groupDetails.groupRuns.size == 0){
+        if(mFutureGroupRuns.size == 0){
             binding.scheduledRunsInclude.scheduledRunsRecyclerView.visibility = View.GONE
             binding.scheduledRunsInclude.noFutureRunsAvailableTextView.visibility = View.VISIBLE
         }
