@@ -6,20 +6,18 @@ import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
-import android.location.LocationManager
 import android.os.Build
-import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
-import com.runwithme.runwithme.R
-import com.runwithme.runwithme.model.Timer
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
 import com.runwithme.runwithme.utils.Constants.LOCATION_FASTEST_UPDATE_INTERVAL
@@ -44,8 +42,13 @@ class TrackerService : LifecycleService() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    private lateinit var sensorManager: SensorManager
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var totalDistance: Double = 0.0
+
+    private var firstSteps: Float = 0f
+    private var totalSteps: Float = 0f
+    private var isFirstTimeCountingSteps = false
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
@@ -59,26 +62,41 @@ class TrackerService : LifecycleService() {
         }
     }
 
+    private val sensorListener = object : SensorEventListener {
+        override fun onSensorChanged(event: SensorEvent?) {
+            if (event != null) {
+                if (!isFirstTimeCountingSteps) {
+                    firstSteps = event.values[0]
+                    isFirstTimeCountingSteps = true
+                }
+                totalSteps = event.values[0] - firstSteps
+                steps.postValue(totalSteps)
+            }
+        }
+
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+            // Leave this empty.
+        }
+    }
+
     /** Service Methods: */
     override fun onCreate() {
-        Log.d(TAG, "onCreate: called")
         initValues()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand: called")
         intent?.let {
             when (it.action) {
                 ACTION_SERVICE_START -> {
-                    Log.d(TAG, "onStartCommand: ACTION_SERVICE_START")
                     isStarted.postValue(true)
                     startLocationUpdates()
+                    startCountStepsUpdate()
                     startForegroundService()
                 }
                 ACTION_SERVICE_STOP -> {
-                    Log.d(TAG, "onStartCommand: ACTION_SERVICE_STOP")
                     isStarted.postValue(false)
                     stopForegroundService()
                 }
@@ -89,6 +107,20 @@ class TrackerService : LifecycleService() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    private fun startCountStepsUpdate() {
+        val stepCounter = getStepCounter()
+        sensorManager.registerListener(sensorListener, stepCounter, SensorManager.SENSOR_DELAY_NORMAL)
+    }
+
+    private fun getStepCounter(): Sensor? {
+        // Get default gyro instance. Checks rather there is or isn't accelerometer on this mobile device.
+        return if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+            sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        } else {
+            null
+        }
+    }
+
     /** Class Methods: */
     private fun initValues() {
         isStarted.postValue(false)
@@ -96,7 +128,6 @@ class TrackerService : LifecycleService() {
     }
 
     private fun startForegroundService() {
-        Log.d(TAG, "startForegroundService: start")
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, notification.build())
     }
@@ -113,11 +144,11 @@ class TrackerService : LifecycleService() {
     }
 
     private fun stopForegroundService() {
-        Log.d(TAG, "startForegroundService: stop")
         removeLocationUpdates()
         (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(
             NOTIFICATION_ID
         )
+        sensorManager.unregisterListener(sensorListener)
         stopForeground(true)
         stopSelf()
     }
@@ -160,5 +191,6 @@ class TrackerService : LifecycleService() {
     companion object {
         var isStarted = MutableLiveData<Boolean>()
         var locationList = MutableLiveData<MutableList<LatLng>>()
+        var steps = MutableLiveData<Float>(0f)
     }
 }

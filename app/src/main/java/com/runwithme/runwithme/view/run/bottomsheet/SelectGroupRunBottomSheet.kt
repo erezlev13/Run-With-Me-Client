@@ -1,6 +1,5 @@
 package com.runwithme.runwithme.view.run.bottomsheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,21 +7,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.runwithme.runwithme.adapters.GroupsAdapter
 import com.runwithme.runwithme.adapters.SelectGroupRunAdapter
-import com.runwithme.runwithme.databinding.RunBottomSheetBinding
 import com.runwithme.runwithme.databinding.SelectGroupRunBottomSheetBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.GroupRun
-import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
 import com.runwithme.runwithme.utils.NetworkResult
-import com.runwithme.runwithme.view.groups.GroupDetailActivity
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class SelectGroupRunBottomSheet : BottomSheetDialogFragment() {

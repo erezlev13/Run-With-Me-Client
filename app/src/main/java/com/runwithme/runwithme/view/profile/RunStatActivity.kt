@@ -3,21 +3,17 @@ package com.runwithme.runwithme.view.profile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.adapters.RunsStatisticsAdapter
 import com.runwithme.runwithme.databinding.ActivityRunStatBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
 import com.runwithme.runwithme.utils.NetworkResult
-import com.runwithme.runwithme.view.groups.GroupDetailActivity
-import com.runwithme.runwithme.viewmodels.GroupViewModel
 import com.runwithme.runwithme.viewmodels.RunViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

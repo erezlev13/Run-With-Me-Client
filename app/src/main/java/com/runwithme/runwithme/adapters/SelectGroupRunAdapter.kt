@@ -3,11 +3,8 @@ package com.runwithme.runwithme.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.runwithme.runwithme.databinding.FriendRowLayoutBinding
 import com.runwithme.runwithme.databinding.SelectGroupRunRowLayoutBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.GroupRun
-import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.TimeUtils
 
@@ -15,7 +12,6 @@ class SelectGroupRunAdapter( private var groupRunList: ArrayList<GroupRun>
 ) : RecyclerView.Adapter<SelectGroupRunAdapter.SelectGroupRunViewHolder>() {
 
     private var onGroupRunClickListener: OnGroupRunClickListener? = null
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

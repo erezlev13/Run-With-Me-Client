@@ -1,19 +1,13 @@
 package com.runwithme.runwithme.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.runwithme.runwithme.databinding.RunStatRowLayoutBinding
 import com.runwithme.runwithme.model.Run
-import com.runwithme.runwithme.model.RunType
 import com.runwithme.runwithme.utils.TimeUtils
-import com.runwithme.runwithme.view.profile.StatisticsDetailsActivity
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-
 
 class RunsStatisticsAdapter(private val context: Context,
                            private var runsList: ArrayList<Run>

@@ -14,6 +14,7 @@ import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.TimeUtils
 import java.time.format.DateTimeFormatter
 
+
 class GroupStatisticsAdapter(val pastGroupRuns: ArrayList<GroupRun> =  ArrayList()) :
     RecyclerView.Adapter<GroupStatisticsAdapter.GroupStatisticsViewHolder>() {
 

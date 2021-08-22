@@ -21,11 +21,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
-import com.runwithme.runwithme.adapters.GroupsAdapter
 import com.runwithme.runwithme.databinding.FragmentRunBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.GroupRun
-import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.GROUP_RUN
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
@@ -35,10 +32,7 @@ import com.runwithme.runwithme.utils.Permissions.hasBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.hasLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestBackgroundLocationPermission
 import com.runwithme.runwithme.utils.Permissions.requestLocationPermission
-import com.runwithme.runwithme.view.groups.GroupDetailActivity
 import com.runwithme.runwithme.view.activity.MainActivity
-import com.runwithme.runwithme.view.run.OnRunningActivity
-import com.runwithme.runwithme.view.run.bottomsheet.RunBottomSheet
 import com.runwithme.runwithme.view.run.bottomsheet.SelectGroupRunBottomSheet
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog

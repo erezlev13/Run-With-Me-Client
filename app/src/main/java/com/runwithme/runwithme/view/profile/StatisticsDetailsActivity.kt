@@ -2,7 +2,6 @@ package com.runwithme.runwithme.view.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,9 +12,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
 import com.runwithme.runwithme.R
-import com.runwithme.runwithme.databinding.ActivityGroupDetailBinding
 import com.runwithme.runwithme.databinding.ActivityStatisticsDetailsBinding
-import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.MapUtils

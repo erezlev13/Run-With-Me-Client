@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.runwithme.runwithme.databinding.ScheduledRunRowLayoutBinding
-import com.runwithme.runwithme.databinding.ScheduledRunsListBinding
 import com.runwithme.runwithme.model.GroupRun
 import com.runwithme.runwithme.utils.TimeUtils
 import java.time.format.DateTimeFormatter

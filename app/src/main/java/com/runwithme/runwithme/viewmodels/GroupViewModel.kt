@@ -1,7 +1,6 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -60,7 +59,6 @@ class GroupViewModel@Inject constructor(
             val response = repository.remote.getMyGroups()
             myGroupsResponse.value = handleMyGroupsResponse(response)
         } catch (e: Exception) {
-            Log.d("myapp","${e.message}")
             myGroupsResponse.value = NetworkResult.Error("No Connection")
         }
     }

@@ -1,11 +1,14 @@
 package com.runwithme.runwithme.view.groups
 
 import android.content.Intent
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -18,12 +21,14 @@ import com.runwithme.runwithme.model.network.ScheduleRunRequest
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.Constants.GROUP_ID
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.MapUtils
+import com.runwithme.runwithme.view.dialog.LocationDialog
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class ScheduleRunActivity : AppCompatActivity() {
+class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose {
 
     /** Properties: */
     private lateinit var mViewModel: GroupViewModel
@@ -97,11 +102,30 @@ class ScheduleRunActivity : AppCompatActivity() {
     }
 
     private fun onLocationWriteUpdate() {
+        binding.locationTextInputEditText.setOnClickListener {
+            showLocationDialog()
+        }
         binding.locationTextInputEditText.doOnTextChanged { _, _, _, _ ->
             if(binding.locationTextInputEditText.error == getString(R.string.location_empty_error)){
                 binding.locationTextInputEditText.error = null
             }
         }
+    }
+
+    private fun showLocationDialog() {
+        val dialog = LocationDialog(this)
+        dialog.show(supportFragmentManager, LocationDialog.TAG)
+    }
+
+    override fun onLocationChooseSuccess(position: LatLng) {
+        val coder = Geocoder(this)
+        val address = coder.getFromLocation(position.latitude, position.longitude, 5)
+        val locationText = address.first().getAddressLine(0)
+        binding.locationTextInputEditText.setText(locationText)
+    }
+
+    override fun onLocationChooseFailed() {
+        // Leave this empty for now.
     }
 
     private fun onDateClickListener() {
@@ -115,6 +139,7 @@ class ScheduleRunActivity : AppCompatActivity() {
                 MaterialDatePicker.Builder.datePicker()
                         .setTitleText("Select date")
                         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .setCalendarConstraints(CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
                         .build()
         datePicker.show(supportFragmentManager, "DatePicker")
 
