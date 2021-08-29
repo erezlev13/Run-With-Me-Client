@@ -84,6 +84,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/no_runs_available_textView"
         app:layout_constraintStart_toStartOf="@+id/no_runs_available_textView"
-        app:layout_constraintTop_toTopOf="@+id/runs_stat_toolbar" />
+        app:layout_constraintTop_toTopOf="@+id/run_statistics_appBarLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

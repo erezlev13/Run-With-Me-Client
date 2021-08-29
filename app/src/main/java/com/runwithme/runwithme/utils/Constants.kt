@@ -26,7 +26,7 @@ object Constants {
     const val NAV_TO_GROUPS = "groups"
 
     //Retrofit
-    const val BASE_URL = "http://192.168.1.13:3000/run-with-me/"
+    const val BASE_URL = "http://192.168.0.107:3000/run-with-me/"
     const val MAPS_STATIC_URL = "https://maps.googleapis.com/maps/api/staticmap?"
 
     //Room

@@ -137,7 +137,7 @@ class GroupDetailActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_GROUP_DETAILS, mGroupDetails)
             intent.putExtra(GROUP_ID, groupDetails._id)
             startActivity(intent)
-
+            finish()
         }
     }
 
