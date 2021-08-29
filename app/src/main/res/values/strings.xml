@@ -25,6 +25,7 @@
     <string name="button_stat">Statistics</string>
     <string name="button_add_friend">Add friend</string>
     <string name="no_runs_stat">No Runs Found Yet.</string>
+    <string name="no_friends">No Friends Found Yet.</string>
     <string name="no_groups">No Groups Found Yet.</string>
     <string name="no_future_runs">No Future Runs Found Yet.</string>
     <string name="no_group_runs">You do not have group runs soon</string>
@@ -38,6 +39,7 @@
     <string name="group_name_empty_error">You must enter a name for your group</string>
     <string name="group_description_empty_error">You must enter a description for your group</string>
     <string name="email_empty_error">Please insert your email</string>
+    <string name="email_invalid_error">Please insert valid email</string>
     <string name="password_empty_error">Please insert your password</string>
     <string name="first_name_empty_error">Please insert your first name</string>
     <string name="last_name_empty_error">Please insert your last name</string>

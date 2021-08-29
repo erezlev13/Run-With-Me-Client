@@ -51,6 +51,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:id="@+id/no_friends_available_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_friends"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friends_recyclerView"
         android:layout_width="match_parent"
@@ -61,6 +72,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_friend_appBarLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/show_and_delete_friend_appBarLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
