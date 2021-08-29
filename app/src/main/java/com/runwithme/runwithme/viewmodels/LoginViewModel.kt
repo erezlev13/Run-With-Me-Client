@@ -3,6 +3,7 @@ package com.runwithme.runwithme.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.runwithme.runwithme.data.database.UserEntity
+import com.runwithme.runwithme.model.User
 import com.runwithme.runwithme.model.network.LoginRequest
 import com.runwithme.runwithme.model.network.LoginResponse
 import com.runwithme.runwithme.model.network.SignupRequest
@@ -67,7 +68,7 @@ class LoginViewModel @Inject constructor(
             response.isSuccessful -> {
                 val loginResponse = response.body()
                 if (loginResponse != null) {
-                    offlineCacheUser(loginResponse!!)
+                    offlineCacheUser(loginResponse!!.token,loginResponse!!.user)
                 }
                 return NetworkResult.Success(loginResponse!!)
             }
@@ -78,8 +79,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun offlineCacheUser(loginResponse: LoginResponse) {
-        val userEntity = UserEntity(loginResponse.token, loginResponse.user)
+    private fun offlineCacheUser(token: String, user: User) {
+        val userEntity = UserEntity(token, user)
         insertUser(userEntity)
     }
 
@@ -100,6 +101,9 @@ class LoginViewModel @Inject constructor(
         when {
             response.isSuccessful -> {
                 val tokenResponse = response.body()
+                if (tokenResponse != null) {
+                    offlineCacheUser(tokenResponse.token,tokenResponse.user)
+                }
                 return NetworkResult.Success(tokenResponse!!)
             }
             else -> {

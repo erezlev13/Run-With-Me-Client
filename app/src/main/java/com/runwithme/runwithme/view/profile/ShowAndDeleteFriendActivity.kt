@@ -2,6 +2,7 @@ package com.runwithme.runwithme.view.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.runwithme.runwithme.adapters.ShowAndDeleteFriendsAdapter
@@ -45,7 +46,14 @@ class ShowAndDeleteFriendActivity : AppCompatActivity() {
                         is NetworkResult.Success -> {
                             if (response.data?.friends != null) {
                                 mFriendList = response.data.friends
-                                setupShowAndDeleteFriendRecyclerView()
+                                if (mFriendList.size > 0) {
+                                    binding.friendsRecyclerView.visibility = View.VISIBLE
+                                    binding.noFriendsAvailableTextView.visibility = View.INVISIBLE
+                                    setupShowAndDeleteFriendRecyclerView()
+                                } else {
+                                    binding.friendsRecyclerView.visibility = View.INVISIBLE
+                                    binding.noFriendsAvailableTextView.visibility = View.VISIBLE
+                                }
                             }
                         }
 

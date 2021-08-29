@@ -1,8 +1,10 @@
 package com.runwithme.runwithme.view.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -10,12 +12,14 @@ import com.runwithme.runwithme.R
 import com.runwithme.runwithme.databinding.ActivitySignupBinding
 import com.runwithme.runwithme.model.network.SignupRequest
 import com.runwithme.runwithme.utils.ExtensionFunctions.hide
-import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ExtensionFunctions.show
+import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.utils.SessionManager
 import com.runwithme.runwithme.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.regex.Pattern
+
 
 @AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
@@ -58,8 +62,14 @@ class SignupActivity : AppCompatActivity() {
             emailFilled = false
         }
         if (binding.emailTextInputEditText.text!!.isEmpty()) {
-            binding.emailTextInputEditText.error = getString(R.string.email_empty_error)
+            binding.emailTextInputLayout.error = getString(R.string.email_empty_error)
             emailFilled = false
+        }
+        else{
+            if(!isValidEmail(binding.emailTextInputEditText.text.toString())){
+                binding.emailTextInputLayout.error = getString(R.string.email_invalid_error)
+                emailFilled = false
+            }
         }
         if (binding.passwordTextInputEditText.text!!.isEmpty()) {
             binding.passwordTextInputLayout.error = getString(R.string.password_empty_error)
@@ -95,7 +105,7 @@ class SignupActivity : AppCompatActivity() {
                 }
                 is NetworkResult.Error -> {
                     binding.signUpProgressBar.hide()
-                    binding.emailTextInputEditText.error = getString(R.string.email_exist)
+                    binding.emailTextInputLayout.error = getString(R.string.email_exist)
                 }
                 else -> {
                     binding.signUpProgressBar.hide()
@@ -107,6 +117,11 @@ class SignupActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        Log.d("myapp"," res: ${Patterns.EMAIL_ADDRESS.matcher(email).matches()}")
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun onTextChangeAllFields() {
