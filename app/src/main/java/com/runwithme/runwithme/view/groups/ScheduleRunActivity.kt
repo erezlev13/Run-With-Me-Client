@@ -24,7 +24,10 @@ import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.view.dialog.LocationDialog
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 @AndroidEntryPoint
 class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose {
@@ -101,6 +104,7 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
                         val intent = Intent(this, GroupDetailActivity::class.java)
                         intent.putExtra(EXTRA_GROUP_DETAILS, mGroupDetails)
                         startActivity(intent)
+                        finish()
                     } else {
                         Snackbar.make(
                             binding.root,
@@ -174,9 +178,18 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
     }
 
     private fun setDate(calendar: Calendar) {
-        date = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) + 1}/${
-            calendar.get(Calendar.YEAR)
-        }"
+        val newDay = if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+            "0".plus(calendar.get(Calendar.DAY_OF_MONTH))
+        } else {
+            calendar.get(Calendar.DAY_OF_MONTH)
+        }
+
+        val newMonth = if (calendar.get(Calendar.MONTH) < 10) {
+            "0".plus(calendar.get(Calendar.MONTH) + 1)
+        } else {
+            calendar.get(Calendar.MONTH) + 1
+        }
+        date = "$newDay/$newMonth/${calendar.get(Calendar.YEAR)}"
     }
 
     private fun showDateOnEditText(date: String) {
@@ -216,7 +229,19 @@ class ScheduleRunActivity : AppCompatActivity(), LocationDialog.OnLocationChoose
     }
 
     private fun setTime(hour: String, minute: String) {
-        time = "$hour:$minute"
+        val newMinute = if (minute.toInt() < 10) {
+            "0".plus(minute)
+        } else {
+            minute
+        }
+
+        val newHour = if (minute.toInt() < 10) {
+            "0".plus(hour)
+        } else {
+            hour
+        }
+
+        time = "$newHour:$newMinute"
     }
 
     private fun showTimeOnEditText(time: String) {
