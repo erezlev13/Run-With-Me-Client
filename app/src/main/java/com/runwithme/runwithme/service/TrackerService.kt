@@ -18,6 +18,9 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import com.runwithme.runwithme.model.steps.SensorFilter
+import com.runwithme.runwithme.model.steps.StepDetector
+import com.runwithme.runwithme.model.steps.StepListener
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_START
 import com.runwithme.runwithme.utils.Constants.ACTION_SERVICE_STOP
 import com.runwithme.runwithme.utils.Constants.LOCATION_FASTEST_UPDATE_INTERVAL
@@ -31,7 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TrackerService : LifecycleService() {
+class TrackerService : LifecycleService(), StepListener {
 
     /** Properties: */
     @Inject
@@ -44,9 +47,8 @@ class TrackerService : LifecycleService() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var totalDistance: Double = 0.0
 
-    private var firstSteps: Float = 0f
+    private val stepDetector = StepDetector()
     private var totalSteps: Float = 0f
-    private var isFirstTimeCountingSteps = false
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
@@ -63,12 +65,8 @@ class TrackerService : LifecycleService() {
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             if (event != null) {
-                if (!isFirstTimeCountingSteps) {
-                    firstSteps = event.values[0]
-                    isFirstTimeCountingSteps = true
-                }
-                totalSteps = event.values[0] - firstSteps
-                steps.postValue(totalSteps)
+                stepDetector.updateAccel(
+                    event.timestamp, event.values[0], event.values[1], event.values[2])
             }
         }
 
@@ -77,11 +75,17 @@ class TrackerService : LifecycleService() {
         }
     }
 
+    override fun step(timeNs: Long) {
+        totalSteps += 1
+        steps.postValue(totalSteps)
+    }
+
     /** Service Methods: */
     override fun onCreate() {
         initValues()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        stepDetector.registerListener(this)
         super.onCreate()
     }
 
@@ -111,9 +115,9 @@ class TrackerService : LifecycleService() {
     }
 
     private fun getStepCounter(): Sensor? {
-        // Get default gyro instance. Checks rather there is or isn't accelerometer on this mobile device.
-        return if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
-            sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        // Get default acc. instance. Checks rather there is or isn't accelerometer on this mobile device.
+        return if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         } else {
             null
         }
