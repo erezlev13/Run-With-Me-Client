@@ -13,7 +13,9 @@ import com.runwithme.runwithme.adapters.GroupsAdapter
 import com.runwithme.runwithme.databinding.FragmentGroupsBinding
 import com.runwithme.runwithme.model.*
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
+import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.ExtensionFunctions.show
 import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.viewmodels.GroupViewModel
@@ -70,11 +72,13 @@ class GroupsFragment : Fragment() {
 
     private fun getGroupListFromDB() {
         var groupList: ArrayList<Group> = ArrayList()
+        binding.myGroupsProgressBar.show()
         mGroupViewModel.getMyGroups()
         mGroupViewModel.myGroupsResponse.observeOnce(this, { response ->
             when (response) {
                 is NetworkResult.Success -> {
                     if (response.data?.groups != null) {
+                        binding.myGroupsProgressBar.hide()
                         groupList = response.data.groups
                         if (groupList.size > 0) {
                             binding.myGroupsRecyclerView.visibility = View.VISIBLE

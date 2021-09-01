@@ -71,10 +71,8 @@
                     android:id="@+id/avg_distance_value_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:text="@string/start_distance"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/avg_distance_imageView"
                     app:layout_constraintStart_toStartOf="@+id/avg_distance_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/avg_distance_imageView" />
@@ -108,10 +106,8 @@
                     android:id="@+id/avg_steps_value_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:text="@string/init_steps"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/avg_step_imageView"
                     app:layout_constraintStart_toStartOf="@+id/avg_step_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/avg_step_imageView" />
@@ -146,13 +142,29 @@
                     android:id="@+id/avg_pace_value_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:text="@string/start_pace_and_duration"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/avg_pace_imageView"
                     app:layout_constraintStart_toStartOf="@+id/avg_pace_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/avg_pace_imageView" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/compare_button"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="141dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="141dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/compare_run"
+                    android:textSize="8dp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_graphic"
+                    android:backgroundTint="@color/lightBlue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/avg_steps_value_text_view" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>

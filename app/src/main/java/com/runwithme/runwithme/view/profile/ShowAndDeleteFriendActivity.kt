@@ -9,7 +9,9 @@ import com.runwithme.runwithme.adapters.ShowAndDeleteFriendsAdapter
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.databinding.ActivityShowAndDeleteFriendBinding
 import com.runwithme.runwithme.model.User
+import com.runwithme.runwithme.utils.ExtensionFunctions.hide
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
+import com.runwithme.runwithme.utils.ExtensionFunctions.show
 import com.runwithme.runwithme.utils.NetworkResult
 import com.runwithme.runwithme.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +40,7 @@ class ShowAndDeleteFriendActivity : AppCompatActivity() {
     }
 
     private fun getAllFriendsFromDB() {
+        binding.myFriendsProgressBar.show()
         mUserViewModel.readUser.observeOnce(this, { userList ->
             if (userList.isNotEmpty()) {
                 mUserViewModel.getAllFriends()
@@ -45,6 +48,7 @@ class ShowAndDeleteFriendActivity : AppCompatActivity() {
                     when (response) {
                         is NetworkResult.Success -> {
                             if (response.data?.friends != null) {
+                                binding.myFriendsProgressBar.hide()
                                 mFriendList = response.data.friends
                                 if (mFriendList.size > 0) {
                                     binding.friendsRecyclerView.visibility = View.VISIBLE

@@ -1,11 +1,13 @@
 package com.runwithme.runwithme.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.runwithme.runwithme.data.database.UserEntity
 import com.runwithme.runwithme.model.Run
 import com.runwithme.runwithme.model.network.MyRunsResponse
 import com.runwithme.runwithme.model.network.RunDataRequest
+import com.runwithme.runwithme.model.network.SaveRunResponse
 import com.runwithme.runwithme.network.Repository
 import com.runwithme.runwithme.utils.Constants.NO_CONNECTION
 import com.runwithme.runwithme.utils.NetworkResult
@@ -21,7 +23,7 @@ class RunViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    val runData: MutableLiveData<NetworkResult<Run>> = MutableLiveData()
+    val runData: MutableLiveData<NetworkResult<SaveRunResponse>> = MutableLiveData()
     val myRunsResponse: MutableLiveData<NetworkResult<MyRunsResponse>> = MutableLiveData()
 
     fun saveRunData(runDataRequest: RunDataRequest) {
@@ -29,14 +31,14 @@ class RunViewModel @Inject constructor(
             try {
                 val response = repository.remote.saveRunData(runDataRequest)
                 runData.value = handleRunDataResponse(response)
-                addRunToLocalDB(response.body()!!)
+                addRunToLocalDB(response.body()!!.newRun)
             } catch (e: Exception) {
                 runData.value = NetworkResult.Error(NO_CONNECTION)
             }
         }
     }
 
-    private fun handleRunDataResponse(response: Response<Run>): NetworkResult<Run>? {
+    private fun handleRunDataResponse(response: Response<SaveRunResponse>): NetworkResult<SaveRunResponse>? {
         when {
             response.isSuccessful -> {
                 val runDataBody = response.body()
