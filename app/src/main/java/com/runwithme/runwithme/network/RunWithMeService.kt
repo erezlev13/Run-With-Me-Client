@@ -46,7 +46,7 @@ interface RunWithMeService {
     suspend fun getPastGroupRuns(@Query("groupId") groupId:String) : Response<PastGroupRunResponse>
 
     @POST("runs/save-run")
-    suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<Run>
+    suspend fun saveRunData(@Body runDataRequest: RunDataRequest): Response<SaveRunResponse>
 
     @POST("groups/save-group")
     suspend fun saveGroupData(@Body groupDataRequest: GroupDataRequest) :Response<Group>

@@ -52,7 +52,7 @@ class RemoteDataSource @Inject constructor(
         return runWithMeApi.deleteFriend(friendID)
     }
 
-    suspend fun saveRunData(runDataRequest: RunDataRequest): Response<Run> {
+    suspend fun saveRunData(runDataRequest: RunDataRequest): Response<SaveRunResponse> {
         return runWithMeApi.saveRunData(runDataRequest)
     }
 

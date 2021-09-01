@@ -45,7 +45,6 @@ class ShowAndDeleteFriendsAdapter(
                             " is deleted from your friend list", Snackbar.LENGTH_LONG).show()
                 friendsList.removeAt(position)
                 notifyDataSetChanged()
-
             }
         }
     }

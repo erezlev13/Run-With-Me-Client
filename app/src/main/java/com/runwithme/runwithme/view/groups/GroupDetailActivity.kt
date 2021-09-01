@@ -1,5 +1,6 @@
 package com.runwithme.runwithme.view.groups
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,15 +13,20 @@ import com.runwithme.runwithme.R
 import com.runwithme.runwithme.adapters.GroupMembersAdapter
 import com.runwithme.runwithme.adapters.GroupStatisticsAdapter
 import com.runwithme.runwithme.adapters.ScheduledRunsAdapter
+import com.runwithme.runwithme.adapters.ShowAndDeleteFriendsAdapter
 import com.runwithme.runwithme.databinding.ActivityGroupDetailBinding
 import com.runwithme.runwithme.model.Group
 import com.runwithme.runwithme.model.GroupRun
+import com.runwithme.runwithme.model.User
+import com.runwithme.runwithme.utils.Constants
 import com.runwithme.runwithme.utils.Constants.EXTRA_GROUP_DETAILS
 import com.runwithme.runwithme.utils.Constants.GROUP_ID
 import com.runwithme.runwithme.utils.ExtensionFunctions.observeOnce
 import com.runwithme.runwithme.utils.ImageUtils
 import com.runwithme.runwithme.utils.NetworkResult
+import com.runwithme.runwithme.view.activity.MainActivity
 import com.runwithme.runwithme.view.dialog.GroupDescriptionDialog
+import com.runwithme.runwithme.view.profile.AddFriendActivity
 import com.runwithme.runwithme.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -117,6 +123,26 @@ class GroupDetailActivity : AppCompatActivity() {
         binding.statisticsListInclude.statisticsRecyclerView.setHasFixedSize(true)
         mStatisticsAdapter = GroupStatisticsAdapter(mPastGroupRuns)
         binding.statisticsListInclude.statisticsRecyclerView.adapter = mStatisticsAdapter
+
+        mStatisticsAdapter.setOnCompareClickListener(object :
+            GroupStatisticsAdapter.OnCompareClickListener {
+            override fun onCompareClick(groupRun: GroupRun) {
+                goToCompareStatistics(groupRun)
+            }
+        })
+        if(mPastGroupRuns.size == 0){
+            binding.statisticsListInclude.statisticsRecyclerView.visibility = View.GONE
+            binding.statisticsListInclude.noGroupRunsStatisticsAvailableTextView.visibility = View.VISIBLE
+        }
+        else{
+            binding.statisticsListInclude.statisticsRecyclerView.visibility = View.VISIBLE
+            binding.statisticsListInclude.noGroupRunsStatisticsAvailableTextView.visibility = View.GONE
+        }
+    }
+    private fun goToCompareStatistics(groupRun: GroupRun){
+        val intent = Intent(this, CompareStatisticsActivity::class.java)
+        intent.putExtra(Constants.GROUP_RUN, groupRun)
+        startActivity(intent)
     }
 
     private fun showAndScheduleFutureRuns(groupDetails: Group) {

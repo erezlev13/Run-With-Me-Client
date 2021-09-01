@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.profile.ShowAndDeleteFriendActivity">
+    tools:context=".view.groups.CompareStatisticsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/show_and_delete_friend_appBarLayout"
+        android:id="@+id/compare_statistics_appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/show_and_delete_friend_toolbar"
+                android:id="@+id/compare_statistics_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/startBlue"
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:text="@string/title_my_friends"
+                    android:text="@string/title_compare_statistics"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20dp"
@@ -50,40 +50,5 @@
             </androidx.appcompat.widget.Toolbar>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
-    <TextView
-        android:id="@+id/no_friends_available_textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/no_friends"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:visibility="invisible"
-        tools:visibility="invisible" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friends_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="4dp"
-        android:scrollbars="vertical"
-        android:layout_marginTop="?attr/actionBarSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_and_delete_friend_appBarLayout" />
-
-    <ProgressBar
-        android:id="@+id/my_friends_progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="10"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/no_friends_available_textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/no_friends_available_textView"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
